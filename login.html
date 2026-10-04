@@ -6,422 +6,1708 @@
 
   <title>Campus | Universo del Estudiante</title>
 
+  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+
+    /* ==========================================================
+       UNIVERSO DEL ESTUDIANTE
+       Biblioteca cálida + nostalgia 2000
+       ========================================================== */
+
+    :root {
+
+      --wood-dark: #3b2418;
+      --wood: #68412a;
+      --wood-light: #8a5b39;
+
+      --paper: #f4e6c8;
+      --paper-light: #fff5dd;
+
+      --ink: #281a14;
+
+      --wine: #7f2530;
+      --brick: #a54038;
+      --gold: #c79649;
+      --green: #405747;
+
+      --muted: #735f4c;
+
+      --shadow: rgba(30, 15, 8, .38);
+
+      --panel: rgba(72, 43, 28, .86);
+
+      --input-bg: #fff9e9;
+
+      --button-text: #fff7e7;
+    }
+
+
+    html[data-theme="dark"] {
+
+      --wood-dark: #17100c;
+      --wood: #2b1b13;
+      --wood-light: #432b1e;
+
+      --paper: #30251f;
+      --paper-light: #3b2e26;
+
+      --ink: #f2e3ca;
+
+      --wine: #a83e49;
+      --brick: #ba5149;
+      --gold: #d4a458;
+      --green: #607663;
+
+      --muted: #c6ad91;
+
+      --shadow: rgba(0, 0, 0, .55);
+
+      --panel: rgba(27, 18, 13, .9);
+
+      --input-bg: #211a16;
+
+      --button-text: #fff4dc;
+    }
+
+
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
+
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
 
     body {
+
       min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
+
+      font-family:
+        "Trebuchet MS",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      color: var(--ink);
+
+      overflow-x: hidden;
+
       background:
-        radial-gradient(circle at 15% 20%, #f7c9a9 0 4%, transparent 5%),
-        radial-gradient(circle at 85% 75%, #aac7b8 0 6%, transparent 7%),
-        #f1eadf;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 30px;
-      color: #242424;
+
+        radial-gradient(
+          circle at 20% 18%,
+          rgba(255, 198, 103, .22),
+          transparent 25%
+        ),
+
+        radial-gradient(
+          circle at 82% 70%,
+          rgba(127, 37, 48, .16),
+          transparent 28%
+        ),
+
+        repeating-linear-gradient(
+          90deg,
+          rgba(255,255,255,.018) 0px,
+          rgba(255,255,255,.018) 2px,
+          transparent 2px,
+          transparent 45px
+        ),
+
+        repeating-linear-gradient(
+          4deg,
+          var(--wood-dark) 0px,
+          var(--wood) 70px,
+          var(--wood-light) 130px,
+          var(--wood-dark) 210px
+        );
+
+      transition:
+        background .35s ease,
+        color .35s ease;
     }
 
-    .campus-card {
-      width: 100%;
-      max-width: 950px;
-      background: #fffaf1;
-      border: 3px solid #242424;
-      box-shadow: 10px 10px 0 #242424;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      overflow: hidden;
+
+    body::before {
+
+      content: "";
+
+      position: fixed;
+      inset: 0;
+
+      pointer-events: none;
+
+      background:
+        radial-gradient(
+          ellipse at center,
+          transparent 35%,
+          rgba(20, 9, 4, .28) 100%
+        );
+
+      z-index: 0;
     }
+
+
+    /* ==========================================================
+       TOP BAR
+       ========================================================== */
+
+    .topbar {
+
+      position: relative;
+      z-index: 10;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 18px 28px;
+
+      color: #f7e9ce;
+
+      font-family: Georgia, serif;
+
+      letter-spacing: .04em;
+    }
+
+
+    .brand-mini {
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      font-weight: bold;
+    }
+
+
+    .online-dot {
+
+      width: 9px;
+      height: 9px;
+
+      border-radius: 50%;
+
+      background: #b9d68c;
+
+      box-shadow:
+        0 0 0 3px rgba(185,214,140,.12),
+        0 0 13px rgba(185,214,140,.8);
+    }
+
+
+    .theme-toggle {
+
+      border: 1px solid rgba(255,255,255,.28);
+
+      background:
+        rgba(30, 15, 9, .28);
+
+      color: #fff0d2;
+
+      font-size: 17px;
+
+      padding: 9px 14px;
+
+      border-radius: 999px;
+
+      cursor: pointer;
+
+      backdrop-filter: blur(10px);
+
+      transition:
+        transform .2s ease,
+        background .2s ease;
+    }
+
+
+    .theme-toggle:hover {
+      transform: translateY(-2px);
+      background: rgba(127,37,48,.65);
+    }
+
+
+    /* ==========================================================
+       PAGE
+       ========================================================== */
+
+    .page {
+
+      position: relative;
+      z-index: 2;
+
+      width: min(1180px, calc(100% - 34px));
+
+      margin: 20px auto 60px;
+
+      display: grid;
+      grid-template-columns:
+        minmax(340px, .95fr)
+        minmax(390px, 1.05fr);
+
+      min-height: 690px;
+
+      border:
+        1px solid rgba(255,230,195,.18);
+
+      border-radius: 18px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 28px 80px rgba(15,8,4,.55),
+        0 4px 0 rgba(0,0,0,.16);
+    }
+
+
+    /* ==========================================================
+       LIBRARY SIDE
+       ========================================================== */
+
+    .library {
+
+      position: relative;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      padding: 55px 50px 42px;
+
+      color: #f8ead1;
+
+      background:
+
+        linear-gradient(
+          135deg,
+          rgba(43,25,16,.74),
+          rgba(86,47,28,.73)
+        ),
+
+        repeating-linear-gradient(
+          0deg,
+          #3f271a 0,
+          #3f271a 58px,
+          #533320 59px,
+          #2e1a12 62px
+        );
+    }
+
+
+    .library::after {
+
+      content: "";
+
+      position: absolute;
+      inset: 0;
+
+      pointer-events: none;
+
+      background:
+        radial-gradient(
+          circle at 20% 18%,
+          rgba(255,184,78,.30),
+          transparent 26%
+        );
+    }
+
+
+    .library-content {
+
+      position: relative;
+      z-index: 2;
+    }
+
+
+    .tiny-label {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      margin-bottom: 25px;
+
+      padding: 6px 10px;
+
+      border:
+        1px solid rgba(255,239,211,.42);
+
+      border-radius: 4px;
+
+      font-size: 11px;
+
+      font-weight: bold;
+
+      letter-spacing: .15em;
+
+      text-transform: uppercase;
+
+      background:
+        rgba(39,20,12,.35);
+    }
+
+
+    .magic-title {
+
+      margin: 0 0 22px;
+
+      max-width: 490px;
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      font-size:
+        clamp(54px, 6vw, 82px);
+
+      line-height: .93;
+
+      letter-spacing: -.045em;
+    }
+
+
+    .magic-title em {
+
+      color: #e5b15f;
+
+      font-weight: normal;
+    }
+
 
     .intro {
-      background: #ffb36b;
-      padding: 55px 45px;
-      border-right: 3px solid #242424;
+
+      max-width: 470px;
+
+      margin: 0;
+
+      font-size: 17px;
+
+      line-height: 1.65;
+
+      color: #eadbc3;
+    }
+
+
+    .scribble {
+
+      display: inline-block;
+
+      margin-top: 26px;
+
+      color: #efc67c;
+
+      font-family:
+        "Courier New",
+        monospace;
+
+      font-size: 12px;
+
+      transform: rotate(-2deg);
+    }
+
+
+    /* ==========================================================
+       BOOKS
+       ========================================================== */
+
+    .books {
+
+      position: relative;
+      z-index: 2;
+
+      display: flex;
+      align-items: flex-end;
+
+      height: 150px;
+
+      margin-top: 45px;
+
+      border-bottom:
+        9px solid #25130c;
+
+      box-shadow:
+        0 7px 0 rgba(0,0,0,.18);
+    }
+
+
+    .book {
+
+      width: 53px;
+
+      margin-right: 8px;
+
+      border-radius:
+        4px 4px 1px 1px;
+
+      box-shadow:
+        inset -5px 0 rgba(0,0,0,.14),
+        4px 2px 5px rgba(0,0,0,.22);
+
       position: relative;
     }
 
-    .small {
-      font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 2px;
-      margin-bottom: 20px;
+
+    .book::after {
+
+      content: "";
+
+      position: absolute;
+
+      left: 9px;
+      right: 9px;
+      top: 17px;
+
+      height: 2px;
+
+      background:
+        rgba(255,230,190,.55);
+
+      box-shadow:
+        0 7px
+        rgba(255,230,190,.25);
     }
 
-    h1 {
-      font-family: Georgia, serif;
-      font-size: clamp(42px, 7vw, 72px);
-      line-height: .9;
-      margin-bottom: 25px;
+
+    .b1 {
+      height: 118px;
+      background: #7d2730;
     }
 
-    .intro p {
-      font-size: 17px;
+    .b2 {
+      height: 92px;
+      background: #3d5b47;
+    }
+
+    .b3 {
+      height: 130px;
+      background: #b07137;
+    }
+
+    .b4 {
+      height: 105px;
+      background: #46335c;
+    }
+
+    .b5 {
+      height: 84px;
+      background: #8a4438;
+    }
+
+    .b6 {
+      height: 122px;
+      background: #36566b;
+    }
+
+
+    .book-label {
+
+      position: absolute;
+
+      bottom: 11px;
+      left: 7px;
+      right: 7px;
+
+      background:
+        rgba(244,224,188,.85);
+
+      color: #302017;
+
+      font-size: 8px;
+
+      text-align: center;
+
+      padding: 4px 2px;
+
+      font-family:
+        "Courier New",
+        monospace;
+    }
+
+
+    /* ==========================================================
+       FORM SIDE
+       ========================================================== */
+
+    .desk {
+
+      position: relative;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 48px;
+
+      background:
+
+        radial-gradient(
+          circle at 90% 8%,
+          rgba(255,190,92,.28),
+          transparent 23%
+        ),
+
+        var(--panel);
+    }
+
+
+    .desk::before {
+
+      content: "★";
+
+      position: absolute;
+
+      top: 26px;
+      right: 30px;
+
+      font-family:
+        "Courier New",
+        monospace;
+
+      color: var(--gold);
+
+      font-size: 22px;
+
+      transform: rotate(12deg);
+    }
+
+
+    .paper {
+
+      position: relative;
+
+      width: min(100%, 510px);
+
+      padding: 44px 42px 38px;
+
+      background:
+        var(--paper);
+
+      border:
+        1px solid rgba(51,31,21,.25);
+
+      border-radius: 3px;
+
+      box-shadow:
+
+        14px 17px 0
+        rgba(34,19,11,.24),
+
+        0 22px 50px
+        rgba(0,0,0,.22);
+
+      transform:
+        rotate(-.35deg);
+
+      transition:
+        background .35s ease,
+        color .35s ease;
+    }
+
+
+    .paper::before {
+
+      content: "";
+
+      position: absolute;
+
+      top: 18px;
+      left: 22px;
+
+      width: 63px;
+      height: 17px;
+
+      background:
+        rgba(203,171,116,.46);
+
+      transform:
+        rotate(-4deg);
+
+      box-shadow:
+        0 1px 4px
+        rgba(0,0,0,.09);
+    }
+
+
+    .y2k-sticker {
+
+      position: absolute;
+
+      top: -17px;
+      right: 19px;
+
+      padding: 7px 11px;
+
+      background:
+        var(--wine);
+
+      color:
+        #fff1d5;
+
+      font-family:
+        "Courier New",
+        monospace;
+
+      font-size: 10px;
+
+      letter-spacing: .07em;
+
+      border-radius: 3px;
+
+      transform:
+        rotate(4deg);
+
+      box-shadow:
+        4px 4px 0 rgba(0,0,0,.18);
+    }
+
+
+    .paper-title {
+
+      margin:
+        16px 0 7px;
+
+      font-family:
+        Georgia,
+        serif;
+
+      font-size: 37px;
+
+      letter-spacing: -.03em;
+    }
+
+
+    .paper-subtitle {
+
+      margin:
+        0 0 28px;
+
+      color:
+        var(--muted);
+
+      font-size: 14px;
+
       line-height: 1.5;
-      max-width: 350px;
     }
 
-    .stamp {
-      display: inline-block;
-      border: 2px solid #242424;
-      padding: 8px 12px;
-      transform: rotate(-3deg);
-      margin-top: 35px;
-      font-weight: bold;
-      background: #f7e5a2;
-    }
 
-    .forms {
-      padding: 45px;
-    }
+    /* ==========================================================
+       TABS
+       ========================================================== */
 
     .tabs {
-      display: flex;
-      border-bottom: 2px solid #242424;
-      margin-bottom: 30px;
+
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      margin-bottom: 26px;
+
+      border-bottom:
+        1px solid
+        rgba(67,42,29,.35);
     }
+
 
     .tab {
-      flex: 1;
+
       border: 0;
-      background: none;
-      padding: 14px;
-      font-size: 15px;
-      font-weight: bold;
+
+      background: transparent;
+
+      color:
+        var(--muted);
+
+      padding:
+        13px 8px;
+
+      font-family:
+        inherit;
+
+      font-weight: 800;
+
+      font-size: 13px;
+
       cursor: pointer;
-      opacity: .5;
+
+      position: relative;
     }
+
 
     .tab.active {
-      opacity: 1;
-      background: #dce8de;
+
+      color:
+        var(--wine);
     }
 
+
+    .tab.active::after {
+
+      content: "";
+
+      position: absolute;
+
+      height: 4px;
+
+      left: 14px;
+      right: 14px;
+      bottom: -2px;
+
+      background:
+        var(--wine);
+
+      border-radius:
+        10px;
+    }
+
+
     .form-section {
+
       display: none;
     }
 
+
     .form-section.active {
+
       display: block;
+
+      animation:
+        appear .25s ease;
     }
+
+
+    @keyframes appear {
+
+      from {
+        opacity: 0;
+        transform:
+          translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform:
+          translateY(0);
+      }
+    }
+
+
+    /* ==========================================================
+       FORM
+       ========================================================== */
 
     label {
+
       display: block;
-      font-size: 13px;
+
+      margin:
+        16px 0 7px;
+
+      color:
+        var(--muted);
+
+      font-family:
+        "Courier New",
+        monospace;
+
+      font-size: 11px;
+
       font-weight: bold;
-      margin: 18px 0 7px;
+
+      letter-spacing: .08em;
+
       text-transform: uppercase;
-      letter-spacing: 1px;
     }
+
 
     input {
+
       width: 100%;
-      padding: 14px;
-      border: 2px solid #242424;
-      background: #fff;
-      font-size: 16px;
+
+      padding:
+        14px 15px;
+
+      border:
+        1px solid
+        rgba(73,47,32,.45);
+
+      border-radius: 5px;
+
       outline: none;
+
+      background:
+        var(--input-bg);
+
+      color:
+        var(--ink);
+
+      font-size: 15px;
+
+      transition:
+        border .2s,
+        box-shadow .2s,
+        background .3s;
     }
+
 
     input:focus {
-      background: #fff9d9;
+
+      border-color:
+        var(--wine);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(127,37,48,.11);
     }
+
 
     .primary {
+
       width: 100%;
-      margin-top: 25px;
-      border: 2px solid #242424;
-      padding: 14px;
-      background: #91bca4;
+
+      margin-top: 24px;
+
+      padding:
+        15px 18px;
+
+      border: 0;
+
+      border-radius: 5px;
+
+      background:
+        var(--wine);
+
+      color:
+        var(--button-text);
+
+      font-family:
+        "Courier New",
+        monospace;
+
       font-weight: bold;
-      font-size: 16px;
+
+      font-size: 14px;
+
+      letter-spacing: .04em;
+
       cursor: pointer;
-      box-shadow: 4px 4px 0 #242424;
+
+      box-shadow:
+        5px 5px 0
+        rgba(39,21,14,.22);
+
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        background .18s ease;
     }
+
 
     .primary:hover {
-      transform: translate(2px, 2px);
-      box-shadow: 2px 2px 0 #242424;
+
+      background:
+        var(--brick);
+
+      transform:
+        translate(2px,2px);
+
+      box-shadow:
+        3px 3px 0
+        rgba(39,21,14,.22);
     }
 
+
     .separator {
+
       display: flex;
+
       align-items: center;
+
       gap: 12px;
-      margin: 25px 0;
-      font-size: 12px;
+
+      margin:
+        25px 0 18px;
+
+      color:
+        var(--muted);
+
+      font-size: 10px;
+
+      font-family:
+        "Courier New",
+        monospace;
+
       font-weight: bold;
     }
+
 
     .separator::before,
     .separator::after {
+
       content: "";
+
       flex: 1;
+
       height: 1px;
-      background: #242424;
+
+      background:
+        rgba(86,56,38,.28);
     }
+
 
     .google {
+
       width: 100%;
-      padding: 14px;
-      background: white;
-      border: 2px solid #242424;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: bold;
+
+      padding:
+        14px 16px;
+
+      border:
+        1px solid
+        rgba(74,48,34,.45);
+
+      border-radius: 5px;
+
+      background:
+        var(--paper-light);
+
+      color:
+        var(--ink);
+
+      font-weight:
+        bold;
+
+      font-size:
+        14px;
+
+      cursor:
+        pointer;
+
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease;
     }
+
+
+    .google:hover {
+
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 5px 0
+        rgba(48,29,18,.12);
+    }
+
+
+    /* ==========================================================
+       MESSAGE
+       ========================================================== */
 
     .message {
-      margin-top: 20px;
-      padding: 12px;
-      border: 2px solid #242424;
+
       display: none;
-      font-size: 14px;
-      line-height: 1.4;
+
+      margin-top:
+        22px;
+
+      padding:
+        13px 14px;
+
+      border:
+        1px solid
+        rgba(50,31,22,.25);
+
+      border-radius: 5px;
+
+      font-size:
+        13px;
+
+      line-height:
+        1.5;
     }
+
 
     .message.ok {
+
       display: block;
-      background: #dce8de;
+
+      background:
+        rgba(64,87,71,.18);
+
+      border-left:
+        5px solid
+        var(--green);
     }
+
 
     .message.error {
+
       display: block;
-      background: #ffd7d2;
+
+      background:
+        rgba(165,64,56,.14);
+
+      border-left:
+        5px solid
+        var(--brick);
     }
 
-    .loading {
-      opacity: .6;
+
+    /* ==========================================================
+       SMALL Y2K FOOTER
+       ========================================================== */
+
+    .retro-footer {
+
+      margin-top:
+        24px;
+
+      text-align:
+        center;
+
+      color:
+        var(--muted);
+
+      font-family:
+        "Courier New",
+        monospace;
+
+      font-size:
+        9px;
+
+      letter-spacing:
+        .08em;
+    }
+
+
+    .retro-footer span {
+
+      color:
+        var(--wine);
+
+      font-weight:
+        bold;
+    }
+
+
+    /* ==========================================================
+       LOADING
+       ========================================================== */
+
+    .form-loading button {
+
       pointer-events: none;
+
+      opacity: .65;
     }
 
-    @media(max-width: 750px) {
-      .campus-card {
-        grid-template-columns: 1fr;
+
+    /* ==========================================================
+       RESPONSIVE
+       ========================================================== */
+
+    @media (max-width: 850px) {
+
+      .page {
+
+        grid-template-columns:
+          1fr;
+
+        width:
+          min(94%, 620px);
+
+        margin-top:
+          10px;
       }
 
-      .intro {
-        border-right: 0;
-        border-bottom: 3px solid #242424;
-        padding: 35px 30px;
+
+      .library {
+
+        min-height:
+          480px;
+
+        padding:
+          42px 34px 28px;
       }
 
-      .forms {
-        padding: 30px;
+
+      .magic-title {
+
+        font-size:
+          clamp(48px, 15vw, 70px);
       }
+
+
+      .books {
+
+        height:
+          125px;
+      }
+
+
+      .desk {
+
+        padding:
+          38px 24px 55px;
+      }
+
     }
+
+
+    @media (max-width: 480px) {
+
+      .topbar {
+
+        padding:
+          13px 16px;
+
+        font-size:
+          12px;
+      }
+
+
+      .paper {
+
+        padding:
+          38px 24px 30px;
+      }
+
+
+      .paper-title {
+
+        font-size:
+          31px;
+      }
+
+
+      .library {
+
+        min-height:
+          430px;
+      }
+
+
+      .book {
+
+        width:
+          42px;
+      }
+
+    }
+
   </style>
 </head>
 
+
 <body>
 
-<div class="campus-card">
 
-  <section class="intro">
-    <div class="small">BY NADIA LOPEZ · MADE IN ARGENTINA</div>
+<!-- ==========================================================
+     TOP
+     ========================================================== -->
 
-    <h1>Tu<br>campus.</h1>
+<header class="topbar">
 
-    <p>
-      Tus cursos, progreso, apuntes y diplomas en un mismo lugar.
-      Entrá a Universo del Estudiante y seguí exactamente donde lo dejaste.
-    </p>
+  <div class="brand-mini">
 
-    <div class="stamp">
-      UNIVERSO DEL ESTUDIANTE ★
-    </div>
-  </section>
+    <div class="online-dot"></div>
 
-  <section class="forms">
+    UNIVERSO DEL ESTUDIANTE
 
-    <div class="tabs">
-      <button class="tab active" onclick="showLogin()">INICIAR SESIÓN</button>
-      <button class="tab" onclick="showRegister()">CREAR CUENTA</button>
-    </div>
+  </div>
 
-    <!-- LOGIN -->
-    <div id="loginSection" class="form-section active">
 
-      <label>Correo electrónico</label>
-      <input
-        id="loginEmail"
-        type="email"
-        placeholder="tuemail@gmail.com"
-      >
+  <button
+    class="theme-toggle"
+    id="themeToggle"
+    aria-label="Cambiar modo de pantalla"
+  >
 
-      <label>Contraseña</label>
-      <input
-        id="loginPassword"
-        type="password"
-        placeholder="••••••••"
-      >
+    ☾ modo noche
 
-      <button class="primary" onclick="login()">
-        ENTRAR AL CAMPUS
-      </button>
+  </button>
 
-      <div class="separator">
-        O
+</header>
+
+
+
+<!-- ==========================================================
+     MAIN
+     ========================================================== -->
+
+<main class="page">
+
+
+  <!-- BIBLIOTECA -->
+
+  <section class="library">
+
+
+    <div class="library-content">
+
+      <div class="tiny-label">
+
+        ✦ CAMPUS PRIVADO · EST. 2026
+
       </div>
 
-      <button class="google" onclick="loginGoogle()">
-        G&nbsp;&nbsp; Continuar con Google
-      </button>
 
-    </div>
+      <h1 class="magic-title">
+
+        Tu rincón<br>
+        de <em>estudio.</em>
+
+      </h1>
 
 
-    <!-- REGISTRO -->
-    <div id="registerSection" class="form-section">
+      <p class="intro">
 
-      <label>Tu nombre</label>
-      <input
-        id="registerName"
-        type="text"
-        placeholder="¿Cómo te llamás?"
-      >
+        Entrá, dejá las cosas y seguí exactamente
+        donde te quedaste.
 
-      <label>Correo electrónico</label>
-      <input
-        id="registerEmail"
-        type="email"
-        placeholder="tuemail@gmail.com"
-      >
+        Tus cursos, apuntes, progreso y diplomas
+        viven acá.
 
-      <label>Contraseña</label>
-      <input
-        id="registerPassword"
-        type="password"
-        placeholder="Mínimo 6 caracteres"
-      >
+      </p>
 
-      <button class="primary" onclick="register()">
-        CREAR MI CUENTA
-      </button>
 
-      <div class="separator">
-        O
+      <div class="scribble">
+
+        ★ estudiar también puede sentirse como un lugar al que querés volver
+
       </div>
 
-      <button class="google" onclick="loginGoogle()">
-        G&nbsp;&nbsp; Registrarme con Google
-      </button>
-
     </div>
 
-    <div id="message" class="message"></div>
+
+
+    <!-- ESTANTERÍA -->
+
+    <div class="books">
+
+      <div class="book b1">
+        <div class="book-label">CURSOS</div>
+      </div>
+
+      <div class="book b2">
+        <div class="book-label">IDEAS</div>
+      </div>
+
+      <div class="book b3">
+        <div class="book-label">NOTAS</div>
+      </div>
+
+      <div class="book b4">
+        <div class="book-label">2026</div>
+      </div>
+
+      <div class="book b5">
+        <div class="book-label">FOCUS</div>
+      </div>
+
+      <div class="book b6">
+        <div class="book-label">★</div>
+      </div>
+
+    </div>
 
   </section>
 
-</div>
+
+
+  <!-- FORMULARIO -->
+
+  <section class="desk">
+
+
+    <div class="paper" id="formCard">
+
+
+      <div class="y2k-sticker">
+
+        MADE IN ARGENTINA ★
+
+      </div>
+
+
+      <h2 class="paper-title">
+
+        Bienvenid@.
+
+      </h2>
+
+
+      <p class="paper-subtitle">
+
+        Abrí tu ficha de estudiante y entrá al campus.
+
+      </p>
+
+
+
+      <!-- TABS -->
+
+      <div class="tabs">
+
+        <button
+          class="tab active"
+          onclick="showLogin()"
+        >
+
+          INICIAR SESIÓN
+
+        </button>
+
+
+        <button
+          class="tab"
+          onclick="showRegister()"
+        >
+
+          CREAR CUENTA
+
+        </button>
+
+      </div>
+
+
+
+      <!-- LOGIN -->
+
+      <div
+        id="loginSection"
+        class="form-section active"
+      >
+
+        <label>
+          Correo electrónico
+        </label>
+
+        <input
+          id="loginEmail"
+          type="email"
+          placeholder="tuemail@gmail.com"
+          autocomplete="email"
+        >
+
+
+        <label>
+          Contraseña
+        </label>
+
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+        >
+
+
+        <button
+          class="primary"
+          onclick="login()"
+        >
+
+          ENTRAR A MI CAMPUS →
+
+        </button>
+
+
+        <div class="separator">
+          O ENTRÁ CON
+        </div>
+
+
+        <button
+          class="google"
+          onclick="loginGoogle()"
+        >
+
+          G&nbsp;&nbsp; Continuar con Google
+
+        </button>
+
+      </div>
+
+
+
+      <!-- REGISTRO -->
+
+      <div
+        id="registerSection"
+        class="form-section"
+      >
+
+        <label>
+          Tu nombre
+        </label>
+
+        <input
+          id="registerName"
+          type="text"
+          placeholder="¿Cómo te llamás?"
+          autocomplete="name"
+        >
+
+
+        <label>
+          Correo electrónico
+        </label>
+
+        <input
+          id="registerEmail"
+          type="email"
+          placeholder="tuemail@gmail.com"
+          autocomplete="email"
+        >
+
+
+        <label>
+          Contraseña
+        </label>
+
+        <input
+          id="registerPassword"
+          type="password"
+          placeholder="Mínimo 6 caracteres"
+          autocomplete="new-password"
+        >
+
+
+        <button
+          class="primary"
+          onclick="register()"
+        >
+
+          CREAR MI FICHA →
+
+        </button>
+
+
+        <div class="separator">
+          O REGISTRATE CON
+        </div>
+
+
+        <button
+          class="google"
+          onclick="loginGoogle()"
+        >
+
+          G&nbsp;&nbsp; Registrarme con Google
+
+        </button>
+
+      </div>
+
+
+
+      <!-- MENSAJES -->
+
+      <div
+        id="message"
+        class="message"
+      ></div>
+
+
+
+      <div class="retro-footer">
+
+        universo_del_estudiante.exe ·
+        <span>ONLINE</span>
+        · BY NADIA LOPEZ
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+
+</main>
+
 
 
 <script>
 
-  /* ========================================
-     CONEXIÓN CON SUPABASE
-     ======================================== */
 
-  const SUPABASE_URL =
-    "https://ohlgifhdmqzqymnkjnwe.supabase.co";
-
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_0o_hbYuQFkWQ49u6gCTNgg_2kd6QAiu";
+/* ==========================================================
+   SUPABASE
+   PEGÁ ACÁ LOS MISMOS DOS DATOS QUE YA TENÉS
+   ========================================================== */
 
 
-  const supabaseClient = window.supabase.createClient(
+const SUPABASE_URL =
+  "https://ohlgifhdmqzqymnkjnwe.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_0o_hbYuQFkWQ49u6gCTNgg_2kd6QAiu";
+
+
+const supabaseClient =
+  window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
 
 
-  /* ========================================
-     CAMBIO ENTRE LOGIN Y REGISTRO
-     ======================================== */
 
-  function showLogin() {
+/* ==========================================================
+   URL ACTUAL DEL LOGIN
+   ========================================================== */
 
+
+const LOGIN_URL =
+  window.location.origin +
+  window.location.pathname;
+
+
+
+/* ==========================================================
+   TABS
+   ========================================================== */
+
+
+function showLogin() {
+
+  document
+    .querySelectorAll(".tab")
+    .forEach(
+      tab =>
+        tab.classList.remove("active")
+    );
+
+
+  document
+    .querySelectorAll(".tab")[0]
+    .classList.add("active");
+
+
+  document
+    .querySelectorAll(".form-section")
+    .forEach(
+      section =>
+        section.classList.remove("active")
+    );
+
+
+  document
+    .getElementById("loginSection")
+    .classList.add("active");
+
+
+  clearMessage();
+
+}
+
+
+
+function showRegister() {
+
+  document
+    .querySelectorAll(".tab")
+    .forEach(
+      tab =>
+        tab.classList.remove("active")
+    );
+
+
+  document
+    .querySelectorAll(".tab")[1]
+    .classList.add("active");
+
+
+  document
+    .querySelectorAll(".form-section")
+    .forEach(
+      section =>
+        section.classList.remove("active")
+    );
+
+
+  document
+    .getElementById("registerSection")
+    .classList.add("active");
+
+
+  clearMessage();
+
+}
+
+
+
+/* ==========================================================
+   REGISTRO
+   ========================================================== */
+
+
+async function register() {
+
+
+  const name =
     document
-      .querySelectorAll(".tab")
-      .forEach(tab => tab.classList.remove("active"));
+      .getElementById("registerName")
+      .value
+      .trim();
 
-    document.querySelectorAll(".tab")[0]
-      .classList.add("active");
 
+  const email =
     document
-      .querySelectorAll(".form-section")
-      .forEach(section => section.classList.remove("active"));
+      .getElementById("registerEmail")
+      .value
+      .trim();
 
+
+  const password =
     document
-      .getElementById("loginSection")
-      .classList.add("active");
+      .getElementById("registerPassword")
+      .value;
 
-    clearMessage();
+
+
+  if (!name || !email || !password) {
+
+    showMessage(
+      "Te falta completar algún dato de tu ficha.",
+      "error"
+    );
+
+    return;
+
   }
 
 
-  function showRegister() {
 
-    document
-      .querySelectorAll(".tab")
-      .forEach(tab => tab.classList.remove("active"));
+  if (password.length < 6) {
 
-    document.querySelectorAll(".tab")[1]
-      .classList.add("active");
+    showMessage(
+      "La contraseña necesita al menos 6 caracteres.",
+      "error"
+    );
 
-    document
-      .querySelectorAll(".form-section")
-      .forEach(section => section.classList.remove("active"));
+    return;
 
-    document
-      .getElementById("registerSection")
-      .classList.add("active");
-
-    clearMessage();
   }
 
 
-  /* ========================================
-     REGISTRAR USUARIO
-     ======================================== */
 
-  async function register() {
-
-    const name =
-      document.getElementById("registerName").value.trim();
-
-    const email =
-      document.getElementById("registerEmail").value.trim();
-
-    const password =
-      document.getElementById("registerPassword").value;
+  setLoading(true);
 
 
-    if (!name || !email || !password) {
-      showMessage(
-        "Completá todos los campos.",
-        "error"
-      );
-      return;
-    }
 
-
-    if (password.length < 6) {
-      showMessage(
-        "La contraseña debe tener al menos 6 caracteres.",
-        "error"
-      );
-      return;
-    }
-
-
-    setLoading(true);
+  try {
 
 
     const { data, error } =
@@ -433,198 +1719,376 @@
 
         options: {
 
-  data: {
-    full_name: name
-  },
+          data: {
 
-  emailRedirectTo:
-    "https://orsoconstrucciones6-spec.github.io/universo-del-estudiante-campus/login.html"
+            full_name: name
 
-}
+          },
 
-      });
-
-
-    setLoading(false);
-
-
-    if (error) {
-
-      showMessage(
-        error.message,
-        "error"
-      );
-
-      return;
-    }
-
-
-    showMessage(
-      "¡Cuenta creada! Revisá tu correo electrónico y confirmá tu cuenta antes de iniciar sesión.",
-      "ok"
-    );
-
-  }
-
-
-  /* ========================================
-     INICIAR SESIÓN CON EMAIL
-     ======================================== */
-
-  async function login() {
-
-    const email =
-      document.getElementById("loginEmail").value.trim();
-
-    const password =
-      document.getElementById("loginPassword").value;
-
-
-    if (!email || !password) {
-
-      showMessage(
-        "Ingresá tu correo y contraseña.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    setLoading(true);
-
-
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
-
-        email: email,
-
-        password: password
-
-      });
-
-
-    setLoading(false);
-
-
-    if (error) {
-
-      showMessage(
-        "No pudimos iniciar sesión. Revisá tu correo y contraseña.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    window.location.href = "campus.html";
-
-  }
-
-
-  /* ========================================
-     CONTINUAR CON GOOGLE
-     ======================================== */
-
-  async function loginGoogle() {
-
-    const redirectURL =
-      window.location.origin +
-      window.location.pathname;
-
-
-    const { error } =
-      await supabaseClient.auth.signInWithOAuth({
-
-        provider: "google",
-
-        options: {
-
-          redirectTo: redirectURL
+          emailRedirectTo:
+            LOGIN_URL
 
         }
 
       });
 
 
+
     if (error) {
 
-      showMessage(
-        error.message,
-        "error"
-      );
+      throw error;
 
     }
 
+
+
+    showMessage(
+
+      "¡Tu ficha está creada! ✦ Revisá tu correo y confirmá la cuenta para entrar al campus.",
+
+      "ok"
+
+    );
+
+
+  }
+
+  catch (error) {
+
+
+    showMessage(
+
+      error.message ||
+      "No pudimos crear la cuenta. Probá nuevamente.",
+
+      "error"
+
+    );
+
+
+  }
+
+  finally {
+
+    setLoading(false);
+
+  }
+
+}
+
+
+
+/* ==========================================================
+   LOGIN EMAIL
+   ========================================================== */
+
+
+async function login() {
+
+
+  const email =
+    document
+      .getElementById("loginEmail")
+      .value
+      .trim();
+
+
+  const password =
+    document
+      .getElementById("loginPassword")
+      .value;
+
+
+
+  if (!email || !password) {
+
+    showMessage(
+      "Ingresá tu correo y contraseña.",
+      "error"
+    );
+
+    return;
+
   }
 
 
-  /* ========================================
-     USUARIO YA LOGUEADO
-     ======================================== */
 
-  async function checkSession() {
-
-    const { data } =
-      await supabaseClient.auth.getSession();
+  setLoading(true);
 
 
-    if (data.session) {
 
-      window.location.href =
-        "campus.html";
+  try {
+
+
+    const { data, error } =
+      await supabaseClient.auth
+        .signInWithPassword({
+
+          email: email,
+
+          password: password
+
+        });
+
+
+
+    if (error) {
+
+      throw error;
 
     }
 
-  }
 
 
-  checkSession();
+    window.location.href =
+      "campus.html";
 
-
-  /* ========================================
-     MENSAJES
-     ======================================== */
-
-  function showMessage(text, type) {
-
-    const box =
-      document.getElementById("message");
-
-    box.textContent = text;
-
-    box.className =
-      "message " + type;
 
   }
 
+  catch (error) {
 
-  function clearMessage() {
 
-    const box =
-      document.getElementById("message");
+    showMessage(
 
-    box.textContent = "";
+      "No pudimos iniciar sesión. Revisá el correo, la contraseña y que hayas confirmado tu cuenta.",
 
-    box.className =
-      "message";
+      "error"
+
+    );
+
 
   }
 
+  finally {
 
-  function setLoading(value) {
+    setLoading(false);
 
-    document.body.classList.toggle(
-      "loading",
-      value
+  }
+
+}
+
+
+
+/* ==========================================================
+   GOOGLE
+   ========================================================== */
+
+
+async function loginGoogle() {
+
+
+  const { error } =
+    await supabaseClient.auth
+      .signInWithOAuth({
+
+        provider:
+          "google",
+
+        options: {
+
+          redirectTo:
+            LOGIN_URL
+
+        }
+
+      });
+
+
+
+  if (error) {
+
+    showMessage(
+      error.message,
+      "error"
     );
 
   }
 
+}
+
+
+
+/* ==========================================================
+   SESIÓN EXISTENTE
+   ========================================================== */
+
+
+async function checkSession() {
+
+
+  const { data } =
+    await supabaseClient.auth
+      .getSession();
+
+
+  if (data.session) {
+
+    window.location.href =
+      "campus.html";
+
+  }
+
+}
+
+
+checkSession();
+
+
+
+/* ==========================================================
+   MENSAJES
+   ========================================================== */
+
+
+function showMessage(text, type) {
+
+
+  const box =
+    document
+      .getElementById("message");
+
+
+  box.textContent =
+    text;
+
+
+  box.className =
+    "message " + type;
+
+}
+
+
+
+function clearMessage() {
+
+
+  const box =
+    document
+      .getElementById("message");
+
+
+  box.textContent =
+    "";
+
+
+  box.className =
+    "message";
+
+}
+
+
+
+/* ==========================================================
+   LOADING
+   ========================================================== */
+
+
+function setLoading(value) {
+
+
+  document
+    .getElementById("formCard")
+    .classList
+    .toggle(
+      "form-loading",
+      value
+    );
+
+}
+
+
+
+/* ==========================================================
+   MODO CLARO / OSCURO
+   ========================================================== */
+
+
+const themeToggle =
+  document
+    .getElementById("themeToggle");
+
+
+
+function applyTheme(theme) {
+
+
+  document
+    .documentElement
+    .setAttribute(
+      "data-theme",
+      theme
+    );
+
+
+  localStorage.setItem(
+    "ude-theme",
+    theme
+  );
+
+
+  themeToggle.textContent =
+    theme === "dark"
+      ? "☀ modo cálido"
+      : "☾ modo noche";
+
+}
+
+
+
+const savedTheme =
+  localStorage.getItem(
+    "ude-theme"
+  );
+
+
+const systemDark =
+  window
+    .matchMedia(
+      "(prefers-color-scheme: dark)"
+    )
+    .matches;
+
+
+
+applyTheme(
+  savedTheme ||
+  (
+    systemDark
+      ? "dark"
+      : "light"
+  )
+);
+
+
+
+themeToggle
+  .addEventListener(
+    "click",
+    () => {
+
+
+      const current =
+        document
+          .documentElement
+          .getAttribute(
+            "data-theme"
+          );
+
+
+      applyTheme(
+        current === "dark"
+          ? "light"
+          : "dark"
+      );
+
+
+    }
+  );
+
+
 </script>
+
 
 </body>
 </html>
