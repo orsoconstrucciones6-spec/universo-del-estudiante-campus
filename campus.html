@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Campus | Universo del Estudiante</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      font-family:Arial, Helvetica, sans-serif;
+      background:#f1eadf;
+      color:#242424;
+      min-height:100vh;
+    }
+
+    header{
+      background:#ffb36b;
+      border-bottom:3px solid #242424;
+      padding:22px 6%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+    }
+
+    .brand{
+      font-family:Georgia, serif;
+      font-size:28px;
+      font-weight:bold;
+    }
+
+    .logout{
+      border:2px solid #242424;
+      background:#fffaf1;
+      padding:10px 16px;
+      font-weight:bold;
+      cursor:pointer;
+      box-shadow:3px 3px 0 #242424;
+    }
+
+    main{
+      max-width:1100px;
+      margin:auto;
+      padding:55px 25px;
+    }
+
+    .welcome{
+      background:#fffaf1;
+      border:3px solid #242424;
+      box-shadow:8px 8px 0 #242424;
+      padding:35px;
+      margin-bottom:40px;
+    }
+
+    .welcome small{
+      font-weight:bold;
+      letter-spacing:2px;
+    }
+
+    h1{
+      font-family:Georgia, serif;
+      font-size:50px;
+      margin:10px 0;
+    }
+
+    .email{
+      opacity:.7;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
+    }
+
+    .card{
+      min-height:170px;
+      border:3px solid #242424;
+      padding:25px;
+      background:#fffaf1;
+      box-shadow:5px 5px 0 #242424;
+    }
+
+    .card:nth-child(2){
+      background:#dce8de;
+    }
+
+    .card:nth-child(3){
+      background:#f7e5a2;
+    }
+
+    .card:nth-child(4){
+      background:#f5c7c1;
+    }
+
+    .card:nth-child(5){
+      background:#c9d8ed;
+    }
+
+    .card:nth-child(6){
+      background:#e7d5ea;
+    }
+
+    .card h2{
+      font-family:Georgia, serif;
+      margin-bottom:12px;
+    }
+
+    .card p{
+      line-height:1.5;
+    }
+
+    @media(max-width:800px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      h1{
+        font-size:38px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">UNIVERSO DEL ESTUDIANTE</div>
+  <button class="logout" onclick="logout()">CERRAR SESIÓN</button>
+</header>
+
+<main>
+
+  <section class="welcome">
+    <small>MI CAMPUS · MADE IN ARGENTINA</small>
+    <h1>Hola, <span id="studentName">estudiante</span> ✦</h1>
+    <p>Este es tu espacio personal dentro de Universo del Estudiante.</p>
+    <p class="email" id="studentEmail"></p>
+  </section>
+
+  <section class="grid">
+
+    <div class="card">
+      <h2>Mis cursos</h2>
+      <p>Acá van a aparecer los cursos que compraste y tu progreso.</p>
+    </div>
+
+    <div class="card">
+      <h2>Explorar cursos</h2>
+      <p>Descubrí nuevos cursos y experiencias para seguir aprendiendo.</p>
+    </div>
+
+    <div class="card">
+      <h2>Mi progreso</h2>
+      <p>Seguimiento de módulos, actividades y avances.</p>
+    </div>
+
+    <div class="card">
+      <h2>Mi cuaderno</h2>
+      <p>Notas y apuntes personales de tus cursos.</p>
+    </div>
+
+    <div class="card">
+      <h2>Mis diplomas</h2>
+      <p>Tus certificados aparecerán acá cuando completes cada curso.</p>
+    </div>
+
+    <div class="card">
+      <h2>Mi perfil</h2>
+      <p>Datos de tu cuenta y preferencias del campus.</p>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+
+const SUPABASE_URL =
+  "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_0o_hbYuQFkWQ49u6gCTNgg_2kd6QAiu";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_0o_hbYuQFkWQ49u6gCTNgg_2kd6QAiu";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+
+// COMPROBAR QUE EL USUARIO ESTÉ LOGUEADO
+async function loadUser(){
+
+  const { data, error } =
+    await supabaseClient.auth.getUser();
+
+  if(error || !data.user){
+
+    window.location.href = "login.html";
+    return;
+
+  }
+
+  const user = data.user;
+
+  const name =
+    user.user_metadata?.full_name ||
+    user.user_metadata?.name ||
+    "estudiante";
+
+  document.getElementById("studentName").textContent = name;
+
+  document.getElementById("studentEmail").textContent =
+    user.email || "";
+
+}
+
+
+// CERRAR SESIÓN
+async function logout(){
+
+  await supabaseClient.auth.signOut();
+
+  window.location.href = "login.html";
+
+}
+
+loadUser();
+
+</script>
+
+</body>
+</html>
