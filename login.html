@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Campus | Universo del Estudiante</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 15% 20%, #f7c9a9 0 4%, transparent 5%),
+        radial-gradient(circle at 85% 75%, #aac7b8 0 6%, transparent 7%),
+        #f1eadf;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      color: #242424;
+    }
+
+    .campus-card {
+      width: 100%;
+      max-width: 950px;
+      background: #fffaf1;
+      border: 3px solid #242424;
+      box-shadow: 10px 10px 0 #242424;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
+
+    .intro {
+      background: #ffb36b;
+      padding: 55px 45px;
+      border-right: 3px solid #242424;
+      position: relative;
+    }
+
+    .small {
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: Georgia, serif;
+      font-size: clamp(42px, 7vw, 72px);
+      line-height: .9;
+      margin-bottom: 25px;
+    }
+
+    .intro p {
+      font-size: 17px;
+      line-height: 1.5;
+      max-width: 350px;
+    }
+
+    .stamp {
+      display: inline-block;
+      border: 2px solid #242424;
+      padding: 8px 12px;
+      transform: rotate(-3deg);
+      margin-top: 35px;
+      font-weight: bold;
+      background: #f7e5a2;
+    }
+
+    .forms {
+      padding: 45px;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #242424;
+      margin-bottom: 30px;
+    }
+
+    .tab {
+      flex: 1;
+      border: 0;
+      background: none;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      opacity: .5;
+    }
+
+    .tab.active {
+      opacity: 1;
+      background: #dce8de;
+    }
+
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin: 18px 0 7px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid #242424;
+      background: #fff;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      background: #fff9d9;
+    }
+
+    .primary {
+      width: 100%;
+      margin-top: 25px;
+      border: 2px solid #242424;
+      padding: 14px;
+      background: #91bca4;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 4px 4px 0 #242424;
+    }
+
+    .primary:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 #242424;
+    }
+
+    .separator {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 25px 0;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .separator::before,
+    .separator::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #242424;
+    }
+
+    .google {
+      width: 100%;
+      padding: 14px;
+      background: white;
+      border: 2px solid #242424;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .message {
+      margin-top: 20px;
+      padding: 12px;
+      border: 2px solid #242424;
+      display: none;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .message.ok {
+      display: block;
+      background: #dce8de;
+    }
+
+    .message.error {
+      display: block;
+      background: #ffd7d2;
+    }
+
+    .loading {
+      opacity: .6;
+      pointer-events: none;
+    }
+
+    @media(max-width: 750px) {
+      .campus-card {
+        grid-template-columns: 1fr;
+      }
+
+      .intro {
+        border-right: 0;
+        border-bottom: 3px solid #242424;
+        padding: 35px 30px;
+      }
+
+      .forms {
+        padding: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="campus-card">
+
+  <section class="intro">
+    <div class="small">BY NADIA LOPEZ · MADE IN ARGENTINA</div>
+
+    <h1>Tu<br>campus.</h1>
+
+    <p>
+      Tus cursos, progreso, apuntes y diplomas en un mismo lugar.
+      Entrá a Universo del Estudiante y seguí exactamente donde lo dejaste.
+    </p>
+
+    <div class="stamp">
+      UNIVERSO DEL ESTUDIANTE ★
+    </div>
+  </section>
+
+  <section class="forms">
+
+    <div class="tabs">
+      <button class="tab active" onclick="showLogin()">INICIAR SESIÓN</button>
+      <button class="tab" onclick="showRegister()">CREAR CUENTA</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="loginSection" class="form-section active">
+
+      <label>Correo electrónico</label>
+      <input
+        id="loginEmail"
+        type="email"
+        placeholder="tuemail@gmail.com"
+      >
+
+      <label>Contraseña</label>
+      <input
+        id="loginPassword"
+        type="password"
+        placeholder="••••••••"
+      >
+
+      <button class="primary" onclick="login()">
+        ENTRAR AL CAMPUS
+      </button>
+
+      <div class="separator">
+        O
+      </div>
+
+      <button class="google" onclick="loginGoogle()">
+        G&nbsp;&nbsp; Continuar con Google
+      </button>
+
+    </div>
+
+
+    <!-- REGISTRO -->
+    <div id="registerSection" class="form-section">
+
+      <label>Tu nombre</label>
+      <input
+        id="registerName"
+        type="text"
+        placeholder="¿Cómo te llamás?"
+      >
+
+      <label>Correo electrónico</label>
+      <input
+        id="registerEmail"
+        type="email"
+        placeholder="tuemail@gmail.com"
+      >
+
+      <label>Contraseña</label>
+      <input
+        id="registerPassword"
+        type="password"
+        placeholder="Mínimo 6 caracteres"
+      >
+
+      <button class="primary" onclick="register()">
+        CREAR MI CUENTA
+      </button>
+
+      <div class="separator">
+        O
+      </div>
+
+      <button class="google" onclick="loginGoogle()">
+        G&nbsp;&nbsp; Registrarme con Google
+      </button>
+
+    </div>
+
+    <div id="message" class="message"></div>
+
+  </section>
+
+</div>
+
+
+<script>
+
+  /* ========================================
+     CONEXIÓN CON SUPABASE
+     ======================================== */
+
+  const SUPABASE_URL =
+    "PEGÁ_ACÁ_TU_PROJECT_URL";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "PEGÁ_ACÁ_TU_PUBLISHABLE_KEY";
+
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+  /* ========================================
+     CAMBIO ENTRE LOGIN Y REGISTRO
+     ======================================== */
+
+  function showLogin() {
+
+    document
+      .querySelectorAll(".tab")
+      .forEach(tab => tab.classList.remove("active"));
+
+    document.querySelectorAll(".tab")[0]
+      .classList.add("active");
+
+    document
+      .querySelectorAll(".form-section")
+      .forEach(section => section.classList.remove("active"));
+
+    document
+      .getElementById("loginSection")
+      .classList.add("active");
+
+    clearMessage();
+  }
+
+
+  function showRegister() {
+
+    document
+      .querySelectorAll(".tab")
+      .forEach(tab => tab.classList.remove("active"));
+
+    document.querySelectorAll(".tab")[1]
+      .classList.add("active");
+
+    document
+      .querySelectorAll(".form-section")
+      .forEach(section => section.classList.remove("active"));
+
+    document
+      .getElementById("registerSection")
+      .classList.add("active");
+
+    clearMessage();
+  }
+
+
+  /* ========================================
+     REGISTRAR USUARIO
+     ======================================== */
+
+  async function register() {
+
+    const name =
+      document.getElementById("registerName").value.trim();
+
+    const email =
+      document.getElementById("registerEmail").value.trim();
+
+    const password =
+      document.getElementById("registerPassword").value;
+
+
+    if (!name || !email || !password) {
+      showMessage(
+        "Completá todos los campos.",
+        "error"
+      );
+      return;
+    }
+
+
+    if (password.length < 6) {
+      showMessage(
+        "La contraseña debe tener al menos 6 caracteres.",
+        "error"
+      );
+      return;
+    }
+
+
+    setLoading(true);
+
+
+    const { data, error } =
+      await supabaseClient.auth.signUp({
+
+        email: email,
+
+        password: password,
+
+        options: {
+
+          data: {
+            full_name: name
+          }
+
+        }
+
+      });
+
+
+    setLoading(false);
+
+
+    if (error) {
+
+      showMessage(
+        error.message,
+        "error"
+      );
+
+      return;
+    }
+
+
+    showMessage(
+      "¡Cuenta creada! Revisá tu correo electrónico y confirmá tu cuenta antes de iniciar sesión.",
+      "ok"
+    );
+
+  }
+
+
+  /* ========================================
+     INICIAR SESIÓN CON EMAIL
+     ======================================== */
+
+  async function login() {
+
+    const email =
+      document.getElementById("loginEmail").value.trim();
+
+    const password =
+      document.getElementById("loginPassword").value;
+
+
+    if (!email || !password) {
+
+      showMessage(
+        "Ingresá tu correo y contraseña.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    setLoading(true);
+
+
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+
+        email: email,
+
+        password: password
+
+      });
+
+
+    setLoading(false);
+
+
+    if (error) {
+
+      showMessage(
+        "No pudimos iniciar sesión. Revisá tu correo y contraseña.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    window.location.href = "campus.html";
+
+  }
+
+
+  /* ========================================
+     CONTINUAR CON GOOGLE
+     ======================================== */
+
+  async function loginGoogle() {
+
+    const redirectURL =
+      window.location.origin +
+      window.location.pathname;
+
+
+    const { error } =
+      await supabaseClient.auth.signInWithOAuth({
+
+        provider: "google",
+
+        options: {
+
+          redirectTo: redirectURL
+
+        }
+
+      });
+
+
+    if (error) {
+
+      showMessage(
+        error.message,
+        "error"
+      );
+
+    }
+
+  }
+
+
+  /* ========================================
+     USUARIO YA LOGUEADO
+     ======================================== */
+
+  async function checkSession() {
+
+    const { data } =
+      await supabaseClient.auth.getSession();
+
+
+    if (data.session) {
+
+      window.location.href =
+        "campus.html";
+
+    }
+
+  }
+
+
+  checkSession();
+
+
+  /* ========================================
+     MENSAJES
+     ======================================== */
+
+  function showMessage(text, type) {
+
+    const box =
+      document.getElementById("message");
+
+    box.textContent = text;
+
+    box.className =
+      "message " + type;
+
+  }
+
+
+  function clearMessage() {
+
+    const box =
+      document.getElementById("message");
+
+    box.textContent = "";
+
+    box.className =
+      "message";
+
+  }
+
+
+  function setLoading(value) {
+
+    document.body.classList.toggle(
+      "loading",
+      value
+    );
+
+  }
+
+</script>
+
+</body>
+</html>
