@@ -1,1538 +1,1821 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Campus | Universo del Estudiante</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- SUPABASE -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>Tu Campus | Universo del Estudiante</title>
 
-  <style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    /* ==========================================================
-       UNIVERSO DEL ESTUDIANTE
-       Biblioteca cálida + nostalgia 2000
-       ========================================================== */
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    :root {
+<link
+  href="https://fonts.googleapis.com/css2?family=Anton&family=Special+Elite&family=DM+Sans:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+>
 
-      --wood-dark: #3b2418;
-      --wood: #68412a;
-      --wood-light: #8a5b39;
+<style>
 
-      --paper: #f4e6c8;
-      --paper-light: #fff5dd;
+/* ======================================================
+   UNIVERSO DEL ESTUDIANTE
+   CAMPUS RETRO / REVISTA / MADERA
+   ====================================================== */
 
-      --ink: #281a14;
+:root {
 
-      --wine: #7f2530;
-      --brick: #a54038;
-      --gold: #c79649;
-      --green: #405747;
+  --wood: #60371f;
+  --wood-dark: #351b10;
 
-      --muted: #735f4c;
+  --paper: #eee0c3;
+  --paper-light: #f7ecd3;
 
-      --shadow: rgba(30, 15, 8, .38);
+  --ink: #231814;
+  --muted: #6f5c4c;
 
-      --panel: rgba(72, 43, 28, .86);
+  --red: #9d2927;
+  --red-dark: #79201f;
+  --red-soft: #b74b3d;
 
-      --input-bg: #fff9e9;
+  --mustard: #c99b47;
+  --green: #697761;
 
-      --button-text: #fff7e7;
-    }
+  --shadow: rgba(25, 10, 3, .46);
+}
 
 
-    html[data-theme="dark"] {
+html[data-theme="dark"] {
 
-      --wood-dark: #17100c;
-      --wood: #2b1b13;
-      --wood-light: #432b1e;
+  --paper: #30241e;
+  --paper-light: #392b23;
 
-      --paper: #30251f;
-      --paper-light: #3b2e26;
+  --ink: #f4e8d2;
+  --muted: #c7b69f;
 
-      --ink: #f2e3ca;
+  --red: #b33e39;
+  --red-dark: #8d2b28;
 
-      --wine: #a83e49;
-      --brick: #ba5149;
-      --gold: #d4a458;
-      --green: #607663;
+  --shadow: rgba(0,0,0,.65);
+}
 
-      --muted: #c6ad91;
 
-      --shadow: rgba(0, 0, 0, .55);
+* {
+  box-sizing: border-box;
+}
 
-      --panel: rgba(27, 18, 13, .9);
 
-      --input-bg: #211a16;
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
 
-      --button-text: #fff4dc;
-    }
 
+body {
 
-    * {
-      box-sizing: border-box;
-    }
+  min-height: 100vh;
 
+  font-family:
+    "DM Sans",
+    Arial,
+    sans-serif;
 
-    html,
-    body {
-      margin: 0;
-      min-height: 100%;
-    }
+  color: var(--ink);
 
+  background-color: var(--wood-dark);
 
-    body {
+  background-image:
 
-      min-height: 100vh;
+    linear-gradient(
+      rgba(45, 20, 8, .08),
+      rgba(45, 20, 8, .16)
+    ),
 
-      font-family:
-        "Trebuchet MS",
-        Arial,
-        Helvetica,
-        sans-serif;
+    url("madera.jpg");
 
-      color: var(--ink);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 
-      overflow-x: hidden;
+  overflow-x: hidden;
+}
 
-      background:
 
-        radial-gradient(
-          circle at 20% 18%,
-          rgba(255, 198, 103, .22),
-          transparent 25%
-        ),
+/* fallback madera si no existe madera.jpg */
 
-        radial-gradient(
-          circle at 82% 70%,
-          rgba(127, 37, 48, .16),
-          transparent 28%
-        ),
+body::before {
 
-        repeating-linear-gradient(
-          90deg,
-          rgba(255,255,255,.018) 0px,
-          rgba(255,255,255,.018) 2px,
-          transparent 2px,
-          transparent 45px
-        ),
+  content: "";
 
-        repeating-linear-gradient(
-          4deg,
-          var(--wood-dark) 0px,
-          var(--wood) 70px,
-          var(--wood-light) 130px,
-          var(--wood-dark) 210px
-        );
+  position: fixed;
+  inset: 0;
 
-      transition:
-        background .35s ease,
-        color .35s ease;
-    }
+  z-index: -2;
 
+  background:
 
-    body::before {
+    repeating-linear-gradient(
+      92deg,
+      #4c2917 0px,
+      #633a22 70px,
+      #75482b 125px,
+      #4b2818 210px
+    );
+}
 
-      content: "";
 
-      position: fixed;
-      inset: 0;
+/* sombra exterior */
 
-      pointer-events: none;
+body::after {
 
-      background:
-        radial-gradient(
-          ellipse at center,
-          transparent 35%,
-          rgba(20, 9, 4, .28) 100%
-        );
+  content: "";
 
-      z-index: 0;
-    }
+  position: fixed;
+  inset: 0;
 
+  pointer-events: none;
 
-    /* ==========================================================
-       TOP BAR
-       ========================================================== */
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 45%,
+      rgba(17,7,2,.37) 100%
+    );
 
-    .topbar {
+  z-index: 100;
+}
 
-      position: relative;
-      z-index: 10;
 
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+/* ======================================================
+   CONTENEDOR
+   ====================================================== */
 
-      padding: 18px 28px;
+.page {
 
-      color: #f7e9ce;
+  position: relative;
 
-      font-family: Georgia, serif;
+  width: min(1450px, 96%);
 
-      letter-spacing: .04em;
-    }
+  min-height: 900px;
 
+  margin: 20px auto;
 
-    .brand-mini {
+  padding: 30px;
 
-      display: flex;
-      align-items: center;
-      gap: 10px;
+  overflow: hidden;
 
-      font-weight: bold;
-    }
+}
 
 
-    .online-dot {
+/* ======================================================
+   MARCA
+   ====================================================== */
 
-      width: 9px;
-      height: 9px;
+.brand {
 
-      border-radius: 50%;
+  position: absolute;
 
-      background: #b9d68c;
+  top: 12px;
+  left: 20px;
 
-      box-shadow:
-        0 0 0 3px rgba(185,214,140,.12),
-        0 0 13px rgba(185,214,140,.8);
-    }
+  z-index: 10;
 
+  background: #eee2c7;
 
-    .theme-toggle {
+  color: #8f2925;
 
-      border: 1px solid rgba(255,255,255,.28);
+  padding: 9px 15px;
 
-      background:
-        rgba(30, 15, 9, .28);
+  font-family: Anton, sans-serif;
 
-      color: #fff0d2;
+  font-size: 25px;
 
-      font-size: 17px;
+  line-height: .9;
 
-      padding: 9px 14px;
+  letter-spacing: .02em;
 
-      border-radius: 999px;
+  transform: rotate(-2deg);
 
-      cursor: pointer;
+  box-shadow:
+    5px 5px 0 rgba(30,12,5,.25);
 
-      backdrop-filter: blur(10px);
+  clip-path:
+    polygon(
+      2% 3%,
+      98% 0,
+      100% 92%,
+      92% 100%,
+      3% 96%,
+      0 10%
+    );
+}
 
-      transition:
-        transform .2s ease,
-        background .2s ease;
-    }
 
+.brand span {
+  display: block;
+}
 
-    .theme-toggle:hover {
-      transform: translateY(-2px);
-      background: rgba(127,37,48,.65);
-    }
 
+/* ======================================================
+   MINI MENU
+   ====================================================== */
 
-    /* ==========================================================
-       PAGE
-       ========================================================== */
+.mini-menu {
 
-    .page {
+  position: absolute;
 
-      position: relative;
-      z-index: 2;
+  top: 30px;
+  left: 350px;
 
-      width: min(1180px, calc(100% - 34px));
+  display: flex;
 
-      margin: 20px auto 60px;
+  gap: 6px;
 
-      display: grid;
-      grid-template-columns:
-        minmax(340px, .95fr)
-        minmax(390px, 1.05fr);
+  z-index: 9;
+}
 
-      min-height: 690px;
 
-      border:
-        1px solid rgba(255,230,195,.18);
+.mini-menu span {
 
-      border-radius: 18px;
+  padding: 8px 20px;
 
-      overflow: hidden;
+  font-family:
+    "Special Elite",
+    monospace;
 
-      box-shadow:
-        0 28px 80px rgba(15,8,4,.55),
-        0 4px 0 rgba(0,0,0,.16);
-    }
+  font-size: 12px;
 
+  color: #1e1611;
 
-    /* ==========================================================
-       LIBRARY SIDE
-       ========================================================== */
+  box-shadow:
+    2px 3px 0 rgba(0,0,0,.16);
 
-    .library {
+  transform: rotate(-1deg);
+}
 
-      position: relative;
 
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+.mini-menu span:nth-child(1) {
+  background: #b84d3e;
+}
 
-      padding: 55px 50px 42px;
+.mini-menu span:nth-child(2) {
+  background: #d1a351;
+}
 
-      color: #f8ead1;
+.mini-menu span:nth-child(3) {
+  background: #dfc89e;
+}
 
-      background:
+.mini-menu span:nth-child(4) {
+  background: #8c987c;
+}
 
-        linear-gradient(
-          135deg,
-          rgba(43,25,16,.74),
-          rgba(86,47,28,.73)
-        ),
 
-        repeating-linear-gradient(
-          0deg,
-          #3f271a 0,
-          #3f271a 58px,
-          #533320 59px,
-          #2e1a12 62px
-        );
-    }
+/* ======================================================
+   MODO OSCURO
+   ====================================================== */
 
+.theme-toggle {
 
-    .library::after {
+  position: absolute;
 
-      content: "";
+  right: 20px;
+  top: 25px;
 
-      position: absolute;
-      inset: 0;
+  z-index: 20;
 
-      pointer-events: none;
+  border: 0;
 
-      background:
-        radial-gradient(
-          circle at 20% 18%,
-          rgba(255,184,78,.30),
-          transparent 26%
-        );
-    }
+  padding: 8px 11px;
 
+  background:
+    rgba(239,224,195,.88);
 
-    .library-content {
+  color: #3c271b;
 
-      position: relative;
-      z-index: 2;
-    }
+  font-family:
+    "Special Elite",
+    monospace;
 
+  cursor: pointer;
 
-    .tiny-label {
+  transform: rotate(2deg);
 
-      display: inline-flex;
+  box-shadow:
+    3px 3px 0 rgba(0,0,0,.2);
+}
 
-      align-items: center;
 
-      gap: 8px;
+/* ======================================================
+   TÍTULO
+   ====================================================== */
 
-      margin-bottom: 25px;
+.hero {
 
-      padding: 6px 10px;
+  position: absolute;
 
-      border:
-        1px solid rgba(255,239,211,.42);
+  left: 65px;
+  top: 145px;
 
-      border-radius: 4px;
+  width: 660px;
 
-      font-size: 11px;
+  z-index: 10;
+}
 
-      font-weight: bold;
 
-      letter-spacing: .15em;
+.title-line {
 
-      text-transform: uppercase;
+  display: inline-block;
 
-      background:
-        rgba(39,20,12,.35);
-    }
+  font-family:
+    Anton,
+    Impact,
+    sans-serif;
 
+  text-transform: uppercase;
 
-    .magic-title {
+  letter-spacing: -.035em;
 
-      margin: 0 0 22px;
+  line-height: .84;
 
-      max-width: 490px;
+  color: #111;
 
-      font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
+  background: #eee2c7;
 
-      font-size:
-        clamp(54px, 6vw, 82px);
+  padding:
+    8px 16px;
 
-      line-height: .93;
+  font-size:
+    clamp(80px, 10vw, 160px);
 
-      letter-spacing: -.045em;
-    }
+  box-shadow:
+    8px 7px 0 rgba(29,12,5,.3);
 
+  transform:
+    rotate(-1deg);
 
-    .magic-title em {
+  clip-path:
+    polygon(
+      1% 4%,
+      99% 0,
+      100% 94%,
+      2% 100%
+    );
+}
 
-      color: #e5b15f;
 
-      font-weight: normal;
-    }
+.title-line .red {
 
+  color:
+    var(--red);
+}
 
-    .intro {
 
-      max-width: 470px;
+.hero-subtitle {
 
-      margin: 0;
+  display: inline-block;
 
-      font-size: 17px;
+  margin:
+    12px 0 0 220px;
 
-      line-height: 1.65;
+  background:
+    #dfcea8;
 
-      color: #eadbc3;
-    }
+  color:
+    #241811;
 
+  padding:
+    8px 13px;
 
-    .scribble {
+  font-family:
+    "Special Elite",
+    monospace;
 
-      display: inline-block;
+  font-size:
+    19px;
 
-      margin-top: 26px;
+  transform:
+    rotate(-1deg);
 
-      color: #efc67c;
+  box-shadow:
+    4px 4px 0 rgba(0,0,0,.15);
+}
 
-      font-family:
-        "Courier New",
-        monospace;
 
-      font-size: 12px;
+/* ======================================================
+   GLOBO ANTIGUO
+   ====================================================== */
 
-      transform: rotate(-2deg);
-    }
+.globe-wrap {
 
+  position: absolute;
 
-    /* ==========================================================
-       BOOKS
-       ========================================================== */
+  left: 4px;
+  top: 415px;
 
-    .books {
+  width: 320px;
+  height: 370px;
 
-      position: relative;
-      z-index: 2;
+  z-index: 6;
+}
 
-      display: flex;
-      align-items: flex-end;
 
-      height: 150px;
+.globe {
 
-      margin-top: 45px;
+  position: absolute;
 
-      border-bottom:
-        9px solid #25130c;
+  left: 0;
+  top: 0;
 
-      box-shadow:
-        0 7px 0 rgba(0,0,0,.18);
-    }
+  width: 290px;
+  height: 290px;
 
+  border-radius: 50%;
 
-    .book {
+  border:
+    9px solid #4e2f1e;
 
-      width: 53px;
+  background:
 
-      margin-right: 8px;
+    radial-gradient(
+      ellipse at 35% 45%,
+      rgba(69,103,64,.65) 0 8%,
+      transparent 9%
+    ),
 
-      border-radius:
-        4px 4px 1px 1px;
+    radial-gradient(
+      ellipse at 63% 30%,
+      rgba(77,106,64,.7) 0 12%,
+      transparent 13%
+    ),
 
-      box-shadow:
-        inset -5px 0 rgba(0,0,0,.14),
-        4px 2px 5px rgba(0,0,0,.22);
+    radial-gradient(
+      ellipse at 60% 68%,
+      rgba(70,98,62,.72) 0 14%,
+      transparent 15%
+    ),
 
-      position: relative;
-    }
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 28px,
+      rgba(90,55,30,.32) 29px,
+      transparent 30px
+    ),
 
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 34px,
+      rgba(90,55,30,.24) 35px,
+      transparent 36px
+    ),
 
-    .book::after {
+    #caa36b;
 
-      content: "";
+  box-shadow:
 
-      position: absolute;
+    inset -35px -20px 50px
+    rgba(64,30,15,.32),
 
-      left: 9px;
-      right: 9px;
-      top: 17px;
+    15px 20px 30px
+    rgba(19,8,3,.32);
 
-      height: 2px;
+  transform:
+    rotate(-8deg);
+}
 
-      background:
-        rgba(255,230,190,.55);
 
-      box-shadow:
-        0 7px
-        rgba(255,230,190,.25);
-    }
+.globe::before {
 
+  content: "";
 
-    .b1 {
-      height: 118px;
-      background: #7d2730;
-    }
+  position: absolute;
 
-    .b2 {
-      height: 92px;
-      background: #3d5b47;
-    }
+  left: 50%;
+  top: -20px;
 
-    .b3 {
-      height: 130px;
-      background: #b07137;
-    }
+  width: 130px;
+  height: 325px;
 
-    .b4 {
-      height: 105px;
-      background: #46335c;
-    }
+  border:
+    6px solid #765033;
 
-    .b5 {
-      height: 84px;
-      background: #8a4438;
-    }
+  border-radius:
+    50%;
 
-    .b6 {
-      height: 122px;
-      background: #36566b;
-    }
+  transform:
+    translateX(-50%);
 
+  pointer-events: none;
+}
 
-    .book-label {
 
-      position: absolute;
+.globe-stand {
 
-      bottom: 11px;
-      left: 7px;
-      right: 7px;
+  position: absolute;
 
-      background:
-        rgba(244,224,188,.85);
+  bottom: 25px;
+  left: 92px;
 
-      color: #302017;
+  width: 115px;
+  height: 27px;
 
-      font-size: 8px;
+  background:
+    #5a321e;
 
-      text-align: center;
+  border-radius:
+    50%;
 
-      padding: 4px 2px;
+  box-shadow:
+    0 8px 0 #352014;
+}
 
-      font-family:
-        "Courier New",
-        monospace;
-    }
 
+/* ======================================================
+   TELEVISOR RETRO
+   ====================================================== */
 
-    /* ==========================================================
-       FORM SIDE
-       ========================================================== */
+.tv {
 
-    .desk {
+  position: absolute;
 
-      position: relative;
+  left: 300px;
+  top: 490px;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  width: 305px;
+  height: 235px;
 
-      padding: 48px;
+  padding:
+    17px;
 
-      background:
+  background:
+    #9d302b;
 
-        radial-gradient(
-          circle at 90% 8%,
-          rgba(255,190,92,.28),
-          transparent 23%
-        ),
+  border:
+    7px solid #65211f;
 
-        var(--panel);
-    }
+  border-radius:
+    16px;
 
+  transform:
+    rotate(-2deg);
 
-    .desk::before {
+  box-shadow:
+    13px 16px 0 rgba(25,8,4,.33);
 
-      content: "★";
+  z-index: 7;
+}
 
-      position: absolute;
 
-      top: 26px;
-      right: 30px;
+.tv-screen {
 
-      font-family:
-        "Courier New",
-        monospace;
+  width: 100%;
+  height: 100%;
 
-      color: var(--gold);
+  border:
+    7px solid #281b17;
 
-      font-size: 22px;
+  border-radius:
+    26px;
 
-      transform: rotate(12deg);
-    }
+  overflow: hidden;
 
+  background:
 
-    .paper {
+    linear-gradient(
+      to top,
+      rgba(190,82,41,.75),
+      transparent 50%
+    ),
 
-      position: relative;
+    linear-gradient(
+      #24333f,
+      #75412c
+    );
 
-      width: min(100%, 510px);
+  position: relative;
+}
 
-      padding: 44px 42px 38px;
 
-      background:
-        var(--paper);
+.tv-screen::before {
 
-      border:
-        1px solid rgba(51,31,21,.25);
+  content: "CAMPUS";
 
-      border-radius: 3px;
+  position: absolute;
 
-      box-shadow:
+  left: 50%;
+  top: 50%;
 
-        14px 17px 0
-        rgba(34,19,11,.24),
+  transform:
+    translate(-50%,-50%);
 
-        0 22px 50px
-        rgba(0,0,0,.22);
+  color:
+    #e6b468;
 
-      transform:
-        rotate(-.35deg);
+  font-family:
+    "Special Elite",
+    monospace;
 
-      transition:
-        background .35s ease,
-        color .35s ease;
-    }
+  letter-spacing:
+    .22em;
 
+  font-size:
+    20px;
 
-    .paper::before {
+  text-shadow:
+    0 2px 8px black;
+}
 
-      content: "";
 
-      position: absolute;
+/* ======================================================
+   CASETES
+   ====================================================== */
 
-      top: 18px;
-      left: 22px;
+.cassettes {
 
-      width: 63px;
-      height: 17px;
+  position: absolute;
 
-      background:
-        rgba(203,171,116,.46);
+  left: 465px;
+  top: 720px;
 
-      transform:
-        rotate(-4deg);
+  z-index: 8;
 
-      box-shadow:
-        0 1px 4px
-        rgba(0,0,0,.09);
-    }
+  transform:
+    rotate(-2deg);
+}
 
 
-    .y2k-sticker {
+.cassette {
 
-      position: absolute;
+  width: 210px;
 
-      top: -17px;
-      right: 19px;
+  padding:
+    8px 15px;
 
-      padding: 7px 11px;
+  margin-top:
+    -1px;
 
-      background:
-        var(--wine);
+  border:
+    2px solid #332016;
 
-      color:
-        #fff1d5;
+  font-family:
+    "Special Elite",
+    monospace;
 
-      font-family:
-        "Courier New",
-        monospace;
+  font-size:
+    11px;
 
-      font-size: 10px;
+  color:
+    #241711;
 
-      letter-spacing: .07em;
+  box-shadow:
+    4px 4px 0 rgba(0,0,0,.17);
+}
 
-      border-radius: 3px;
 
-      transform:
-        rotate(4deg);
+.cassette:nth-child(1) {
+  background: #c3ad84;
+}
 
-      box-shadow:
-        4px 4px 0 rgba(0,0,0,.18);
-    }
+.cassette:nth-child(2) {
+  background: #bc8b37;
+}
 
+.cassette:nth-child(3) {
+  background: #975049;
+}
 
-    .paper-title {
 
-      margin:
-        16px 0 7px;
+/* ======================================================
+   CD
+   ====================================================== */
 
-      font-family:
-        Georgia,
-        serif;
+.cd {
 
-      font-size: 37px;
+  position: absolute;
 
-      letter-spacing: -.03em;
-    }
+  left: 315px;
+  top: 760px;
 
+  width: 200px;
+  height: 200px;
 
-    .paper-subtitle {
+  border-radius: 50%;
 
-      margin:
-        0 0 28px;
+  z-index: 6;
 
-      color:
-        var(--muted);
+  background:
 
-      font-size: 14px;
+    radial-gradient(
+      circle,
+      transparent 0 17px,
+      #b8aaa3 18px 29px,
+      transparent 30px
+    ),
 
-      line-height: 1.5;
-    }
+    conic-gradient(
+      #d1cabd,
+      #a6b5b3,
+      #d69d89,
+      #d9c35e,
+      #91b6ae,
+      #cca1be,
+      #d1cabd
+    );
 
+  box-shadow:
+    10px 14px 25px rgba(0,0,0,.28);
 
-    /* ==========================================================
-       TABS
-       ========================================================== */
+  transform:
+    rotate(8deg);
+}
 
-    .tabs {
 
-      display: grid;
+/* ======================================================
+   DISCMAN
+   ====================================================== */
 
-      grid-template-columns:
-        1fr 1fr;
+.discman {
 
-      margin-bottom: 26px;
+  position: absolute;
 
-      border-bottom:
-        1px solid
-        rgba(67,42,29,.35);
-    }
+  left: 25px;
+  top: 750px;
 
+  width: 235px;
+  height: 155px;
 
-    .tab {
+  border-radius:
+    55px 55px 35px 35px;
 
-      border: 0;
+  background:
+    linear-gradient(
+      145deg,
+      #d5c6ad,
+      #92735e
+    );
 
-      background: transparent;
+  border:
+    5px solid #432a1d;
 
-      color:
-        var(--muted);
+  z-index: 7;
 
-      padding:
-        13px 8px;
+  transform:
+    rotate(3deg);
 
-      font-family:
-        inherit;
+  box-shadow:
+    9px 11px 0 rgba(0,0,0,.2);
+}
 
-      font-weight: 800;
 
-      font-size: 13px;
+.discman::after {
 
-      cursor: pointer;
+  content: "";
 
-      position: relative;
-    }
+  position: absolute;
 
+  width: 125px;
+  height: 125px;
 
-    .tab.active {
+  border:
+    2px solid rgba(70,45,30,.6);
 
-      color:
-        var(--wine);
-    }
+  border-radius: 50%;
 
+  left: 53px;
+  top: 13px;
+}
 
-    .tab.active::after {
 
-      content: "";
+/* ======================================================
+   REVISTAS
+   ====================================================== */
 
-      position: absolute;
+.magazines {
 
-      height: 4px;
+  position: absolute;
 
-      left: 14px;
-      right: 14px;
-      bottom: -2px;
+  right: -30px;
+  top: -40px;
 
-      background:
-        var(--wine);
+  width: 155px;
+  height: 210px;
 
-      border-radius:
-        10px;
-    }
+  background:
+    #c4a174;
 
+  border:
+    7px solid #261711;
 
-    .form-section {
+  transform:
+    rotate(11deg);
 
-      display: none;
-    }
+  z-index: 5;
 
+  box-shadow:
+    10px 12px 0 rgba(0,0,0,.25);
+}
 
-    .form-section.active {
 
-      display: block;
+.magazines::before {
 
-      animation:
-        appear .25s ease;
-    }
+  content: "TV HITS";
 
+  position: absolute;
 
-    @keyframes appear {
+  top: 15px;
+  left: 8px;
 
-      from {
-        opacity: 0;
-        transform:
-          translateY(4px);
-      }
+  right: 8px;
 
-      to {
-        opacity: 1;
-        transform:
-          translateY(0);
-      }
-    }
+  padding:
+    8px;
 
+  background:
+    #ab302c;
 
-    /* ==========================================================
-       FORM
-       ========================================================== */
+  color:
+    #eee1bf;
 
-    label {
+  text-align:
+    center;
 
-      display: block;
+  font-family:
+    Anton,
+    sans-serif;
 
-      margin:
-        16px 0 7px;
+  font-size:
+    28px;
+}
 
-      color:
-        var(--muted);
 
-      font-family:
-        "Courier New",
-        monospace;
+/* ======================================================
+   HOJA LOGIN
+   ====================================================== */
 
-      font-size: 11px;
+.login-paper {
 
-      font-weight: bold;
+  position: absolute;
 
-      letter-spacing: .08em;
+  right: 70px;
+  top: 125px;
 
-      text-transform: uppercase;
-    }
+  width: min(530px, 46vw);
 
+  min-height: 660px;
 
-    input {
+  padding:
+    68px 57px 48px;
 
-      width: 100%;
+  z-index: 20;
 
-      padding:
-        14px 15px;
+  color:
+    var(--ink);
 
-      border:
-        1px solid
-        rgba(73,47,32,.45);
+  background:
 
-      border-radius: 5px;
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 31px,
+      rgba(81,57,40,.055) 32px
+    ),
 
-      outline: none;
+    var(--paper);
 
-      background:
-        var(--input-bg);
+  box-shadow:
 
-      color:
-        var(--ink);
+    -8px 10px 0
+    rgba(235,218,182,.82),
 
-      font-size: 15px;
+    17px 19px 0
+    rgba(31,13,5,.25),
 
-      transition:
-        border .2s,
-        box-shadow .2s,
-        background .3s;
-    }
+    0 24px 50px
+    rgba(0,0,0,.19);
 
+  transform:
+    rotate(.45deg);
 
-    input:focus {
+  transition:
+    background .3s ease,
+    color .3s ease;
+}
 
-      border-color:
-        var(--wine);
 
-      box-shadow:
-        0 0 0 3px
-        rgba(127,37,48,.11);
-    }
+/* cinta adhesiva */
 
+.login-paper::before {
 
-    .primary {
+  content: "";
 
-      width: 100%;
+  position: absolute;
 
-      margin-top: 24px;
+  top: -18px;
+  left: 65px;
 
-      padding:
-        15px 18px;
+  width: 85px;
+  height: 34px;
 
-      border: 0;
+  background:
+    rgba(210,183,132,.72);
 
-      border-radius: 5px;
+  transform:
+    rotate(-4deg);
 
-      background:
-        var(--wine);
+  box-shadow:
+    0 2px 4px rgba(0,0,0,.15);
+}
 
-      color:
-        var(--button-text);
 
-      font-family:
-        "Courier New",
-        monospace;
+/* ======================================================
+   TABS
+   ====================================================== */
 
-      font-weight: bold;
+.tabs {
 
-      font-size: 14px;
+  display: grid;
 
-      letter-spacing: .04em;
+  grid-template-columns:
+    1fr 1fr;
 
-      cursor: pointer;
+  margin-bottom:
+    43px;
 
-      box-shadow:
-        5px 5px 0
-        rgba(39,21,14,.22);
+  box-shadow:
+    0 4px 9px
+    rgba(61,34,20,.12);
+}
 
-      transition:
-        transform .18s ease,
-        box-shadow .18s ease,
-        background .18s ease;
-    }
 
+.tab {
 
-    .primary:hover {
+  border: 0;
 
-      background:
-        var(--brick);
+  padding:
+    17px 9px;
 
-      transform:
-        translate(2px,2px);
+  font-family:
+    "Special Elite",
+    monospace;
 
-      box-shadow:
-        3px 3px 0
-        rgba(39,21,14,.22);
-    }
+  font-weight:
+    bold;
 
+  font-size:
+    14px;
 
-    .separator {
+  cursor:
+    pointer;
 
-      display: flex;
+  color:
+    var(--ink);
 
-      align-items: center;
+  background:
+    #e4cfa7;
 
-      gap: 12px;
+  transition:
+    background .2s,
+    color .2s;
+}
 
-      margin:
-        25px 0 18px;
 
-      color:
-        var(--muted);
+.tab.active {
 
-      font-size: 10px;
+  background:
+    var(--red);
 
-      font-family:
-        "Courier New",
-        monospace;
+  color:
+    #f9edda;
+}
 
-      font-weight: bold;
-    }
 
+/* ======================================================
+   FORMULARIOS
+   ====================================================== */
 
-    .separator::before,
-    .separator::after {
+.form-section {
 
-      content: "";
+  display:
+    none;
+}
 
-      flex: 1;
 
-      height: 1px;
+.form-section.active {
 
-      background:
-        rgba(86,56,38,.28);
-    }
+  display:
+    block;
 
+  animation:
+    fade .22s ease;
+}
 
-    .google {
 
-      width: 100%;
+@keyframes fade {
 
-      padding:
-        14px 16px;
+  from {
+    opacity: 0;
+    transform:
+      translateY(5px);
+  }
 
-      border:
-        1px solid
-        rgba(74,48,34,.45);
+  to {
+    opacity: 1;
+    transform:
+      translateY(0);
+  }
+}
 
-      border-radius: 5px;
 
-      background:
-        var(--paper-light);
+label {
 
-      color:
-        var(--ink);
+  display:
+    block;
 
-      font-weight:
-        bold;
+  margin:
+    21px 0 8px;
 
-      font-size:
-        14px;
+  font-family:
+    "Special Elite",
+    monospace;
 
-      cursor:
-        pointer;
+  font-size:
+    12px;
 
-      transition:
-        transform .18s ease,
-        box-shadow .18s ease;
-    }
+  text-transform:
+    uppercase;
 
+  letter-spacing:
+    .08em;
+}
 
-    .google:hover {
 
-      transform:
-        translateY(-2px);
+input {
 
-      box-shadow:
-        0 5px 0
-        rgba(48,29,18,.12);
-    }
+  width:
+    100%;
 
+  padding:
+    16px;
 
-    /* ==========================================================
-       MESSAGE
-       ========================================================== */
+  border:
+    1px solid
+    rgba(59,39,28,.55);
 
-    .message {
+  border-radius:
+    5px;
 
-      display: none;
+  outline:
+    none;
 
-      margin-top:
-        22px;
+  background:
+    rgba(255,249,234,.48);
 
-      padding:
-        13px 14px;
+  color:
+    var(--ink);
 
-      border:
-        1px solid
-        rgba(50,31,22,.25);
+  font-size:
+    15px;
+}
 
-      border-radius: 5px;
 
-      font-size:
-        13px;
+html[data-theme="dark"] input {
 
-      line-height:
-        1.5;
-    }
+  background:
+    rgba(24,16,13,.58);
+}
 
 
-    .message.ok {
+input:focus {
 
-      display: block;
+  border-color:
+    var(--red);
 
-      background:
-        rgba(64,87,71,.18);
+  box-shadow:
+    0 0 0 3px
+    rgba(157,41,39,.12);
+}
 
-      border-left:
-        5px solid
-        var(--green);
-    }
 
+/* ======================================================
+   BOTÓN
+   ====================================================== */
 
-    .message.error {
+.primary {
 
-      display: block;
+  width:
+    100%;
 
-      background:
-        rgba(165,64,56,.14);
+  margin-top:
+    24px;
 
-      border-left:
-        5px solid
-        var(--brick);
-    }
+  padding:
+    17px;
 
+  border:
+    none;
 
-    /* ==========================================================
-       SMALL Y2K FOOTER
-       ========================================================== */
+  border-radius:
+    5px;
 
-    .retro-footer {
+  background:
+    var(--red);
 
-      margin-top:
-        24px;
+  color:
+    #fff0d8;
 
-      text-align:
-        center;
+  font-family:
+    "Special Elite",
+    monospace;
 
-      color:
-        var(--muted);
+  font-size:
+    16px;
 
-      font-family:
-        "Courier New",
-        monospace;
+  letter-spacing:
+    .06em;
 
-      font-size:
-        9px;
+  cursor:
+    pointer;
 
-      letter-spacing:
-        .08em;
-    }
+  box-shadow:
+    5px 5px 0 rgba(42,17,10,.19);
 
+  transition:
+    transform .18s,
+    background .18s;
+}
 
-    .retro-footer span {
 
-      color:
-        var(--wine);
+.primary:hover {
 
-      font-weight:
-        bold;
-    }
+  background:
+    var(--red-dark);
 
+  transform:
+    translate(2px,2px);
+}
 
-    /* ==========================================================
-       LOADING
-       ========================================================== */
 
-    .form-loading button {
+/* ======================================================
+   DIVISOR
+   ====================================================== */
 
-      pointer-events: none;
+.separator {
 
-      opacity: .65;
-    }
+  display:
+    flex;
 
+  align-items:
+    center;
 
-    /* ==========================================================
-       RESPONSIVE
-       ========================================================== */
+  gap:
+    13px;
 
-    @media (max-width: 850px) {
+  margin:
+    32px 0 20px;
 
-      .page {
+  font-family:
+    "Special Elite",
+    monospace;
 
-        grid-template-columns:
-          1fr;
+  font-size:
+    11px;
+}
 
-        width:
-          min(94%, 620px);
 
-        margin-top:
-          10px;
-      }
+.separator::before,
+.separator::after {
 
+  content:
+    "";
 
-      .library {
+  flex:
+    1;
 
-        min-height:
-          480px;
+  height:
+    1px;
 
-        padding:
-          42px 34px 28px;
-      }
+  background:
+    rgba(70,46,30,.35);
+}
 
 
-      .magic-title {
+/* ======================================================
+   GOOGLE
+   ====================================================== */
 
-        font-size:
-          clamp(48px, 15vw, 70px);
-      }
+.google {
 
+  width:
+    100%;
 
-      .books {
+  padding:
+    15px;
 
-        height:
-          125px;
-      }
+  border:
+    1px solid
+    rgba(61,39,27,.5);
 
+  border-radius:
+    5px;
 
-      .desk {
+  color:
+    var(--ink);
 
-        padding:
-          38px 24px 55px;
-      }
+  background:
+    rgba(255,249,235,.35);
 
-    }
+  font-weight:
+    700;
 
+  font-size:
+    14px;
 
-    @media (max-width: 480px) {
+  cursor:
+    pointer;
 
-      .topbar {
+  transition:
+    transform .2s;
+}
 
-        padding:
-          13px 16px;
 
-        font-size:
-          12px;
-      }
+.google:hover {
 
+  transform:
+    translateY(-2px);
+}
 
-      .paper {
 
-        padding:
-          38px 24px 30px;
-      }
+/* ======================================================
+   MENSAJE INFERIOR
+   ====================================================== */
 
+.paper-note {
 
-      .paper-title {
+  margin-top:
+    34px;
 
-        font-size:
-          31px;
-      }
+  padding:
+    14px 18px;
 
+  background:
+    #d6bd8e;
 
-      .library {
+  color:
+    #39251a;
 
-        min-height:
-          430px;
-      }
+  font-family:
+    "Special Elite",
+    monospace;
 
+  font-size:
+    12px;
 
-      .book {
+  line-height:
+    1.5;
 
-        width:
-          42px;
-      }
+  transform:
+    rotate(-1.5deg);
 
-    }
+  box-shadow:
+    3px 4px 0 rgba(0,0,0,.09);
+}
 
-  </style>
+
+/* ======================================================
+   ERRORES
+   ====================================================== */
+
+.message {
+
+  display:
+    none;
+
+  margin-top:
+    18px;
+
+  padding:
+    12px 14px;
+
+  border:
+    1px solid rgba(66,42,29,.3);
+
+  font-size:
+    13px;
+}
+
+
+.message.ok {
+
+  display:
+    block;
+
+  background:
+    rgba(100,126,89,.17);
+
+  border-left:
+    5px solid
+    #657956;
+}
+
+
+.message.error {
+
+  display:
+    block;
+
+  background:
+    rgba(158,42,38,.12);
+
+  border-left:
+    5px solid
+    var(--red);
+}
+
+
+/* ======================================================
+   LOADING
+   ====================================================== */
+
+.form-loading button {
+
+  opacity:
+    .6;
+
+  pointer-events:
+    none;
+}
+
+
+/* ======================================================
+   MOBILE
+   ====================================================== */
+
+@media(max-width: 1000px) {
+
+  .page {
+
+    width:
+      100%;
+
+    min-height:
+      auto;
+
+    padding:
+      20px;
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    align-items:
+      center;
+  }
+
+
+  .brand,
+  .mini-menu,
+  .hero,
+  .globe-wrap,
+  .tv,
+  .cassettes,
+  .cd,
+  .discman,
+  .magazines {
+
+    position:
+      relative;
+
+    left:
+      auto;
+
+    right:
+      auto;
+
+    top:
+      auto;
+
+  }
+
+
+  .mini-menu {
+
+    margin-top:
+      20px;
+
+    justify-content:
+      center;
+
+    flex-wrap:
+      wrap;
+  }
+
+
+  .hero {
+
+    width:
+      100%;
+
+    text-align:
+      center;
+
+    margin:
+      65px 0 35px;
+  }
+
+
+  .title-line {
+
+    font-size:
+      clamp(65px,18vw,110px);
+  }
+
+
+  .hero-subtitle {
+
+    margin:
+      10px auto;
+  }
+
+
+  .globe-wrap,
+  .tv,
+  .cassettes,
+  .cd,
+  .discman,
+  .magazines {
+
+    display:
+      none;
+  }
+
+
+  .login-paper {
+
+    position:
+      relative;
+
+    right:
+      auto;
+
+    top:
+      auto;
+
+    width:
+      min(100%,570px);
+
+    min-height:
+      auto;
+
+    padding:
+      55px 30px 38px;
+
+    margin-bottom:
+      60px;
+  }
+
+
+  .theme-toggle {
+
+    position:
+      fixed;
+
+    top:
+      13px;
+
+    right:
+      13px;
+  }
+
+}
+
+
+</style>
+
 </head>
 
 
 <body>
 
 
-<!-- ==========================================================
-     TOP
-     ========================================================== -->
+<main class="page">
 
-<header class="topbar">
 
-  <div class="brand-mini">
+<!-- ======================================================
+     MARCA
+     ====================================================== -->
 
-    <div class="online-dot"></div>
+<div class="brand">
 
-    UNIVERSO DEL ESTUDIANTE
+  <span>UNIVERSO</span>
+  <span>DEL ESTUDIANTE</span>
+
+</div>
+
+
+
+<div class="mini-menu">
+
+  <span>CURSOS</span>
+  <span>APUNTES</span>
+  <span>PROGRESO</span>
+  <span>DIPLOMAS</span>
+
+</div>
+
+
+
+<button
+  class="theme-toggle"
+  id="themeToggle"
+>
+
+  ☾ noche
+
+</button>
+
+
+
+<!-- ======================================================
+     TÍTULO
+     ====================================================== -->
+
+<section class="hero">
+
+  <div class="title-line">
+
+    TU <span class="red">CAMPUS.</span>
 
   </div>
 
 
-  <button
-    class="theme-toggle"
-    id="themeToggle"
-    aria-label="Cambiar modo de pantalla"
+  <div class="hero-subtitle">
+
+    Todos tus cursos, apuntes, progreso<br>
+    y diplomas en un solo lugar.
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     OBJETOS RETRO
+     ====================================================== -->
+
+<div class="globe-wrap">
+
+  <div class="globe"></div>
+
+  <div class="globe-stand"></div>
+
+</div>
+
+
+
+<div class="tv">
+
+  <div class="tv-screen"></div>
+
+</div>
+
+
+
+<div class="cassettes">
+
+  <div class="cassette">
+    GOOD MUSIC
+  </div>
+
+  <div class="cassette">
+    BETTER GRADES
+  </div>
+
+  <div class="cassette">
+    STUDY MODE
+  </div>
+
+</div>
+
+
+
+<div class="cd"></div>
+
+<div class="discman"></div>
+
+<div class="magazines"></div>
+
+
+
+<!-- ======================================================
+     LOGIN PAPER
+     ====================================================== -->
+
+<section
+  class="login-paper"
+  id="formCard"
+>
+
+
+  <div class="tabs">
+
+
+    <button
+      class="tab active"
+      onclick="showLogin()"
+    >
+
+      INICIAR SESIÓN
+
+    </button>
+
+
+    <button
+      class="tab"
+      onclick="showRegister()"
+    >
+
+      CREAR CUENTA
+
+    </button>
+
+
+  </div>
+
+
+
+  <!-- LOGIN -->
+
+  <div
+    id="loginSection"
+    class="form-section active"
   >
 
-    ☾ modo noche
 
-  </button>
-
-</header>
-
+    <label>
+      Correo electrónico
+    </label>
 
 
-<!-- ==========================================================
-     MAIN
-     ========================================================== -->
-
-<main class="page">
-
-
-  <!-- BIBLIOTECA -->
-
-  <section class="library">
+    <input
+      id="loginEmail"
+      type="email"
+      placeholder="tuemail@gmail.com"
+      autocomplete="email"
+    >
 
 
-    <div class="library-content">
 
-      <div class="tiny-label">
-
-        ✦ CAMPUS PRIVADO · EST. 2026
-
-      </div>
+    <label>
+      Contraseña
+    </label>
 
 
-      <h1 class="magic-title">
-
-        Tu rincón<br>
-        de <em>estudio.</em>
-
-      </h1>
-
-
-      <p class="intro">
-
-        Entrá, dejá las cosas y seguí exactamente
-        donde te quedaste.
-
-        Tus cursos, apuntes, progreso y diplomas
-        viven acá.
-
-      </p>
+    <input
+      id="loginPassword"
+      type="password"
+      placeholder="••••••••"
+      autocomplete="current-password"
+    >
 
 
-      <div class="scribble">
 
-        ★ estudiar también puede sentirse como un lugar al que querés volver
+    <button
+      class="primary"
+      onclick="login()"
+    >
 
-      </div>
+      ENTRAR A MI CAMPUS
+
+    </button>
+
+
+
+    <div class="separator">
+
+      O ENTRÁ CON
 
     </div>
 
 
 
-    <!-- ESTANTERÍA -->
+    <button
+      class="google"
+      onclick="loginGoogle()"
+    >
 
-    <div class="books">
+      G&nbsp;&nbsp; Continuar con Google
 
-      <div class="book b1">
-        <div class="book-label">CURSOS</div>
-      </div>
+    </button>
 
-      <div class="book b2">
-        <div class="book-label">IDEAS</div>
-      </div>
 
-      <div class="book b3">
-        <div class="book-label">NOTAS</div>
-      </div>
+  </div>
 
-      <div class="book b4">
-        <div class="book-label">2026</div>
-      </div>
 
-      <div class="book b5">
-        <div class="book-label">FOCUS</div>
-      </div>
 
-      <div class="book b6">
-        <div class="book-label">★</div>
-      </div>
+  <!-- CREAR CUENTA -->
+
+  <div
+    id="registerSection"
+    class="form-section"
+  >
+
+
+    <label>
+      Tu nombre
+    </label>
+
+
+    <input
+      id="registerName"
+      type="text"
+      placeholder="¿Cómo te llamás?"
+      autocomplete="name"
+    >
+
+
+
+    <label>
+      Correo electrónico
+    </label>
+
+
+    <input
+      id="registerEmail"
+      type="email"
+      placeholder="tuemail@gmail.com"
+      autocomplete="email"
+    >
+
+
+
+    <label>
+      Contraseña
+    </label>
+
+
+    <input
+      id="registerPassword"
+      type="password"
+      placeholder="Mínimo 6 caracteres"
+      autocomplete="new-password"
+    >
+
+
+
+    <button
+      class="primary"
+      onclick="register()"
+    >
+
+      CREAR MI CUENTA
+
+    </button>
+
+
+
+    <div class="separator">
+
+      O REGISTRATE CON
 
     </div>
 
-  </section>
 
 
+    <button
+      class="google"
+      onclick="loginGoogle()"
+    >
 
-  <!-- FORMULARIO -->
+      G&nbsp;&nbsp; Registrarme con Google
 
-  <section class="desk">
+    </button>
 
 
-    <div class="paper" id="formCard">
+  </div>
 
 
-      <div class="y2k-sticker">
 
-        MADE IN ARGENTINA ★
+  <div
+    id="message"
+    class="message"
+  ></div>
 
-      </div>
 
 
-      <h2 class="paper-title">
+  <div class="paper-note">
 
-        Bienvenid@.
+    Hacete una cuenta y empezá a construir
+    tu propia historia de estudio.
 
-      </h2>
+  </div>
 
 
-      <p class="paper-subtitle">
-
-        Abrí tu ficha de estudiante y entrá al campus.
-
-      </p>
-
-
-
-      <!-- TABS -->
-
-      <div class="tabs">
-
-        <button
-          class="tab active"
-          onclick="showLogin()"
-        >
-
-          INICIAR SESIÓN
-
-        </button>
-
-
-        <button
-          class="tab"
-          onclick="showRegister()"
-        >
-
-          CREAR CUENTA
-
-        </button>
-
-      </div>
-
-
-
-      <!-- LOGIN -->
-
-      <div
-        id="loginSection"
-        class="form-section active"
-      >
-
-        <label>
-          Correo electrónico
-        </label>
-
-        <input
-          id="loginEmail"
-          type="email"
-          placeholder="tuemail@gmail.com"
-          autocomplete="email"
-        >
-
-
-        <label>
-          Contraseña
-        </label>
-
-        <input
-          id="loginPassword"
-          type="password"
-          placeholder="••••••••"
-          autocomplete="current-password"
-        >
-
-
-        <button
-          class="primary"
-          onclick="login()"
-        >
-
-          ENTRAR A MI CAMPUS →
-
-        </button>
-
-
-        <div class="separator">
-          O ENTRÁ CON
-        </div>
-
-
-        <button
-          class="google"
-          onclick="loginGoogle()"
-        >
-
-          G&nbsp;&nbsp; Continuar con Google
-
-        </button>
-
-      </div>
-
-
-
-      <!-- REGISTRO -->
-
-      <div
-        id="registerSection"
-        class="form-section"
-      >
-
-        <label>
-          Tu nombre
-        </label>
-
-        <input
-          id="registerName"
-          type="text"
-          placeholder="¿Cómo te llamás?"
-          autocomplete="name"
-        >
-
-
-        <label>
-          Correo electrónico
-        </label>
-
-        <input
-          id="registerEmail"
-          type="email"
-          placeholder="tuemail@gmail.com"
-          autocomplete="email"
-        >
-
-
-        <label>
-          Contraseña
-        </label>
-
-        <input
-          id="registerPassword"
-          type="password"
-          placeholder="Mínimo 6 caracteres"
-          autocomplete="new-password"
-        >
-
-
-        <button
-          class="primary"
-          onclick="register()"
-        >
-
-          CREAR MI FICHA →
-
-        </button>
-
-
-        <div class="separator">
-          O REGISTRATE CON
-        </div>
-
-
-        <button
-          class="google"
-          onclick="loginGoogle()"
-        >
-
-          G&nbsp;&nbsp; Registrarme con Google
-
-        </button>
-
-      </div>
-
-
-
-      <!-- MENSAJES -->
-
-      <div
-        id="message"
-        class="message"
-      ></div>
-
-
-
-      <div class="retro-footer">
-
-        universo_del_estudiante.exe ·
-        <span>ONLINE</span>
-        · BY NADIA LOPEZ
-
-      </div>
-
-
-    </div>
-
-  </section>
+</section>
 
 
 </main>
@@ -1542,10 +1825,9 @@
 <script>
 
 
-/* ==========================================================
-   SUPABASE
-   PEGÁ ACÁ LOS MISMOS DOS DATOS QUE YA TENÉS
-   ========================================================== */
+/* ======================================================
+   PEGÁ AQUÍ TUS DOS DATOS DE SUPABASE
+   ====================================================== */
 
 
 const SUPABASE_URL =
@@ -1558,16 +1840,16 @@ const SUPABASE_PUBLISHABLE_KEY =
 
 const supabaseClient =
   window.supabase.createClient(
+
     SUPABASE_URL,
+
     SUPABASE_PUBLISHABLE_KEY
+
   );
 
 
 
-/* ==========================================================
-   URL ACTUAL DEL LOGIN
-   ========================================================== */
-
+/* URL DEL LOGIN */
 
 const LOGIN_URL =
   window.location.origin +
@@ -1575,12 +1857,13 @@ const LOGIN_URL =
 
 
 
-/* ==========================================================
+/* ======================================================
    TABS
-   ========================================================== */
+   ====================================================== */
 
 
 function showLogin() {
+
 
   document
     .querySelectorAll(".tab")
@@ -1616,6 +1899,7 @@ function showLogin() {
 
 function showRegister() {
 
+
   document
     .querySelectorAll(".tab")
     .forEach(
@@ -1648,9 +1932,9 @@ function showRegister() {
 
 
 
-/* ==========================================================
+/* ======================================================
    REGISTRO
-   ========================================================== */
+   ====================================================== */
 
 
 async function register() {
@@ -1679,10 +1963,15 @@ async function register() {
 
   if (!name || !email || !password) {
 
+
     showMessage(
-      "Te falta completar algún dato de tu ficha.",
+
+      "Completá todos los datos para crear tu cuenta.",
+
       "error"
+
     );
+
 
     return;
 
@@ -1692,10 +1981,15 @@ async function register() {
 
   if (password.length < 6) {
 
+
     showMessage(
+
       "La contraseña necesita al menos 6 caracteres.",
+
       "error"
+
     );
+
 
     return;
 
@@ -1713,11 +2007,15 @@ async function register() {
     const { data, error } =
       await supabaseClient.auth.signUp({
 
+
         email: email,
+
 
         password: password,
 
+
         options: {
+
 
           data: {
 
@@ -1725,10 +2023,13 @@ async function register() {
 
           },
 
+
           emailRedirectTo:
             LOGIN_URL
 
+
         }
+
 
       });
 
@@ -1744,7 +2045,7 @@ async function register() {
 
     showMessage(
 
-      "¡Tu ficha está creada! ✦ Revisá tu correo y confirmá la cuenta para entrar al campus.",
+      "¡Cuenta creada! Revisá tu correo y confirmá tu cuenta para entrar al campus.",
 
       "ok"
 
@@ -1753,13 +2054,14 @@ async function register() {
 
   }
 
+
   catch (error) {
 
 
     showMessage(
 
       error.message ||
-      "No pudimos crear la cuenta. Probá nuevamente.",
+      "No pudimos crear la cuenta. Intentá nuevamente.",
 
       "error"
 
@@ -1768,19 +2070,23 @@ async function register() {
 
   }
 
+
   finally {
+
 
     setLoading(false);
 
+
   }
+
 
 }
 
 
 
-/* ==========================================================
-   LOGIN EMAIL
-   ========================================================== */
+/* ======================================================
+   LOGIN
+   ====================================================== */
 
 
 async function login() {
@@ -1802,10 +2108,15 @@ async function login() {
 
   if (!email || !password) {
 
+
     showMessage(
+
       "Ingresá tu correo y contraseña.",
+
       "error"
+
     );
+
 
     return;
 
@@ -1824,9 +2135,12 @@ async function login() {
       await supabaseClient.auth
         .signInWithPassword({
 
+
           email: email,
 
+
           password: password
+
 
         });
 
@@ -1846,12 +2160,13 @@ async function login() {
 
   }
 
+
   catch (error) {
 
 
     showMessage(
 
-      "No pudimos iniciar sesión. Revisá el correo, la contraseña y que hayas confirmado tu cuenta.",
+      "No pudimos iniciar sesión. Revisá los datos y comprobá que hayas confirmado tu correo.",
 
       "error"
 
@@ -1860,19 +2175,23 @@ async function login() {
 
   }
 
+
   finally {
+
 
     setLoading(false);
 
+
   }
+
 
 }
 
 
 
-/* ==========================================================
+/* ======================================================
    GOOGLE
-   ========================================================== */
+   ====================================================== */
 
 
 async function loginGoogle() {
@@ -1882,15 +2201,20 @@ async function loginGoogle() {
     await supabaseClient.auth
       .signInWithOAuth({
 
+
         provider:
           "google",
 
+
         options: {
+
 
           redirectTo:
             LOGIN_URL
 
+
         }
+
 
       });
 
@@ -1898,20 +2222,26 @@ async function loginGoogle() {
 
   if (error) {
 
+
     showMessage(
+
       error.message,
+
       "error"
+
     );
 
+
   }
+
 
 }
 
 
 
-/* ==========================================================
+/* ======================================================
    SESIÓN EXISTENTE
-   ========================================================== */
+   ====================================================== */
 
 
 async function checkSession() {
@@ -1922,26 +2252,34 @@ async function checkSession() {
       .getSession();
 
 
+
   if (data.session) {
+
 
     window.location.href =
       "campus.html";
 
+
   }
 
+
 }
+
 
 
 checkSession();
 
 
 
-/* ==========================================================
+/* ======================================================
    MENSAJES
-   ========================================================== */
+   ====================================================== */
 
 
-function showMessage(text, type) {
+function showMessage(
+  text,
+  type
+) {
 
 
   const box =
@@ -1955,6 +2293,7 @@ function showMessage(text, type) {
 
   box.className =
     "message " + type;
+
 
 }
 
@@ -1975,13 +2314,14 @@ function clearMessage() {
   box.className =
     "message";
 
+
 }
 
 
 
-/* ==========================================================
+/* ======================================================
    LOADING
-   ========================================================== */
+   ====================================================== */
 
 
 function setLoading(value) {
@@ -1995,18 +2335,21 @@ function setLoading(value) {
       value
     );
 
+
 }
 
 
 
-/* ==========================================================
-   MODO CLARO / OSCURO
-   ========================================================== */
+/* ======================================================
+   MODO OSCURO
+   ====================================================== */
 
 
 const themeToggle =
   document
-    .getElementById("themeToggle");
+    .getElementById(
+      "themeToggle"
+    );
 
 
 
@@ -2029,8 +2372,9 @@ function applyTheme(theme) {
 
   themeToggle.textContent =
     theme === "dark"
-      ? "☀ modo cálido"
-      : "☾ modo noche";
+      ? "☀ cálido"
+      : "☾ noche";
+
 
 }
 
@@ -2052,12 +2396,15 @@ const systemDark =
 
 
 applyTheme(
+
   savedTheme ||
+
   (
     systemDark
       ? "dark"
       : "light"
   )
+
 );
 
 
@@ -2077,9 +2424,11 @@ themeToggle
 
 
       applyTheme(
+
         current === "dark"
           ? "light"
           : "dark"
+
       );
 
 
@@ -2088,7 +2437,6 @@ themeToggle
 
 
 </script>
-
 
 </body>
 </html>
