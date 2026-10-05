@@ -1,239 +1,2610 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Campus | Universo del Estudiante</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>Mi Campus | Universo del Estudiante</title>
 
-  <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    body{
-      font-family:Arial, Helvetica, sans-serif;
-      background:#f1eadf;
-      color:#242424;
-      min-height:100vh;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    header{
-      background:#ffb36b;
-      border-bottom:3px solid #242424;
-      padding:22px 6%;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:20px;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-    .brand{
-      font-family:Georgia, serif;
-      font-size:28px;
-      font-weight:bold;
-    }
+<style>
 
-    .logout{
-      border:2px solid #242424;
-      background:#fffaf1;
-      padding:10px 16px;
-      font-weight:bold;
-      cursor:pointer;
-      box-shadow:3px 3px 0 #242424;
-    }
+:root {
 
-    main{
-      max-width:1100px;
-      margin:auto;
-      padding:55px 25px;
-    }
+  --bg: #e7e7e3;
+  --surface: #f6f5f0;
+  --surface-2: #deded8;
 
-    .welcome{
-      background:#fffaf1;
-      border:3px solid #242424;
-      box-shadow:8px 8px 0 #242424;
-      padding:35px;
-      margin-bottom:40px;
-    }
+  --ink: #171717;
+  --muted: #686866;
 
-    .welcome small{
-      font-weight:bold;
-      letter-spacing:2px;
-    }
+  --purple: #6e4bff;
+  --purple-dark: #5133d4;
+  --purple-soft: #d9d0ff;
 
-    h1{
-      font-family:Georgia, serif;
-      font-size:50px;
-      margin:10px 0;
-    }
+  --lime: #c8f36b;
+  --lime-dark: #9cc53d;
 
-    .email{
-      opacity:.7;
-    }
+  --silver: #c9c9c9;
+  --silver-light: #eeeeea;
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:22px;
-    }
+  --pink: #f0b8dc;
+  --blue: #b7d8ff;
 
-    .card{
-      min-height:170px;
-      border:3px solid #242424;
-      padding:25px;
-      background:#fffaf1;
-      box-shadow:5px 5px 0 #242424;
-    }
+  --line: #242424;
 
-    .card:nth-child(2){
-      background:#dce8de;
-    }
+  --shadow: rgba(0,0,0,.18);
+}
 
-    .card:nth-child(3){
-      background:#f7e5a2;
-    }
 
-    .card:nth-child(4){
-      background:#f5c7c1;
-    }
+html[data-theme="dark"] {
 
-    .card:nth-child(5){
-      background:#c9d8ed;
-    }
+  --bg: #171717;
+  --surface: #242424;
+  --surface-2: #30302f;
 
-    .card:nth-child(6){
-      background:#e7d5ea;
-    }
+  --ink: #f3f3ef;
+  --muted: #b9b9b3;
 
-    .card h2{
-      font-family:Georgia, serif;
-      margin-bottom:12px;
-    }
+  --purple: #8b73ff;
+  --purple-dark: #7358f3;
+  --purple-soft: #3c3462;
 
-    .card p{
-      line-height:1.5;
-    }
+  --lime: #b8e75c;
+  --lime-dark: #90b940;
 
-    @media(max-width:800px){
-      .grid{
-        grid-template-columns:1fr;
-      }
+  --silver: #535353;
+  --silver-light: #353535;
 
-      h1{
-        font-size:38px;
-      }
-    }
-  </style>
+  --pink: #5c3e55;
+  --blue: #344b62;
+
+  --line: #efefe9;
+
+  --shadow: rgba(0,0,0,.42);
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+
+body {
+
+  min-height: 100vh;
+
+  font-family:
+    "DM Sans",
+    Arial,
+    sans-serif;
+
+  color: var(--ink);
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      rgba(0,0,0,.025) 1px,
+      transparent 1px
+    ),
+    var(--bg);
+
+  background-size:
+    34px 34px;
+
+  transition:
+    background .3s,
+    color .3s;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.topbar {
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding:
+    18px 35px;
+
+  border-bottom:
+    2px solid var(--line);
+
+  background:
+    var(--surface);
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 100;
+}
+
+
+.brand {
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  font-family:
+    "Archivo Black",
+    sans-serif;
+
+  font-size:
+    18px;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    -.03em;
+}
+
+
+.brand-dot {
+
+  width: 14px;
+  height: 14px;
+
+  border-radius: 50%;
+
+  background:
+    var(--lime);
+
+  border:
+    2px solid var(--line);
+
+  box-shadow:
+    3px 3px 0 var(--purple);
+}
+
+
+.header-actions {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+
+.theme-toggle,
+.logout {
+
+  border:
+    1.5px solid var(--line);
+
+  padding:
+    9px 13px;
+
+  cursor:
+    pointer;
+
+  font-family:
+    "Space Mono",
+    monospace;
+
+  font-size:
+    10px;
+
+  font-weight:
+    bold;
+
+  box-shadow:
+    3px 3px 0 var(--line);
+
+  transition:
+    .15s ease;
+}
+
+
+.theme-toggle {
+
+  background:
+    var(--surface);
+
+  color:
+    var(--ink);
+}
+
+
+.logout {
+
+  background:
+    var(--purple);
+
+  color:
+    white;
+}
+
+
+.theme-toggle:hover,
+.logout:hover {
+
+  transform:
+    translate(2px,2px);
+
+  box-shadow:
+    1px 1px 0 var(--line);
+}
+
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+
+.layout {
+
+  width:
+    min(1350px, 94%);
+
+  margin:
+    40px auto 70px;
+
+  display:
+    grid;
+
+  grid-template-columns:
+    230px 1fr;
+
+  gap:
+    28px;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.sidebar {
+
+  position:
+    sticky;
+
+  top:
+    100px;
+
+  align-self:
+    start;
+
+  border:
+    2px solid var(--line);
+
+  background:
+    var(--surface);
+
+  box-shadow:
+    7px 7px 0 var(--line);
+
+  padding:
+    18px;
+}
+
+
+.sidebar-title {
+
+  font-family:
+    "Space Mono",
+    monospace;
+
+  font-size:
+    9px;
+
+  text-transform:
+    uppercase;
+
+  color:
+    var(--muted);
+
+  margin-bottom:
+    14px;
+}
+
+
+.nav-button {
+
+  width:
+    100%;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  border:
+    0;
+
+  border-bottom:
+    1px solid var(--line);
+
+  background:
+    transparent;
+
+  color:
+    var(--ink);
+
+  padding:
+    14px 8px;
+
+  cursor:
+    pointer;
+
+  text-align:
+    left;
+
+  font-family:
+    "DM Sans",
+    sans-serif;
+
+  font-weight:
+    700;
+
+  font-size:
+    14px;
+}
+
+
+.nav-button:hover {
+
+  background:
+    var(--purple-soft);
+}
+
+
+.nav-button.active {
+
+  background:
+    var(--lime);
+
+  color:
+    #161616;
+
+  padding-left:
+    12px;
+}
+
+
+.nav-index {
+
+  font-family:
+    "Space Mono",
+    monospace;
+
+  font-size:
+    9px;
+
+  opacity:
+    .65;
+}
+
+
+.sidebar-footer {
+
+  margin-top:
+    22px;
+
+  padding:
+    12px;
+
+  background:
+    var(--silver-light);
+
+  border:
+    1px solid var(--line);
+
+  font-family:
+    "Space Mono",
+    monospace;
+
+  font-size:
+    9px;
+
+  line-height:
+    1.55;
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.main {
+
+  min-width:
+    0;
+}
+
+
+/* =========================================================
+   BIENVENIDA
+   ========================================================= */
+
+.hero {
+
+  position:
+    relative;
+
+  border:
+    2px solid var(--line);
+
+  background:
+    var(--purple-soft);
+
+  box-shadow:
+    9px 9px 0 var(--line);
+
+  padding:
+    38px;
+
+  overflow:
+    hidden;
+
+  margin-bottom:
+    32px;
+}
+
+
+.hero-tag {
+
+  display:
+    inline-block;
+
+  padding:
+    7px 10px;
+
+  border:
+    1.5px solid var(--line);
+
+  background:
+    var(--lime);
+
+  color:
+    #151515;
+
+  font-family:
+    "Space Mono",
+    monospace;
+
+  font-size:
+    9px;
+
+  font-weight:
+    bold;
+
+  text-transform:
+    uppercase;
+
+  box-shadow:
+    3px 3px 0 var(--line);
+
+  margin-bottom:
+    22px;
+}
+
+
+.hero h1 {
+
+  margin:
+    0;
+
+  max-width:
+    800px;
+
+  font-family:
+    "Archivo Black",
+    sans-serif;
+
+  font-size:
+    clamp(44px, 6vw, 82px);
+
+  line-height:
+    .92;
+
+  letter-spacing:
+    -.06em;
+
+  text-transform:
+    uppercase;
+}
+
+
+.hero h1 span {
+
+  color:
+    var(--purple);
+}
+
+
+.hero-copy {
+
+  max-width:
+    650px;
+
+  margin:
+    20px 0 0;
+
+  font-size:
+    17px;
+
+  line-height:
+    1.55;
+}
+
+
+.user-email {
+
+  margin-top:
+    12px;
+
+  color:
+    var(--muted);
+
+  font-family:
+    "Space Mono",
+    monospace;
+
+  font-size:
+    10px;
+}
+
+
+.hero-sticker {
+
+  position:
+    absolute;
+
+  right:
+    35px;
+
+  top:
+    35px;
+
+  padding:
+    10px 14px;
+
+  background:
+    var(--purple);
+
+  color:
+    white;
+
+  border:
+    2px solid var(--line);
+
+  box-shadow:
+    4px 4px 0 var(--line);
+
+  font-family:
+    "Space Mono",
+    monospace;
+
+  font-size:
+    10px;
+
+  transform:
+    rotate(3deg);
+}
+
+
+/* =========================================================
+   DASHBOARD CARDS
+   ========================================================= */
+
+.dashboard-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap:
+    20px;
+}
+
+
+.dashboard-card {
+
+  min-height:
+    190px;
+
+  padding:
+    22px;
+
+  border:
+    2px solid var(--line);
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    6px 6px 0 var(--line);
+
+  transition:
+    .15s ease;
+}
+
+
+.dashboard-card:hover {
+
+  transform:
+    translate(2px,2px);
+
+  box-shadow:
+    4px 4px 0 var(--line);
+}
+
+
+.dashboard-card:nth-child(1) {
+  background:
+    var(--purple-soft);
+}
+
+
+.dashboard-card:nth-child(2) {
+  background:
+    var(--lime);
+
+  color:
+    #161616;
+}
+
+
+.dashboard-card:nth-child(3) {
+  background:
+    var(--silver-light);
+}
+
+
+.dashboard-card:nth-child(4) {
+  background:
+    var(--pink);
+}
+
+
+.dashboard-card:nth-child(5) {
+  background:
+    var(--blue);
+}
+
+
+.dashboard-card:nth-child(6) {
+  background:
+    var(--surface);
+}
+
+
+.card-number {
+
+  font-family:
+    "Space Mono",
+    monospace;
+
+  font-size:
+    9px;
+
+  margin-bottom:
+    35px;
+}
+
+
+.dashboard-card h2 {
+
+  margin:
+    0 0 8px;
+
+  font-family:
+    "Archivo Black",
+    sans-serif;
+
+  font-size:
+    22px;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    -.03em;
+}
+
+
+.dashboard-card p {
+
+  margin:
+    0;
+
+  max-width:
+    260px;
+
+  font-size:
+    13px;
+
+  line-height:
+    1.5;
+}
+
+
+/* =========================================================
+   SECCIONES INTERNAS
+   ========================================================= */
+
+.section-view {
+
+  display:
+    none;
+}
+
+
+.section-view.active {
+
+  display:
+    block;
+
+  animation:
+    viewEnter .22s ease;
+}
+
+
+@keyframes viewEnter {
+
+  from {
+
+    opacity:
+      0;
+
+    transform:
+      translateY(5px);
+
+  }
+
+  to {
+
+    opacity:
+      1;
+
+    transform:
+      translateY(0);
+
+  }
+
+}
+
+
+.section-head {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    end;
+
+  gap:
+    20px;
+
+  margin-bottom:
+    25px;
+}
+
+
+.section-head h2 {
+
+  margin:
+    0;
+
+  font-family:
+    "Archivo Black",
+    sans-serif;
+
+  font-size:
+    clamp(37px, 5vw, 65px);
+
+  line-height:
+    .9;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    -.05em;
+}
+
+
+.back-button {
+
+  border:
+    2px solid var(--line);
+
+  background:
+    var(--surface);
+
+  color:
+    var(--ink);
+
+  padding:
+    10px 14px;
+
+  cursor:
+    pointer;
+
+  font-family:
+    "Space Mono",
+    monospace;
+
+  font-size:
+    10px;
+
+  box-shadow:
+    3px 3px 0 var(--line);
+}
+
+
+.back-button:hover {
+
+  transform:
+    translate(2px,2px);
+
+  box-shadow:
+    1px 1px 0 var(--line);
+}
+
+
+/* =========================================================
+   PANELES
+   ========================================================= */
+
+.panel {
+
+  border:
+    2px solid var(--line);
+
+  background:
+    var(--surface);
+
+  box-shadow:
+    7px 7px 0 var(--line);
+
+  padding:
+    28px;
+
+  margin-bottom:
+    22px;
+}
+
+
+.panel-tag {
+
+  display:
+    inline-block;
+
+  margin-bottom:
+    14px;
+
+  padding:
+    6px 8px;
+
+  background:
+    var(--purple);
+
+  color:
+    white;
+
+  font-family:
+    "Space Mono",
+    monospace;
+
+  font-size:
+    9px;
+
+  font-weight:
+    bold;
+}
+
+
+.panel h3 {
+
+  margin:
+    0 0 10px;
+
+  font-family:
+    "Archivo Black",
+    sans-serif;
+
+  font-size:
+    23px;
+
+  text-transform:
+    uppercase;
+}
+
+
+.panel p {
+
+  margin:
+    0;
+
+  line-height:
+    1.6;
+
+  color:
+    var(--muted);
+}
+
+
+/* =========================================================
+   CURSOS
+   ========================================================= */
+
+.course-list {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap:
+    18px;
+}
+
+
+.course-card {
+
+  border:
+    2px solid var(--line);
+
+  background:
+    var(--surface);
+
+  box-shadow:
+    5px 5px 0 var(--line);
+
+  padding:
+    22px;
+}
+
+
+.course-card.empty {
+
+  grid-column:
+    1 / -1;
+
+  text-align:
+    center;
+
+  padding:
+    55px 25px;
+}
+
+
+.course-icon {
+
+  width:
+    48px;
+
+  height:
+    48px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  margin-bottom:
+    18px;
+
+  border:
+    2px solid var(--line);
+
+  background:
+    var(--lime);
+
+  color:
+    #161616;
+
+  font-family:
+    "Archivo Black",
+    sans-serif;
+
+  box-shadow:
+    3px 3px 0 var(--line);
+}
+
+
+/* =========================================================
+   PROGRESO
+   ========================================================= */
+
+.progress-item {
+
+  margin-bottom:
+    25px;
+}
+
+
+.progress-top {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  gap:
+    20px;
+
+  margin-bottom:
+    8px;
+
+  font-weight:
+    700;
+}
+
+
+.progress-bar {
+
+  width:
+    100%;
+
+  height:
+    18px;
+
+  border:
+    2px solid var(--line);
+
+  background:
+    var(--surface-2);
+}
+
+
+.progress-fill {
+
+  height:
+    100%;
+
+  background:
+    var(--purple);
+
+  width:
+    0%;
+}
+
+
+/* =========================================================
+   CUADERNO
+   ========================================================= */
+
+.notebook {
+
+  width:
+    100%;
+
+  min-height:
+    300px;
+
+  padding:
+    25px;
+
+  resize:
+    vertical;
+
+  border:
+    2px solid var(--line);
+
+  outline:
+    none;
+
+  background:
+
+    repeating-linear-gradient(
+      transparent 0px,
+      transparent 30px,
+      rgba(0,0,0,.09) 31px
+    ),
+
+    var(--surface);
+
+  color:
+    var(--ink);
+
+  font-family:
+    "DM Sans",
+    sans-serif;
+
+  font-size:
+    15px;
+
+  line-height:
+    31px;
+}
+
+
+.save-note {
+
+  margin-top:
+    15px;
+
+  border:
+    2px solid var(--line);
+
+  background:
+    var(--lime);
+
+  color:
+    #151515;
+
+  padding:
+    12px 16px;
+
+  cursor:
+    pointer;
+
+  font-weight:
+    800;
+
+  box-shadow:
+    4px 4px 0 var(--line);
+}
+
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+.profile-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:
+    16px;
+}
+
+
+.profile-data {
+
+  border:
+    2px solid var(--line);
+
+  padding:
+    18px;
+
+  background:
+    var(--surface-2);
+}
+
+
+.profile-data small {
+
+  display:
+    block;
+
+  margin-bottom:
+    8px;
+
+  font-family:
+    "Space Mono",
+    monospace;
+
+  font-size:
+    9px;
+
+  color:
+    var(--muted);
+
+  text-transform:
+    uppercase;
+}
+
+
+.profile-data strong {
+
+  font-size:
+    16px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media(max-width: 1000px) {
+
+  .layout {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .sidebar {
+
+    position:
+      static;
+
+    display:
+      grid;
+
+    grid-template-columns:
+      repeat(3, 1fr);
+
+    gap:
+      5px;
+
+  }
+
+
+  .sidebar-title,
+  .sidebar-footer {
+
+    display:
+      none;
+
+  }
+
+
+  .nav-button {
+
+    border:
+      1px solid var(--line);
+
+  }
+
+
+  .dashboard-grid {
+
+    grid-template-columns:
+      repeat(2, 1fr);
+
+  }
+
+}
+
+
+@media(max-width: 650px) {
+
+  .topbar {
+
+    padding:
+      15px;
+  }
+
+
+  .brand {
+
+    font-size:
+      13px;
+  }
+
+
+  .layout {
+
+    width:
+      calc(100% - 28px);
+
+    margin-top:
+      25px;
+  }
+
+
+  .sidebar {
+
+    grid-template-columns:
+      repeat(2, 1fr);
+
+  }
+
+
+  .dashboard-grid {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .hero {
+
+    padding:
+      28px 22px;
+  }
+
+
+  .hero-sticker {
+
+    display:
+      none;
+
+  }
+
+
+  .course-list {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .profile-grid {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .section-head {
+
+    align-items:
+      start;
+
+    flex-direction:
+      column;
+
+  }
+
+}
+
+</style>
 </head>
+
 
 <body>
 
-<header>
-  <div class="brand">UNIVERSO DEL ESTUDIANTE</div>
-  <button class="logout" onclick="logout()">CERRAR SESIÓN</button>
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+<header class="topbar">
+
+  <div class="brand">
+
+    <span class="brand-dot"></span>
+
+    UNIVERSO DEL ESTUDIANTE
+
+  </div>
+
+
+  <div class="header-actions">
+
+    <button
+      id="themeToggle"
+      class="theme-toggle"
+    >
+      ☾ NOCHE
+    </button>
+
+
+    <button
+      class="logout"
+      onclick="logout()"
+    >
+      CERRAR SESIÓN
+    </button>
+
+  </div>
+
 </header>
 
-<main>
 
-  <section class="welcome">
-    <small>MI CAMPUS · MADE IN ARGENTINA</small>
-    <h1>Hola, <span id="studentName">estudiante</span> ✦</h1>
-    <p>Este es tu espacio personal dentro de Universo del Estudiante.</p>
-    <p class="email" id="studentEmail"></p>
-  </section>
 
-  <section class="grid">
+<!-- =========================================================
+     CAMPUS
+     ========================================================= -->
 
-    <div class="card">
-      <h2>Mis cursos</h2>
-      <p>Acá van a aparecer los cursos que compraste y tu progreso.</p>
+<div class="layout">
+
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+
+    <div class="sidebar-title">
+      MI CAMPUS / MENÚ
     </div>
 
-    <div class="card">
-      <h2>Explorar cursos</h2>
-      <p>Descubrí nuevos cursos y experiencias para seguir aprendiendo.</p>
+
+    <button
+      class="nav-button active"
+      onclick="showSection('home', this)"
+    >
+
+      Inicio
+
+      <span class="nav-index">
+        00
+      </span>
+
+    </button>
+
+
+    <button
+      class="nav-button"
+      onclick="showSection('courses', this)"
+    >
+
+      Mis cursos
+
+      <span class="nav-index">
+        01
+      </span>
+
+    </button>
+
+
+    <button
+      class="nav-button"
+      onclick="showSection('explore', this)"
+    >
+
+      Explorar
+
+      <span class="nav-index">
+        02
+      </span>
+
+    </button>
+
+
+    <button
+      class="nav-button"
+      onclick="showSection('progress', this)"
+    >
+
+      Mi progreso
+
+      <span class="nav-index">
+        03
+      </span>
+
+    </button>
+
+
+    <button
+      class="nav-button"
+      onclick="showSection('notes', this)"
+    >
+
+      Mi cuaderno
+
+      <span class="nav-index">
+        04
+      </span>
+
+    </button>
+
+
+    <button
+      class="nav-button"
+      onclick="showSection('diplomas', this)"
+    >
+
+      Diplomas
+
+      <span class="nav-index">
+        05
+      </span>
+
+    </button>
+
+
+    <button
+      class="nav-button"
+      onclick="showSection('profile', this)"
+    >
+
+      Mi perfil
+
+      <span class="nav-index">
+        06
+      </span>
+
+    </button>
+
+
+    <div class="sidebar-footer">
+
+      universo_del_estudiante.exe<br>
+      CAMPUS ONLINE
+
     </div>
 
-    <div class="card">
-      <h2>Mi progreso</h2>
-      <p>Seguimiento de módulos, actividades y avances.</p>
-    </div>
 
-    <div class="card">
-      <h2>Mi cuaderno</h2>
-      <p>Notas y apuntes personales de tus cursos.</p>
-    </div>
+  </aside>
 
-    <div class="card">
-      <h2>Mis diplomas</h2>
-      <p>Tus certificados aparecerán acá cuando completes cada curso.</p>
-    </div>
 
-    <div class="card">
-      <h2>Mi perfil</h2>
-      <p>Datos de tu cuenta y preferencias del campus.</p>
-    </div>
 
-  </section>
+  <!-- MAIN -->
 
-</main>
+  <main class="main">
+
+
+    <!-- =====================================================
+         HOME
+         ===================================================== -->
+
+    <section
+      id="home"
+      class="section-view active"
+    >
+
+
+      <div class="hero">
+
+
+        <div class="hero-tag">
+          MI CAMPUS · EST. 2026
+        </div>
+
+
+        <h1>
+
+          HOLA,<br>
+
+          <span id="studentName">
+            ESTUDIANTE
+          </span>.
+
+        </h1>
+
+
+        <p class="hero-copy">
+
+          Este es tu espacio personal.
+          Tus cursos, progreso, apuntes y logros
+          empiezan y continúan acá.
+
+        </p>
+
+
+        <div
+          class="user-email"
+          id="studentEmail"
+        ></div>
+
+
+        <div class="hero-sticker">
+          STUDY MODE: ON
+        </div>
+
+
+      </div>
+
+
+
+      <div class="dashboard-grid">
+
+
+        <article
+          class="dashboard-card"
+          onclick="goToSection('courses')"
+        >
+
+          <div class="card-number">
+            01 / APRENDÉ
+          </div>
+
+          <h2>
+            Mis cursos
+          </h2>
+
+          <p>
+            Tus cursos comprados,
+            módulos y acceso directo.
+          </p>
+
+        </article>
+
+
+
+        <article
+          class="dashboard-card"
+          onclick="goToSection('explore')"
+        >
+
+          <div class="card-number">
+            02 / EXPLORÁ
+          </div>
+
+          <h2>
+            Explorar cursos
+          </h2>
+
+          <p>
+            Universidad, idiomas,
+            desarrollo personal,
+            ingeniería y más.
+          </p>
+
+        </article>
+
+
+
+        <article
+          class="dashboard-card"
+          onclick="goToSection('progress')"
+        >
+
+          <div class="card-number">
+            03 / AVANZÁ
+          </div>
+
+          <h2>
+            Mi progreso
+          </h2>
+
+          <p>
+            Seguí módulos,
+            actividades y avances.
+          </p>
+
+        </article>
+
+
+
+        <article
+          class="dashboard-card"
+          onclick="goToSection('notes')"
+        >
+
+          <div class="card-number">
+            04 / ESCRIBÍ
+          </div>
+
+          <h2>
+            Mi cuaderno
+          </h2>
+
+          <p>
+            Un espacio para tus notas,
+            ideas y recordatorios.
+          </p>
+
+        </article>
+
+
+
+        <article
+          class="dashboard-card"
+          onclick="goToSection('diplomas')"
+        >
+
+          <div class="card-number">
+            05 / LOGRÁ
+          </div>
+
+          <h2>
+            Mis diplomas
+          </h2>
+
+          <p>
+            Tus certificados
+            y cursos completados.
+          </p>
+
+        </article>
+
+
+
+        <article
+          class="dashboard-card"
+          onclick="goToSection('profile')"
+        >
+
+          <div class="card-number">
+            06 / VOS
+          </div>
+
+          <h2>
+            Mi perfil
+          </h2>
+
+          <p>
+            Tus datos y preferencias
+            dentro del campus.
+          </p>
+
+        </article>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         MIS CURSOS
+         ===================================================== -->
+
+    <section
+      id="courses"
+      class="section-view"
+    >
+
+
+      <div class="section-head">
+
+        <h2>
+          MIS CURSOS.
+        </h2>
+
+        <button
+          class="back-button"
+          onclick="goToSection('home')"
+        >
+          ← VOLVER
+        </button>
+
+      </div>
+
+
+      <div class="course-list">
+
+
+        <div class="course-card empty">
+
+          <div class="course-icon">
+            +
+          </div>
+
+          <h3>
+            Todavía no hay cursos.
+          </h3>
+
+          <p>
+
+            Cuando compres un curso,
+            aparecerá automáticamente acá.
+
+          </p>
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         EXPLORAR
+         ===================================================== -->
+
+    <section
+      id="explore"
+      class="section-view"
+    >
+
+
+      <div class="section-head">
+
+        <h2>
+          EXPLORAR.
+        </h2>
+
+        <button
+          class="back-button"
+          onclick="goToSection('home')"
+        >
+          ← VOLVER
+        </button>
+
+      </div>
+
+
+
+      <div class="dashboard-grid">
+
+
+        <article class="dashboard-card">
+
+          <div class="card-number">
+            CAT / 01
+          </div>
+
+          <h2>
+            Universidad
+          </h2>
+
+          <p>
+            CV, negociación,
+            liderazgo y networking.
+          </p>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+          <div class="card-number">
+            CAT / 02
+          </div>
+
+          <h2>
+            Desarrollo personal
+          </h2>
+
+          <p>
+            Habilidades que sirven
+            adentro y afuera del aula.
+          </p>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+          <div class="card-number">
+            CAT / 03
+          </div>
+
+          <h2>
+            Idiomas
+          </h2>
+
+          <p>
+            Cursos para comunicarte
+            con el mundo.
+          </p>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+          <div class="card-number">
+            CAT / 04
+          </div>
+
+          <h2>
+            Ingeniería Civil
+          </h2>
+
+          <p>
+            Recursos técnicos,
+            herramientas y aprendizaje.
+          </p>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+          <div class="card-number">
+            CAT / 05
+          </div>
+
+          <h2>
+            Ciencia divertida
+          </h2>
+
+          <p>
+            Experimentos y proyectos
+            para aprender haciendo.
+          </p>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+          <div class="card-number">
+            CAT / 06
+          </div>
+
+          <h2>
+            Mundo digital
+          </h2>
+
+          <p>
+            Herramientas,
+            tecnología y habilidades online.
+          </p>
+
+        </article>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         PROGRESO
+         ===================================================== -->
+
+    <section
+      id="progress"
+      class="section-view"
+    >
+
+
+      <div class="section-head">
+
+        <h2>
+          MI PROGRESO.
+        </h2>
+
+        <button
+          class="back-button"
+          onclick="goToSection('home')"
+        >
+          ← VOLVER
+        </button>
+
+      </div>
+
+
+      <div class="panel">
+
+        <span class="panel-tag">
+          SEGUIMIENTO
+        </span>
+
+        <h3>
+          Tu recorrido empieza acá.
+        </h3>
+
+        <p>
+
+          Cuando empecemos a cargar
+          cursos reales, acá vas a ver
+          automáticamente cuánto completaste
+          de cada uno.
+
+        </p>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="progress-item">
+
+          <div class="progress-top">
+
+            <span>
+              Progreso general
+            </span>
+
+            <span>
+              0%
+            </span>
+
+          </div>
+
+
+          <div class="progress-bar">
+
+            <div
+              class="progress-fill"
+              style="width:0%"
+            ></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         CUADERNO
+         ===================================================== -->
+
+    <section
+      id="notes"
+      class="section-view"
+    >
+
+
+      <div class="section-head">
+
+        <h2>
+          MI CUADERNO.
+        </h2>
+
+        <button
+          class="back-button"
+          onclick="goToSection('home')"
+        >
+          ← VOLVER
+        </button>
+
+      </div>
+
+
+      <div class="panel">
+
+        <span class="panel-tag">
+          NOTAS PERSONALES
+        </span>
+
+        <h3>
+          Escribí lo que quieras recordar.
+        </h3>
+
+        <p style="margin-bottom:20px;">
+
+          Por ahora las notas se guardan
+          en este dispositivo.
+          Más adelante las sincronizamos
+          con tu cuenta.
+
+        </p>
+
+
+        <textarea
+          id="notebook"
+          class="notebook"
+          placeholder="Escribí tus apuntes acá..."
+        ></textarea>
+
+
+        <button
+          class="save-note"
+          onclick="saveNotes()"
+        >
+          GUARDAR APUNTES
+        </button>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         DIPLOMAS
+         ===================================================== -->
+
+    <section
+      id="diplomas"
+      class="section-view"
+    >
+
+
+      <div class="section-head">
+
+        <h2>
+          MIS DIPLOMAS.
+        </h2>
+
+        <button
+          class="back-button"
+          onclick="goToSection('home')"
+        >
+          ← VOLVER
+        </button>
+
+      </div>
+
+
+      <div class="panel">
+
+        <span class="panel-tag">
+          TUS LOGROS
+        </span>
+
+        <h3>
+          Todavía no hay diplomas.
+        </h3>
+
+        <p>
+
+          Cuando completes tu primer curso,
+          el diploma aparecerá acá
+          para que puedas verlo y descargarlo.
+
+        </p>
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         PERFIL
+         ===================================================== -->
+
+    <section
+      id="profile"
+      class="section-view"
+    >
+
+
+      <div class="section-head">
+
+        <h2>
+          MI PERFIL.
+        </h2>
+
+        <button
+          class="back-button"
+          onclick="goToSection('home')"
+        >
+          ← VOLVER
+        </button>
+
+      </div>
+
+
+      <div class="panel">
+
+
+        <span class="panel-tag">
+          CUENTA
+        </span>
+
+
+        <h3>
+          Tu ficha de estudiante.
+        </h3>
+
+
+        <div class="profile-grid">
+
+
+          <div class="profile-data">
+
+            <small>
+              Nombre
+            </small>
+
+            <strong
+              id="profileName"
+            >
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="profile-data">
+
+            <small>
+              Correo
+            </small>
+
+            <strong
+              id="profileEmail"
+            >
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="profile-data">
+
+            <small>
+              Estado
+            </small>
+
+            <strong>
+              Cuenta activa
+            </strong>
+
+          </div>
+
+
+          <div class="profile-data">
+
+            <small>
+              Campus
+            </small>
+
+            <strong>
+              Universo del Estudiante
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+  </main>
+
+
+</div>
+
+
 
 <script>
+
+/* =========================================================
+   SUPABASE
+   REEMPLAZÁ SOLO ESTOS DOS VALORES
+   ========================================================= */
 
 const SUPABASE_URL =
   "https://ohlgifhdmqzqymnkjnwe.supabase.co";
 
+
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_0o_hbYuQFkWQ49u6gCTNgg_2kd6QAiu";
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
 
 
-// COMPROBAR QUE EL USUARIO ESTÉ LOGUEADO
-async function loadUser(){
+
+/* =========================================================
+   USUARIO
+   ========================================================= */
+
+async function loadUser() {
+
 
   const { data, error } =
     await supabaseClient.auth.getUser();
 
-  if(error || !data.user){
 
-    window.location.href = "login.html";
+  if (
+    error ||
+    !data.user
+  ) {
+
+    window.location.href =
+      "login.html";
+
     return;
 
   }
 
-  const user = data.user;
+
+  const user =
+    data.user;
+
 
   const name =
     user.user_metadata?.full_name ||
     user.user_metadata?.name ||
-    "estudiante";
+    "ESTUDIANTE";
 
-  document.getElementById("studentName").textContent = name;
 
-  document.getElementById("studentEmail").textContent =
-    user.email || "";
+  document
+    .getElementById("studentName")
+    .textContent =
+      name;
+
+
+  document
+    .getElementById("studentEmail")
+    .textContent =
+      user.email || "";
+
+
+  document
+    .getElementById("profileName")
+    .textContent =
+      name;
+
+
+  document
+    .getElementById("profileEmail")
+    .textContent =
+      user.email || "";
 
 }
 
-
-// CERRAR SESIÓN
-async function logout(){
-
-  await supabaseClient.auth.signOut();
-
-  window.location.href = "login.html";
-
-}
 
 loadUser();
+
+
+
+/* =========================================================
+   CERRAR SESIÓN
+   ========================================================= */
+
+async function logout() {
+
+
+  await supabaseClient.auth
+    .signOut();
+
+
+  window.location.href =
+    "login.html";
+
+}
+
+
+
+/* =========================================================
+   NAVEGACIÓN
+   ========================================================= */
+
+function showSection(
+  id,
+  button
+) {
+
+
+  document
+    .querySelectorAll(
+      ".section-view"
+    )
+    .forEach(
+      section =>
+        section.classList.remove(
+          "active"
+        )
+    );
+
+
+  document
+    .getElementById(id)
+    .classList.add(
+      "active"
+    );
+
+
+  document
+    .querySelectorAll(
+      ".nav-button"
+    )
+    .forEach(
+      nav =>
+        nav.classList.remove(
+          "active"
+        )
+    );
+
+
+  if (button) {
+
+    button.classList.add(
+      "active"
+    );
+
+  }
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+
+function goToSection(id) {
+
+
+  const buttons =
+    document
+      .querySelectorAll(
+        ".nav-button"
+      );
+
+
+  const map = {
+
+    home: 0,
+    courses: 1,
+    explore: 2,
+    progress: 3,
+    notes: 4,
+    diplomas: 5,
+    profile: 6
+
+  };
+
+
+  showSection(
+    id,
+    buttons[
+      map[id]
+    ]
+  );
+
+}
+
+
+
+/* =========================================================
+   CUADERNO LOCAL
+   ========================================================= */
+
+const notebook =
+  document
+    .getElementById(
+      "notebook"
+    );
+
+
+notebook.value =
+  localStorage.getItem(
+    "ude-notebook"
+  ) || "";
+
+
+function saveNotes() {
+
+
+  localStorage.setItem(
+    "ude-notebook",
+    notebook.value
+  );
+
+
+  const button =
+    document
+      .querySelector(
+        ".save-note"
+      );
+
+
+  const original =
+    button.textContent;
+
+
+  button.textContent =
+    "¡GUARDADO!";
+
+
+  setTimeout(
+    () => {
+
+      button.textContent =
+        original;
+
+    },
+    1200
+  );
+
+}
+
+
+
+/* =========================================================
+   MODO CLARO / OSCURO
+   ========================================================= */
+
+const themeToggle =
+  document
+    .getElementById(
+      "themeToggle"
+    );
+
+
+function applyTheme(theme) {
+
+
+  document
+    .documentElement
+    .setAttribute(
+      "data-theme",
+      theme
+    );
+
+
+  localStorage.setItem(
+    "ude-theme",
+    theme
+  );
+
+
+  themeToggle.textContent =
+    theme === "dark"
+      ? "☀ CLARO"
+      : "☾ NOCHE";
+
+}
+
+
+const savedTheme =
+  localStorage.getItem(
+    "ude-theme"
+  );
+
+
+const systemDark =
+  window
+    .matchMedia(
+      "(prefers-color-scheme: dark)"
+    )
+    .matches;
+
+
+applyTheme(
+  savedTheme ||
+  (
+    systemDark
+      ? "dark"
+      : "light"
+  )
+);
+
+
+themeToggle
+  .addEventListener(
+    "click",
+    () => {
+
+
+      const current =
+        document
+          .documentElement
+          .getAttribute(
+            "data-theme"
+          );
+
+
+      applyTheme(
+        current === "dark"
+          ? "light"
+          : "dark"
+      );
+
+    }
+  );
 
 </script>
 
