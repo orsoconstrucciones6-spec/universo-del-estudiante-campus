@@ -1,642 +1,2172 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Campus | Universo del Estudiante</title>
 
+
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
+<!-- FUENTES -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
+
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Kalam:wght@400;700&family=Manrope:wght@500;600;700;800&display=swap"
+rel="stylesheet"
+>
+
 
 <style>
 
+/* ==========================================================
+   UNIVERSO DEL ESTUDIANTE
+   IDENTIDAD 2026
+   Azul + naranja + editorial + doodle
+   ========================================================== */
+
 :root{
-  --bg:#f7f3ea;
+
+  --bg:#f8f3e9;
   --paper:#fffdf8;
-  --paper-2:#f2eee5;
-  --ink:#272727;
-  --muted:#747474;
-  --line:#d7d2c8;
+  --paper-soft:#f2eee5;
 
-  --orange:#ffad72;
-  --coral:#ff8f82;
-  --green:#9de3a5;
-  --blue:#9fd3ff;
-  --yellow:#ffe18a;
-  --purple:#c8b9ff;
-  --pink:#f2b8db;
-  --mint:#bfe8d4;
+  --ink:#17243c;
+  --navy:#193250;
+  --navy-2:#28486b;
 
-  --shadow:rgba(76,61,42,.14);
+  --muted:#666b70;
+  --line:#d7d3ca;
+
+  --orange:#ff7a3d;
+  --orange-light:#ffad72;
+
+  --blue:#87c9f4;
+  --blue-light:#c8e7fb;
+
+  --green:#94d99c;
+  --yellow:#ffd966;
+
+  --purple:#a999ef;
+  --pink:#ef9fb8;
+  --coral:#ff9485;
+  --mint:#b8e1cc;
+
+  --shadow:rgba(45,56,62,.13);
+
 }
+
+
+/* ==========================================================
+   DARK MODE
+   Colorido, NO negro
+   ========================================================== */
 
 html[data-theme="dark"]{
-  --bg:#1d2831;
-  --paper:#26333d;
-  --paper-2:#30404b;
-  --ink:#f7f1e8;
-  --muted:#c2c4c5;
-  --line:#4a5963;
 
-  --orange:#d98959;
-  --coral:#d87870;
-  --green:#79ba86;
-  --blue:#73a9d6;
-  --yellow:#d4ba6c;
-  --purple:#9689d5;
-  --pink:#c58fab;
-  --mint:#84b8a1;
+  --bg:#172634;
+  --paper:#223543;
+  --paper-soft:#2b4050;
 
-  --shadow:rgba(0,0,0,.26);
+  --ink:#f8f2e7;
+  --navy:#121f31;
+  --navy-2:#355978;
+
+  --muted:#c3c8ca;
+  --line:#536575;
+
+  --orange:#ff834c;
+  --orange-light:#d99467;
+
+  --blue:#69a9d3;
+  --blue-light:#33596d;
+
+  --green:#74b77e;
+  --yellow:#d4b64e;
+
+  --purple:#8d7ed0;
+  --pink:#c67f98;
+  --coral:#d9796f;
+  --mint:#7fb49d;
+
+  --shadow:rgba(0,0,0,.27);
+
 }
+
+
+
+/* ==========================================================
+   BASE
+   ========================================================== */
 
 *{
   box-sizing:border-box;
 }
 
-html,body{
+
+html,
+body{
+
   margin:0;
   min-height:100%;
+
 }
+
 
 body{
+
   min-height:100vh;
-  font-family:"Nunito",sans-serif;
+
+  font-family:
+    "Manrope",
+    sans-serif;
+
+  font-weight:600;
+
   color:var(--ink);
+
   background:
-    radial-gradient(circle at 10% 10%, rgba(255,173,114,.16), transparent 22%),
-    radial-gradient(circle at 88% 85%, rgba(159,211,255,.18), transparent 25%),
+
+    radial-gradient(
+      circle at 8% 12%,
+      rgba(255,122,61,.13),
+      transparent 24%
+    ),
+
+    radial-gradient(
+      circle at 90% 82%,
+      rgba(135,201,244,.18),
+      transparent 26%
+    ),
+
     var(--bg);
-  transition:.3s ease;
+
+  transition:
+    background .3s ease,
+    color .3s ease;
+
 }
 
-button,input{
+
+button,
+input{
+
   font:inherit;
+
 }
+
+
+
+/* ==========================================================
+   HEADER
+   ========================================================== */
 
 .topbar{
-  min-height:76px;
+
+  min-height:82px;
+
   display:flex;
-  align-items:center;
+
   justify-content:space-between;
-  padding:14px 32px;
-  border-bottom:1px solid var(--line);
-  background:rgba(255,255,255,.24);
-  backdrop-filter:blur(10px);
+  align-items:center;
+
+  padding:
+    14px 34px;
+
+  border-bottom:
+    1px solid var(--line);
+
+  background:
+    rgba(255,253,248,.77);
+
+  backdrop-filter:
+    blur(12px);
+
 }
+
+
+html[data-theme="dark"] .topbar{
+
+  background:
+    rgba(34,53,67,.88);
+
+}
+
 
 .brand{
+
   display:flex;
+
   align-items:center;
-  gap:13px;
-  font-weight:900;
-  font-size:18px;
+
+  gap:15px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight:700;
+
+  font-size:20px;
+
+  letter-spacing:-.02em;
+
 }
+
 
 .planet-logo{
-  width:44px;
-  height:44px;
+
   position:relative;
+
+  width:46px;
+  height:46px;
+
   border-radius:50%;
-  background:var(--purple);
-  border:2px solid var(--ink);
+
+  background:
+    var(--orange);
+
+  border:
+    3px solid var(--navy);
+
 }
+
 
 .planet-logo::after{
+
   content:"";
+
   position:absolute;
-  width:58px;
-  height:18px;
-  border:2px solid var(--ink);
-  border-radius:50%;
+
+  width:62px;
+  height:19px;
+
   left:50%;
   top:50%;
-  transform:translate(-50%,-50%) rotate(-20deg);
+
+  transform:
+    translate(-50%,-50%)
+    rotate(-20deg);
+
+  border:
+    3px solid var(--navy);
+
+  border-radius:50%;
+
 }
+
+
+.planet-logo::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:
+    var(--yellow);
+
+  top:8px;
+  right:7px;
+
+}
+
 
 .top-actions{
+
   display:flex;
+
   align-items:center;
+
   gap:10px;
+
 }
 
-.argentina-sticker{
+
+
+/* ==========================================================
+   ARGENTINA + FIRMA
+   ========================================================== */
+
+.identity-badges{
+
   display:flex;
+
   align-items:center;
-  gap:7px;
-  padding:7px 10px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  background:var(--paper);
-  font-size:12px;
-  font-weight:800;
-  box-shadow:0 5px 12px var(--shadow);
+
+  gap:8px;
+
 }
+
+
+.identity-badge{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:7px;
+
+  min-height:38px;
+
+  padding:
+    8px 11px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:
+    15px 12px 16px 11px;
+
+  background:
+    var(--paper);
+
+  color:
+    var(--ink);
+
+  box-shadow:
+    0 5px 13px var(--shadow);
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+}
+
+
+.signature{
+
+  font-family:
+    "Kalam",
+    cursive;
+
+  font-size:
+    15px;
+
+  background:
+    var(--orange-light);
+
+  color:
+    var(--navy);
+
+  transform:
+    rotate(-1deg);
+
+}
+
+
+
+/* BANDERA */
 
 .flag{
-  width:26px;
-  height:17px;
+
   position:relative;
-  border:1px solid #c6c6c6;
+
+  width:28px;
+  height:18px;
+
+  border:
+    1px solid #b8bec2;
+
+  border-radius:
+    2px;
+
   background:
+
     linear-gradient(
+
       to bottom,
-      #83c9f4 0 33%,
-      white 33% 66%,
-      #83c9f4 66% 100%
+
+      #75c3ef 0 33%,
+
+      #ffffff 33% 66%,
+
+      #75c3ef 66% 100%
+
     );
+
 }
+
 
 .flag::after{
+
   content:"";
-  width:4px;
-  height:4px;
-  border-radius:50%;
-  background:#e8b536;
+
   position:absolute;
+
+  width:5px;
+  height:5px;
+
+  border-radius:50%;
+
+  background:
+    #efb92e;
+
   left:50%;
   top:50%;
-  transform:translate(-50%,-50%);
+
+  transform:
+    translate(-50%,-50%);
+
 }
+
+
+
+/* ==========================================================
+   THEME
+   ========================================================== */
 
 .theme-toggle{
-  border:1px solid var(--line);
-  background:var(--paper);
-  color:var(--ink);
-  border-radius:14px;
-  padding:9px 13px;
+
+  border:
+    2px solid var(--navy);
+
+  background:
+    var(--blue-light);
+
+  color:
+    var(--navy);
+
+  border-radius:
+    14px;
+
+  padding:
+    10px 14px;
+
   cursor:pointer;
-  font-weight:800;
-  box-shadow:0 5px 12px var(--shadow);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight:
+    700;
+
+  font-size:
+    13px;
+
+  box-shadow:
+    0 5px 12px var(--shadow);
+
+  transition:
+    .18s ease;
+
 }
+
+
+.theme-toggle:hover{
+
+  transform:
+    translateY(-2px);
+
+  background:
+    var(--orange-light);
+
+}
+
+
+
+/* ==========================================================
+   PAGE
+   ========================================================== */
 
 .page{
-  width:min(1180px,92%);
-  margin:55px auto 70px;
+
+  width:
+    min(1200px,92%);
+
+  margin:
+    55px auto 75px;
+
   display:grid;
-  grid-template-columns:1.05fr .85fr;
-  gap:60px;
+
+  grid-template-columns:
+    1.05fr .85fr;
+
+  gap:
+    65px;
+
   align-items:center;
+
 }
+
+
+
+/* ==========================================================
+   HERO
+   ========================================================== */
 
 .hero{
+
   position:relative;
-  padding:25px 5px;
+
+  padding:
+    25px 5px 30px;
+
 }
+
 
 .mini-label{
+
   display:inline-flex;
+
   align-items:center;
+
   gap:8px;
-  background:var(--yellow);
-  color:#2d2d2d;
-  border:1px solid #d7c171;
-  border-radius:16px;
-  padding:8px 13px;
-  font-size:12px;
-  font-weight:900;
-  margin-bottom:20px;
-  transform:rotate(-1deg);
+
+  padding:
+    9px 14px;
+
+  margin-bottom:
+    22px;
+
+  background:
+    var(--orange);
+
+  color:
+    white;
+
+  border:
+    2px solid var(--navy);
+
+  border-radius:
+    18px 14px 17px 12px;
+
+  box-shadow:
+    4px 5px 0 var(--navy);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight:
+    700;
+
+  font-size:
+    13px;
+
+  transform:
+    rotate(-1deg);
+
 }
+
+
 
 .hero h1{
+
   margin:0;
-  font-family:"Patrick Hand",cursive;
-  font-size:clamp(67px,8vw,105px);
-  line-height:.86;
-  letter-spacing:-.02em;
+
+  max-width:
+    700px;
+
+  font-family:
+    "Kalam",
+    cursive;
+
+  font-size:
+    clamp(72px,8.5vw,112px);
+
+  font-weight:
+    700;
+
+  line-height:
+    .83;
+
+  letter-spacing:
+    -.035em;
+
+  color:
+    var(--navy);
+
 }
+
+
+html[data-theme="dark"] .hero h1{
+
+  color:
+    #f7f1e8;
+
+}
+
 
 .hero h1 span{
-  color:#7058d8;
+
+  position:relative;
+
+  display:inline-block;
+
+  color:
+    var(--orange);
+
 }
 
-.hero p{
-  max-width:600px;
-  margin:27px 0 0;
-  font-size:20px;
-  line-height:1.55;
-  font-weight:600;
+
+.hero h1 span::after{
+
+  content:"";
+
+  position:absolute;
+
+  left:2%;
+
+  right:1%;
+
+  bottom:-4px;
+
+  height:8px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--blue);
+
+  transform:
+    rotate(-1deg);
+
+  z-index:-1;
+
 }
+
+
+.hero-copy{
+
+  max-width:
+    610px;
+
+  margin:
+    31px 0 0;
+
+  font-size:
+    20px;
+
+  line-height:
+    1.55;
+
+  font-weight:
+    700;
+
+}
+
+
+
+/* ==========================================================
+   BENEFICIOS
+   ========================================================== */
 
 .feature-row{
-  margin-top:40px;
+
+  margin-top:
+    39px;
+
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:
+    15px;
+
 }
+
 
 .feature{
-  min-height:145px;
-  padding:18px;
-  border:1px solid rgba(90,90,90,.16);
-  border-radius:24px 20px 26px 18px;
-  box-shadow:0 10px 24px var(--shadow);
+
+  position:relative;
+
+  min-height:
+    165px;
+
+  padding:
+    20px;
+
+  border:
+    1px solid rgba(60,65,70,.18);
+
+  border-radius:
+    26px 19px 29px 21px;
+
+  box-shadow:
+    0 11px 24px var(--shadow);
+
+  overflow:hidden;
+
 }
+
 
 .feature:nth-child(1){
-  background:var(--orange);
-  transform:rotate(-1deg);
+
+  background:
+    var(--orange-light);
+
+  transform:
+    rotate(-.7deg);
+
 }
+
 
 .feature:nth-child(2){
-  background:var(--green);
-  transform:rotate(1deg);
+
+  background:
+    var(--green);
+
+  transform:
+    rotate(.8deg);
+
 }
+
 
 .feature:nth-child(3){
-  background:var(--blue);
-  transform:rotate(-.5deg);
+
+  background:
+    var(--blue);
+
+  transform:
+    rotate(-.4deg);
+
 }
 
-.feature-icon{
-  font-size:25px;
-  margin-bottom:14px;
+
+.feature-badge{
+
+  display:inline-block;
+
+  padding:
+    5px 8px;
+
+  margin-bottom:
+    18px;
+
+  border-radius:
+    10px;
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
 }
+
+
+.feature:nth-child(1) .feature-badge{
+
+  background:
+    var(--navy);
+
+  color:white;
+
+}
+
+
+.feature:nth-child(2) .feature-badge{
+
+  background:
+    var(--orange);
+
+  color:white;
+
+}
+
+
+.feature:nth-child(3) .feature-badge{
+
+  background:
+    var(--yellow);
+
+  color:
+    var(--navy);
+
+}
+
 
 .feature strong{
+
   display:block;
-  font-size:17px;
-  margin-bottom:6px;
+
+  margin-bottom:
+    7px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:
+    21px;
+
+  font-weight:
+    700;
+
 }
+
 
 .feature small{
-  font-size:12px;
-  line-height:1.45;
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.5;
+
 }
 
-.mate-note{
-  display:inline-flex;
-  align-items:center;
-  gap:9px;
-  margin-top:27px;
-  padding:9px 13px;
-  background:var(--paper);
-  border:1px solid var(--line);
-  border-radius:15px;
-  box-shadow:0 7px 16px var(--shadow);
-  font-size:12px;
-  font-weight:800;
-  transform:rotate(1deg);
+
+
+/* ==========================================================
+   MATE + TERMO
+   ========================================================== */
+
+.argentine-corner{
+
+  position:relative;
+
+  width:
+    310px;
+
+  min-height:
+    160px;
+
+  margin-top:
+    35px;
+
+  display:flex;
+
+  align-items:flex-end;
+
+  gap:
+    16px;
+
 }
+
+
+/* TERMO */
+
+.thermos{
+
+  position:relative;
+
+  width:61px;
+  height:125px;
+
+  border:
+    3px solid var(--navy);
+
+  border-radius:
+    18px 18px 15px 15px;
+
+  background:
+    var(--blue);
+
+  transform:
+    rotate(-4deg);
+
+  box-shadow:
+    5px 6px 0 rgba(25,50,80,.16);
+
+}
+
+
+.thermos::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:36px;
+  height:15px;
+
+  left:50%;
+  top:-13px;
+
+  transform:
+    translateX(-50%);
+
+  background:
+    var(--navy);
+
+  border-radius:
+    8px 8px 3px 3px;
+
+}
+
+
+.thermos::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:23px;
+  height:23px;
+
+  right:-15px;
+  top:33px;
+
+  border:
+    3px solid var(--navy);
+
+  border-left:0;
+
+  border-radius:
+    0 18px 18px 0;
+
+}
+
+
+
+/* MATE */
+
+.mate{
+
+  position:relative;
+
+  width:83px;
+  height:72px;
+
+  border:
+    3px solid var(--navy);
+
+  border-radius:
+    13px 13px 35px 35px;
+
+  background:
+    var(--orange);
+
+  transform:
+    rotate(3deg);
+
+  box-shadow:
+    5px 6px 0 rgba(25,50,80,.15);
+
+}
+
+
+.mate::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:5px;
+  height:92px;
+
+  background:
+    var(--navy);
+
+  left:54px;
+  top:-72px;
+
+  border-radius:
+    99px;
+
+  transform:
+    rotate(15deg);
+
+}
+
+
+.mate::after{
+
+  content:"";
+
+  position:absolute;
+
+  left:10px;
+  right:10px;
+  top:7px;
+
+  height:12px;
+
+  background:
+    #718e52;
+
+  border-radius:
+    50%;
+
+}
+
+
+
+/* CARTEL ARGENTINO */
+
+.mate-caption{
+
+  max-width:
+    125px;
+
+  margin-bottom:
+    15px;
+
+  padding:
+    10px 11px;
+
+  background:
+    var(--yellow);
+
+  color:
+    var(--navy);
+
+  border-radius:
+    14px 10px 16px 11px;
+
+  box-shadow:
+    0 7px 15px var(--shadow);
+
+  font-family:
+    "Kalam",
+    cursive;
+
+  font-size:
+    17px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.15;
+
+  transform:
+    rotate(-2deg);
+
+}
+
+
+
+/* ==========================================================
+   EASTER EGG
+   ========================================================== */
+
+.easter-egg{
+
+  position:absolute;
+
+  left:
+    88px;
+
+  bottom:
+    -29px;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  padding:
+    8px 11px;
+
+  background:
+    var(--pink);
+
+  color:
+    var(--navy);
+
+  border-radius:
+    12px;
+
+  font-family:
+    "Kalam",
+    cursive;
+
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+
+  transform:
+    rotate(1deg);
+
+  box-shadow:
+    0 6px 15px var(--shadow);
+
+  transition:
+    opacity .2s ease,
+    transform .2s ease;
+
+}
+
+
+.argentine-corner:hover .easter-egg{
+
+  opacity:1;
+
+  transform:
+    rotate(-1deg)
+    translateY(-4px);
+
+}
+
+
+
+/* ==========================================================
+   LOGIN CARD
+   ========================================================== */
 
 .form-card{
+
   position:relative;
-  background:var(--paper);
-  border:1px solid var(--line);
-  border-radius:30px 26px 32px 24px;
-  padding:38px;
-  box-shadow:0 20px 50px var(--shadow);
+
+  padding:
+    42px;
+
+  background:
+    var(--paper);
+
+  border:
+    2px solid var(--navy);
+
+  border-radius:
+    31px 23px 34px 26px;
+
+  box-shadow:
+    0 21px 48px var(--shadow);
+
 }
+
 
 .form-card::before{
+
   content:"MI CAMPUS";
+
   position:absolute;
-  right:24px;
-  top:-17px;
-  background:var(--coral);
-  color:#2b2b2b;
-  padding:8px 12px;
-  border-radius:12px;
-  font-size:11px;
-  font-weight:900;
-  transform:rotate(2deg);
-  box-shadow:0 5px 12px var(--shadow);
+
+  right:26px;
+  top:-18px;
+
+  padding:
+    9px 13px;
+
+  background:
+    var(--orange);
+
+  color:
+    white;
+
+  border:
+    2px solid var(--navy);
+
+  border-radius:
+    13px 10px 15px 11px;
+
+  box-shadow:
+    4px 4px 0 var(--navy);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
+  transform:
+    rotate(2deg);
+
 }
+
 
 .form-title{
-  margin:0 0 7px;
-  font-family:"Patrick Hand",cursive;
-  font-size:43px;
+
+  margin:
+    0 0 6px;
+
+  font-family:
+    "Kalam",
+    cursive;
+
+  font-size:
+    49px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1;
+
+  color:
+    var(--navy);
+
 }
+
+
+html[data-theme="dark"] .form-title{
+
+  color:
+    #fff5e7;
+
+}
+
 
 .form-subtitle{
-  margin:0 0 25px;
-  color:var(--muted);
-  font-size:14px;
+
+  margin:
+    0 0 27px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    15px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.5;
+
 }
+
+
+
+/* ==========================================================
+   TABS
+   ========================================================== */
 
 .tabs{
+
   display:grid;
-  grid-template-columns:1fr 1fr;
-  background:var(--paper-2);
-  border-radius:16px;
-  padding:4px;
-  margin-bottom:25px;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  padding:
+    5px;
+
+  margin-bottom:
+    27px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:
+    17px;
+
+  background:
+    var(--paper-soft);
+
 }
+
 
 .tab{
-  border:0;
-  background:transparent;
-  color:var(--muted);
-  padding:12px 9px;
-  border-radius:12px;
+
+  border:
+    2px solid transparent;
+
+  background:
+    transparent;
+
+  color:
+    var(--muted);
+
+  padding:
+    12px 8px;
+
+  border-radius:
+    13px;
+
   cursor:pointer;
-  font-weight:900;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+
+  transition:
+    .18s ease;
+
 }
+
 
 .tab.active{
-  background:var(--purple);
-  color:#28223f;
-  box-shadow:0 4px 10px var(--shadow);
+
+  background:
+    var(--navy);
+
+  border-color:
+    var(--navy);
+
+  color:
+    white;
+
+  box-shadow:
+    0 5px 13px var(--shadow);
+
 }
+
+
+.tab:not(.active):hover{
+
+  background:
+    var(--orange-light);
+
+  color:
+    var(--navy);
+
+}
+
+
+
+/* ==========================================================
+   FORM
+   ========================================================== */
 
 .form-section{
+
   display:none;
+
 }
+
 
 .form-section.active{
+
   display:block;
-  animation:show .2s ease;
+
+  animation:
+    appear .2s ease;
+
 }
 
-@keyframes show{
-  from{opacity:0;transform:translateY(5px);}
-  to{opacity:1;transform:translateY(0);}
+
+@keyframes appear{
+
+  from{
+
+    opacity:0;
+
+    transform:
+      translateY(5px);
+
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+      translateY(0);
+
+  }
+
 }
+
 
 label{
+
   display:block;
-  margin:17px 0 7px;
-  font-size:12px;
-  font-weight:900;
+
+  margin:
+    19px 0 8px;
+
+  color:
+    var(--ink);
+
+  font-size:
+    13px;
+
+  font-weight:
+    800;
+
 }
+
 
 input{
-  width:100%;
-  padding:14px 15px;
-  background:var(--paper);
-  color:var(--ink);
-  border:1.5px solid var(--line);
-  border-radius:15px;
+
+  width:
+    100%;
+
+  padding:
+    15px 16px;
+
+  border:
+    2px solid var(--line);
+
+  border-radius:
+    15px;
+
   outline:none;
-  font-size:15px;
+
+  background:
+    var(--paper);
+
+  color:
+    var(--ink);
+
+  font-size:
+    15px;
+
+  font-weight:
+    600;
+
+  transition:
+    .18s ease;
+
 }
+
 
 input:focus{
-  border-color:#8d77e0;
-  box-shadow:0 0 0 4px rgba(141,119,224,.12);
+
+  border-color:
+    var(--blue);
+
+  box-shadow:
+    0 0 0 4px rgba(135,201,244,.2);
+
 }
+
+
+
+/* ==========================================================
+   BOTONES
+   ========================================================== */
 
 .primary{
-  width:100%;
-  margin-top:23px;
-  padding:15px;
-  border:0;
-  border-radius:16px;
-  background:var(--coral);
-  color:#282828;
-  font-weight:900;
+
+  width:
+    100%;
+
+  margin-top:
+    25px;
+
+  padding:
+    16px;
+
+  border:
+    3px solid var(--navy);
+
+  border-radius:
+    16px;
+
+  background:
+    var(--orange);
+
+  color:
+    white;
+
   cursor:pointer;
-  box-shadow:0 7px 15px var(--shadow);
-  transition:.16s ease;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:
+    16px;
+
+  font-weight:
+    700;
+
+  box-shadow:
+    5px 6px 0 var(--navy);
+
+  transition:
+    .16s ease;
+
 }
+
 
 .primary:hover{
-  transform:translateY(-2px);
+
+  background:
+    var(--yellow);
+
+  color:
+    var(--navy);
+
+  transform:
+    translate(2px,2px);
+
+  box-shadow:
+    3px 4px 0 var(--navy);
+
 }
 
-.separator{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin:25px 0 18px;
-  color:var(--muted);
-  font-size:11px;
-  font-weight:800;
+
+.primary:active{
+
+  transform:
+    translate(5px,5px);
+
+  box-shadow:
+    none;
+
 }
+
+
+
+/* DIVISOR */
+
+.separator{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:
+    12px;
+
+  margin:
+    30px 0 19px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+}
+
 
 .separator::before,
 .separator::after{
+
   content:"";
-  height:1px;
-  background:var(--line);
+
   flex:1;
+
+  height:
+    1px;
+
+  background:
+    var(--line);
+
 }
+
+
+
+/* GOOGLE */
 
 .google{
-  width:100%;
-  padding:14px;
-  border:1.5px solid var(--line);
-  border-radius:15px;
-  background:var(--paper);
-  color:var(--ink);
+
+  width:
+    100%;
+
+  padding:
+    14px;
+
+  border:
+    2px solid var(--navy);
+
+  border-radius:
+    15px;
+
+  background:
+    var(--blue-light);
+
+  color:
+    var(--navy);
+
   cursor:pointer;
-  font-weight:900;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+
+  box-shadow:
+    4px 5px 0 var(--navy);
+
+  transition:
+    .16s ease;
+
 }
+
+
+.google:hover{
+
+  background:
+    var(--green);
+
+  transform:
+    translate(2px,2px);
+
+  box-shadow:
+    2px 3px 0 var(--navy);
+
+}
+
+
+
+/* ==========================================================
+   MENSAJES
+   ========================================================== */
 
 .message{
+
   display:none;
-  margin-top:18px;
-  padding:12px 14px;
-  border-radius:14px;
-  font-size:13px;
+
+  margin-top:
+    20px;
+
+  padding:
+    14px;
+
+  border-radius:
+    15px;
+
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.45;
+
 }
+
 
 .message.ok{
+
   display:block;
-  background:var(--mint);
+
+  background:
+    var(--mint);
+
+  color:
+    #23342c;
+
 }
+
 
 .message.error{
+
   display:block;
-  background:#f7b3ad;
-  color:#44221f;
+
+  background:
+    #f6b4ad;
+
+  color:
+    #46221f;
+
 }
+
+
+
+/* ==========================================================
+   FOOTER
+   ========================================================== */
 
 .form-footer{
-  margin-top:23px;
-  padding-top:17px;
-  border-top:1px dashed var(--line);
-  color:var(--muted);
-  font-size:11px;
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:
+    8px;
+
+  margin-top:
+    26px;
+
+  padding-top:
+    19px;
+
+  border-top:
+    1px dashed var(--line);
+
 }
+
+
+.footer-badge{
+
+  padding:
+    7px 10px;
+
+  border-radius:
+    11px;
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+}
+
+
+.footer-badge.arg{
+
+  background:
+    var(--blue-light);
+
+  color:
+    var(--navy);
+
+}
+
+
+.footer-badge.nadia{
+
+  background:
+    var(--orange-light);
+
+  color:
+    var(--navy);
+
+  font-family:
+    "Kalam",
+    cursive;
+
+  font-size:
+    14px;
+
+}
+
+
+
+/* ==========================================================
+   LOADING
+   ========================================================== */
 
 .form-loading button{
+
   pointer-events:none;
-  opacity:.6;
+
+  opacity:.58;
+
 }
 
-@media(max-width:850px){
+
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media(max-width:920px){
+
   .page{
-    grid-template-columns:1fr;
-    max-width:650px;
+
+    grid-template-columns:
+      1fr;
+
+    max-width:
+      670px;
+
   }
 
-  .feature-row{
-    grid-template-columns:1fr;
-  }
 
-  .argentina-sticker{
+  .identity-badges{
+
     display:none;
+
   }
+
 }
 
-@media(max-width:520px){
+
+@media(max-width:580px){
+
   .topbar{
-    padding:12px 15px;
+
+    padding:
+      12px 16px;
+
   }
+
 
   .brand{
-    font-size:13px;
+
+    font-size:
+      14px;
+
   }
+
 
   .planet-logo{
-    width:34px;
-    height:34px;
+
+    width:
+      34px;
+
+    height:
+      34px;
+
   }
+
 
   .planet-logo::after{
-    width:46px;
+
+    width:
+      47px;
+
   }
+
 
   .page{
-    width:calc(100% - 28px);
-    margin-top:25px;
+
+    width:
+      calc(100% - 28px);
+
+    margin-top:
+      27px;
+
   }
+
 
   .hero h1{
-    font-size:64px;
+
+    font-size:
+      65px;
+
   }
 
-  .hero p{
-    font-size:17px;
+
+  .hero-copy{
+
+    font-size:
+      17px;
+
   }
+
+
+  .feature-row{
+
+    grid-template-columns:
+      1fr;
+
+  }
+
 
   .form-card{
-    padding:30px 22px;
+
+    padding:
+      33px 23px;
+
   }
+
+
+  .argentine-corner{
+
+    transform:
+      scale(.86);
+
+    transform-origin:
+      left bottom;
+
+  }
+
 }
 
 </style>
+
 </head>
+
+
 
 <body>
 
+
+<!-- ==========================================================
+     HEADER
+     ========================================================== -->
+
 <header class="topbar">
 
+
   <div class="brand">
+
     <span class="planet-logo"></span>
+
     UNIVERSO DEL ESTUDIANTE
+
   </div>
+
+
 
   <div class="top-actions">
 
-    <div class="argentina-sticker">
-      <span class="flag"></span>
-      made in argentina
+
+    <div class="identity-badges">
+
+
+      <div class="identity-badge">
+
+        <span class="flag"></span>
+
+        MADE IN ARGENTINA
+
+      </div>
+
+
+      <div class="identity-badge signature">
+
+        BY NADIA LOPEZ
+
+      </div>
+
+
     </div>
+
+
 
     <button
       id="themeToggle"
       class="theme-toggle"
     >
+
       ☾ NOCHE
+
     </button>
 
+
   </div>
+
 
 </header>
 
 
+
+<!-- ==========================================================
+     MAIN
+     ========================================================== -->
+
 <main class="page">
+
+
+
+  <!-- ========================================================
+       IZQUIERDA
+       ======================================================== -->
 
   <section class="hero">
 
+
     <div class="mini-label">
-      ✦ TU ESPACIO DE ESTUDIO
+
+      TU ESPACIO DIGITAL PARA APRENDER
+
     </div>
 
+
+
     <h1>
+
       Entrá a tu<br>
+
       <span>universo.</span>
+
     </h1>
 
-    <p>
-      Cursos, progreso, apuntes, diplomas y nuevas cosas
-      por descubrir. Todo lo tuyo vive acá.
+
+
+    <p class="hero-copy">
+
+      Cursos, apuntes, progreso, ideas y nuevas cosas
+      por descubrir.
+
+      Todo lo que estás construyendo como estudiante
+      vive acá.
+
     </p>
+
+
 
     <div class="feature-row">
 
-      <article class="feature">
-        <div class="feature-icon">📚</div>
-        <strong>Aprendé</strong>
-        <small>
-          Tus cursos y contenidos en un solo lugar.
-        </small>
-      </article>
 
       <article class="feature">
-        <div class="feature-icon">🪐</div>
-        <strong>Explorá</strong>
+
+        <div class="feature-badge">
+
+          CURSOS
+
+        </div>
+
+        <strong>
+          Aprendé
+        </strong>
+
         <small>
-          Descubrí nuevos temas y experiencias.
+
+          Accedé a tus cursos y seguí exactamente
+          donde lo dejaste.
+
         </small>
+
       </article>
 
+
+
       <article class="feature">
-        <div class="feature-icon">📈</div>
-        <strong>Avanzá</strong>
+
+        <div class="feature-badge">
+
+          EXPLORAR
+
+        </div>
+
+        <strong>
+          Descubrí
+        </strong>
+
         <small>
-          Seguí tu progreso sin perder el hilo.
+
+          Nuevos temas, herramientas y cosas que
+          capaz ni sabías que querías aprender.
+
         </small>
+
       </article>
+
+
+
+      <article class="feature">
+
+        <div class="feature-badge">
+
+          PROGRESO
+
+        </div>
+
+        <strong>
+          Avanzá
+        </strong>
+
+        <small>
+
+          Mirá todo lo que ya hiciste y seguí
+          sumando pequeños logros.
+
+        </small>
+
+      </article>
+
 
     </div>
 
-    <div class="mate-note">
-      🧉 mate listo · campus listo
+
+
+    <!-- ARGENTINA -->
+
+    <div class="argentine-corner">
+
+
+      <div class="thermos"></div>
+
+
+      <div class="mate"></div>
+
+
+      <div class="mate-caption">
+
+        Mate listo.<br>
+        Ahora sí.
+
+      </div>
+
+
+      <div class="easter-egg">
+
+        Hoy no hay puchero:<br>
+        hay parciales. 😂
+
+      </div>
+
+
     </div>
+
 
   </section>
 
+
+
+  <!-- ========================================================
+       LOGIN
+       ======================================================== -->
 
   <section
     class="form-card"
     id="formCard"
   >
 
+
     <h2 class="form-title">
-      Bienvenid@.
+
+      Hola de nuevo.
+
     </h2>
 
+
     <p class="form-subtitle">
-      Entrá y seguí exactamente donde lo dejaste.
+
+      Entrá y seguí construyendo tu propio universo
+      de estudio.
+
     </p>
 
 
+
+    <!-- TABS -->
+
     <div class="tabs">
+
 
       <button
         class="tab active"
         onclick="showLogin()"
       >
+
         INICIAR SESIÓN
+
       </button>
+
+
 
       <button
         class="tab"
         onclick="showRegister()"
       >
+
         CREAR CUENTA
+
       </button>
+
 
     </div>
 
+
+
+    <!-- LOGIN -->
 
     <div
       id="loginSection"
       class="form-section active"
     >
 
+
       <label>
         Correo electrónico
       </label>
+
 
       <input
         id="loginEmail"
@@ -645,9 +2175,12 @@ input:focus{
         autocomplete="email"
       >
 
+
+
       <label>
         Contraseña
       </label>
+
 
       <input
         id="loginPassword"
@@ -656,35 +2189,53 @@ input:focus{
         autocomplete="current-password"
       >
 
+
+
       <button
         class="primary"
         onclick="login()"
       >
+
         ENTRAR A MI CAMPUS →
+
       </button>
 
+
+
       <div class="separator">
+
         O CONTINUÁ CON
+
       </div>
+
+
 
       <button
         class="google"
         onclick="loginGoogle()"
       >
-        G &nbsp;&nbsp; Continuar con Google
+
+        G &nbsp;&nbsp; CONTINUAR CON GOOGLE
+
       </button>
+
 
     </div>
 
+
+
+    <!-- REGISTRO -->
 
     <div
       id="registerSection"
       class="form-section"
     >
 
+
       <label>
         Tu nombre
       </label>
+
 
       <input
         id="registerName"
@@ -693,9 +2244,12 @@ input:focus{
         autocomplete="name"
       >
 
+
+
       <label>
         Correo electrónico
       </label>
+
 
       <input
         id="registerEmail"
@@ -704,9 +2258,12 @@ input:focus{
         autocomplete="email"
       >
 
+
+
       <label>
         Contraseña
       </label>
+
 
       <input
         id="registerPassword"
@@ -715,25 +2272,39 @@ input:focus{
         autocomplete="new-password"
       >
 
+
+
       <button
         class="primary"
         onclick="register()"
       >
+
         CREAR MI CUENTA →
+
       </button>
 
+
+
       <div class="separator">
+
         O REGISTRATE CON
+
       </div>
+
+
 
       <button
         class="google"
         onclick="loginGoogle()"
       >
-        G &nbsp;&nbsp; Registrarme con Google
+
+        G &nbsp;&nbsp; REGISTRARME CON GOOGLE
+
       </button>
 
+
     </div>
+
 
 
     <div
@@ -742,99 +2313,150 @@ input:focus{
     ></div>
 
 
+
+    <!-- FIRMA -->
+
     <div class="form-footer">
-      Universo del Estudiante · By Nadia Lopez · Made in Argentina 🇦🇷
+
+
+      <span class="footer-badge arg">
+
+        🇦🇷 MADE IN ARGENTINA
+
+      </span>
+
+
+      <span class="footer-badge nadia">
+
+        BY NADIA LOPEZ
+
+      </span>
+
+
     </div>
 
+
   </section>
+
 
 </main>
 
 
+
 <script>
 
-/* =========================================================
+
+/* ==========================================================
    SUPABASE
-   ========================================================= */
+   ========================================================== */
+
 
 const SUPABASE_URL =
   "https://ohlgifhdmqzqymnkjnwe.supabase.co";
 
+
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_0o_hbYuQFkWQ49u6gCTNgg_2kd6QAiu";
 
+
 const supabaseClient =
   window.supabase.createClient(
+
     SUPABASE_URL,
+
     SUPABASE_PUBLISHABLE_KEY
+
   );
+
 
 const LOGIN_URL =
   window.location.origin +
   window.location.pathname;
 
 
-/* =========================================================
+
+/* ==========================================================
    TABS
-   ========================================================= */
+   ========================================================== */
+
 
 function showLogin(){
 
+
   document
     .querySelectorAll(".tab")
-    .forEach(tab =>
-      tab.classList.remove("active")
+    .forEach(
+      tab =>
+        tab.classList.remove("active")
     );
+
 
   document
     .querySelectorAll(".tab")[0]
     .classList.add("active");
 
+
   document
     .querySelectorAll(".form-section")
-    .forEach(section =>
-      section.classList.remove("active")
+    .forEach(
+      section =>
+        section.classList.remove("active")
     );
+
 
   document
     .getElementById("loginSection")
     .classList.add("active");
 
+
   clearMessage();
+
 }
+
 
 
 function showRegister(){
 
+
   document
     .querySelectorAll(".tab")
-    .forEach(tab =>
-      tab.classList.remove("active")
+    .forEach(
+      tab =>
+        tab.classList.remove("active")
     );
+
 
   document
     .querySelectorAll(".tab")[1]
     .classList.add("active");
 
+
   document
     .querySelectorAll(".form-section")
-    .forEach(section =>
-      section.classList.remove("active")
+    .forEach(
+      section =>
+        section.classList.remove("active")
     );
+
 
   document
     .getElementById("registerSection")
     .classList.add("active");
 
+
   clearMessage();
+
 }
 
 
-/* =========================================================
+
+/* ==========================================================
    REGISTRO
-   ========================================================= */
+   ========================================================== */
+
 
 async function register(){
+
 
   const name =
     document
@@ -842,11 +2464,13 @@ async function register(){
       .value
       .trim();
 
+
   const email =
     document
       .getElementById("registerEmail")
       .value
       .trim();
+
 
   const password =
     document
@@ -854,89 +2478,137 @@ async function register(){
       .value;
 
 
+
   if(!name || !email || !password){
 
+
     showMessage(
+
       "Completá todos los campos para crear tu cuenta.",
+
       "error"
+
     );
 
+
     return;
+
   }
+
 
 
   if(password.length < 6){
 
+
     showMessage(
+
       "La contraseña debe tener al menos 6 caracteres.",
+
       "error"
+
     );
 
+
     return;
+
   }
+
 
 
   setLoading(true);
 
 
+
   try{
+
 
     const { error } =
       await supabaseClient.auth.signUp({
 
-        email: email,
 
-        password: password,
+        email:email,
 
-        options: {
+
+        password:password,
+
+
+        options:{
+
 
           data:{
+
             full_name:name
+
           },
+
 
           emailRedirectTo:
             LOGIN_URL
+
+
         }
+
 
       });
 
 
+
     if(error){
+
       throw error;
+
     }
 
 
+
     showMessage(
+
       "¡Cuenta creada! Revisá tu correo y confirmá la cuenta para entrar al campus.",
+
       "ok"
+
     );
 
+
   }
+
 
   catch(error){
 
+
     showMessage(
+
       error.message ||
       "No pudimos crear la cuenta.",
+
       "error"
+
     );
 
+
   }
+
 
   finally{
 
+
     setLoading(false);
 
+
   }
+
 
 }
 
 
-/* =========================================================
+
+/* ==========================================================
    LOGIN
-   ========================================================= */
+   ========================================================== */
+
 
 async function login(){
+
 
   const email =
     document
@@ -944,156 +2616,229 @@ async function login(){
       .value
       .trim();
 
+
   const password =
     document
       .getElementById("loginPassword")
       .value;
 
 
+
   if(!email || !password){
 
+
     showMessage(
+
       "Ingresá tu correo y contraseña.",
+
       "error"
+
     );
 
+
     return;
+
   }
+
 
 
   setLoading(true);
 
 
+
   try{
+
 
     const { error } =
       await supabaseClient.auth
         .signInWithPassword({
 
+
           email:email,
+
+
           password:password
+
 
         });
 
 
+
     if(error){
+
       throw error;
+
     }
+
 
 
     window.location.href =
       "campus.html";
 
+
   }
+
 
   catch(error){
 
+
     showMessage(
+
       "No pudimos iniciar sesión. Revisá tus datos y que hayas confirmado tu correo.",
+
       "error"
+
     );
 
+
   }
+
 
   finally{
 
+
     setLoading(false);
 
+
   }
+
 
 }
 
 
-/* =========================================================
+
+/* ==========================================================
    GOOGLE
-   ========================================================= */
+   ========================================================== */
+
 
 async function loginGoogle(){
+
 
   const { error } =
     await supabaseClient.auth
       .signInWithOAuth({
 
+
         provider:"google",
 
+
         options:{
-          redirectTo:LOGIN_URL
+
+          redirectTo:
+            LOGIN_URL
+
         }
+
 
       });
 
 
+
   if(error){
 
+
     showMessage(
+
       error.message,
+
       "error"
+
     );
 
+
   }
+
 
 }
 
 
-/* =========================================================
+
+/* ==========================================================
    SESIÓN
-   ========================================================= */
+   ========================================================== */
+
 
 async function checkSession(){
+
 
   const { data } =
     await supabaseClient.auth
       .getSession();
 
+
   if(data.session){
+
 
     window.location.href =
       "campus.html";
 
+
   }
 
+
 }
+
 
 checkSession();
 
 
-/* =========================================================
-   MENSAJES
-   ========================================================= */
 
-function showMessage(text,type){
+/* ==========================================================
+   MENSAJES
+   ========================================================== */
+
+
+function showMessage(
+  text,
+  type
+){
+
 
   const box =
     document
       .getElementById("message");
+
 
   box.textContent =
     text;
 
+
   box.className =
     "message " + type;
+
+
 }
 
 
+
 function clearMessage(){
+
 
   const box =
     document
       .getElementById("message");
 
+
   box.textContent =
     "";
 
+
   box.className =
     "message";
+
+
 }
 
 
-/* =========================================================
+
+/* ==========================================================
    LOADING
-   ========================================================= */
+   ========================================================== */
+
 
 function setLoading(value){
+
 
   document
     .getElementById("formCard")
@@ -1103,19 +2848,25 @@ function setLoading(value){
       value
     );
 
+
 }
 
 
-/* =========================================================
-   MODO OSCURO
-   ========================================================= */
+
+/* ==========================================================
+   TEMA
+   ========================================================== */
+
 
 const themeToggle =
   document
-    .getElementById("themeToggle");
+    .getElementById(
+      "themeToggle"
+    );
 
 
 function applyTheme(theme){
+
 
   document
     .documentElement
@@ -1124,22 +2875,28 @@ function applyTheme(theme){
       theme
     );
 
+
   localStorage.setItem(
     "ude-theme",
     theme
   );
 
+
   themeToggle.textContent =
     theme === "dark"
       ? "☀ CLARO"
       : "☾ NOCHE";
+
+
 }
+
 
 
 const savedTheme =
   localStorage.getItem(
     "ude-theme"
   );
+
 
 const systemDark =
   window
@@ -1149,37 +2906,50 @@ const systemDark =
     .matches;
 
 
+
 applyTheme(
+
   savedTheme ||
+
   (
     systemDark
       ? "dark"
       : "light"
   )
+
 );
 
 
-themeToggle.addEventListener(
-  "click",
-  ()=>{
 
-    const current =
-      document
-        .documentElement
-        .getAttribute(
-          "data-theme"
-        );
+themeToggle
+  .addEventListener(
+    "click",
+    ()=>{
 
-    applyTheme(
-      current === "dark"
-        ? "light"
-        : "dark"
-    );
 
-  }
-);
+      const current =
+        document
+          .documentElement
+          .getAttribute(
+            "data-theme"
+          );
+
+
+      applyTheme(
+
+        current === "dark"
+          ? "light"
+          : "dark"
+
+      );
+
+
+    }
+  );
+
 
 </script>
+
 
 </body>
 </html>
