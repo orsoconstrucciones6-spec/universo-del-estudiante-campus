@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>Dropshipping | Universo del Estudiante</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Kalam:wght@400;700&family=Manrope:wght@500;600;700;800&display=swap"
+  rel="stylesheet"
+>
+
+
+<style>
+
+:root{
+
+  --bg:#f8f3e9;
+  --paper:#fffdf8;
+
+  --ink:#17243c;
+  --navy:#193250;
+
+  --orange:#ff7a3d;
+  --orange-light:#ffad72;
+
+  --blue:#87c9f4;
+  --yellow:#ffd966;
+  --green:#94d99c;
+  --purple:#a999ef;
+
+  --line:#d7d3ca;
+
+  --shadow:
+    rgba(45,56,62,.14);
+
+}
+
+
+*{
+  box-sizing:border-box;
+}
+
+
+body{
+
+  margin:0;
+
+  min-height:100vh;
+
+  font-family:
+    "Manrope",
+    sans-serif;
+
+  color:
+    var(--ink);
+
+  background:
+
+    radial-gradient(
+      circle at 85% 8%,
+      rgba(135,201,244,.22),
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at 8% 90%,
+      rgba(255,122,61,.17),
+      transparent 25%
+    ),
+
+    var(--bg);
+
+}
+
+
+/* HEADER */
+
+header{
+
+  min-height:78px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:20px;
+
+  padding:
+    15px 30px;
+
+  background:
+    var(--paper);
+
+  border-bottom:
+    1px solid var(--line);
+
+}
+
+
+.brand{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:18px;
+
+  font-weight:700;
+
+}
+
+
+.planet{
+
+  position:relative;
+
+  width:42px;
+  height:42px;
+
+  border-radius:50%;
+
+  background:
+    var(--orange);
+
+  border:
+    3px solid var(--navy);
+
+}
+
+
+.planet::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:55px;
+  height:17px;
+
+  border:
+    3px solid var(--navy);
+
+  border-radius:50%;
+
+  left:50%;
+  top:50%;
+
+  transform:
+    translate(-50%,-50%)
+    rotate(-20deg);
+
+}
+
+
+.back{
+
+  padding:
+    10px 15px;
+
+  border:
+    2px solid var(--navy);
+
+  border-radius:
+    14px;
+
+  background:
+    var(--orange);
+
+  color:white;
+
+  cursor:pointer;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight:700;
+
+  box-shadow:
+    4px 4px 0 var(--navy);
+
+}
+
+
+/* MAIN */
+
+main{
+
+  width:
+    min(1100px,92%);
+
+  margin:
+    45px auto 80px;
+
+}
+
+
+/* LOADING */
+
+.status-card{
+
+  max-width:
+    650px;
+
+  margin:
+    100px auto;
+
+  padding:
+    45px;
+
+  text-align:center;
+
+  background:
+    var(--paper);
+
+  border:
+    2px solid var(--navy);
+
+  border-radius:
+    30px 23px 34px 25px;
+
+  box-shadow:
+    8px 9px 0 var(--navy);
+
+}
+
+
+.status-card h1{
+
+  margin:
+    0 0 15px;
+
+  font-family:
+    "Kalam",
+    cursive;
+
+  font-size:
+    50px;
+
+  line-height:1;
+
+}
+
+
+.status-card p{
+
+  margin:0;
+
+  font-size:16px;
+
+  font-weight:700;
+
+  line-height:1.6;
+
+}
+
+
+/* DENEGADO */
+
+.denied{
+
+  display:none;
+
+}
+
+
+.denied h1{
+
+  color:
+    var(--orange);
+
+}
+
+
+/* CURSO */
+
+.course{
+
+  display:none;
+
+}
+
+
+.hero{
+
+  position:relative;
+
+  overflow:hidden;
+
+  padding:
+    43px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--orange-light),
+      #fff3e4
+    );
+
+  border:
+    2px solid var(--navy);
+
+  border-radius:
+    35px 25px 40px 27px;
+
+  box-shadow:
+    8px 9px 0 var(--navy);
+
+}
+
+
+.course-label{
+
+  display:inline-block;
+
+  padding:
+    7px 11px;
+
+  background:
+    var(--navy);
+
+  color:white;
+
+  border-radius:
+    11px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:12px;
+
+  font-weight:700;
+
+}
+
+
+.hero h1{
+
+  max-width:
+    800px;
+
+  margin:
+    22px 0 10px;
+
+  font-family:
+    "Kalam",
+    cursive;
+
+  font-size:
+    clamp(55px,8vw,90px);
+
+  line-height:
+    .9;
+
+  color:
+    var(--navy);
+
+}
+
+
+.hero p{
+
+  max-width:
+    700px;
+
+  margin:
+    20px 0 0;
+
+  font-size:
+    18px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.55;
+
+}
+
+
+.access-sticker{
+
+  position:absolute;
+
+  right:
+    28px;
+
+  top:
+    28px;
+
+  padding:
+    9px 13px;
+
+  background:
+    var(--green);
+
+  border:
+    2px solid var(--navy);
+
+  border-radius:
+    13px;
+
+  color:
+    var(--navy);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
+  transform:
+    rotate(2deg);
+
+}
+
+
+/* PRÓXIMA ETAPA */
+
+.course-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:
+    18px;
+
+  margin-top:
+    32px;
+
+}
+
+
+.module{
+
+  min-height:
+    190px;
+
+  padding:
+    22px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:
+    25px;
+
+  box-shadow:
+    0 12px 25px var(--shadow);
+
+}
+
+
+.module:nth-child(1){
+  background:var(--blue);
+}
+
+
+.module:nth-child(2){
+  background:var(--yellow);
+}
+
+
+.module:nth-child(3){
+  background:var(--purple);
+}
+
+
+.module strong{
+
+  display:block;
+
+  margin-bottom:
+    10px;
+
+  font-family:
+    "Kalam",
+    cursive;
+
+  font-size:
+    27px;
+
+  color:
+    var(--navy);
+
+}
+
+
+.module p{
+
+  margin:0;
+
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.5;
+
+}
+
+
+.locked-note{
+
+  margin-top:
+    28px;
+
+  padding:
+    20px;
+
+  background:
+    var(--paper);
+
+  border:
+    1px dashed var(--line);
+
+  border-radius:
+    18px;
+
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.55;
+
+}
+
+
+@media(max-width:750px){
+
+  .course-grid{
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .access-sticker{
+
+    position:static;
+
+    display:inline-block;
+
+    margin-bottom:15px;
+
+  }
+
+
+  .hero{
+
+    padding:30px 23px;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+
+
+<body>
+
+
+<header>
+
+  <div class="brand">
+
+    <span class="planet"></span>
+
+    UNIVERSO DEL ESTUDIANTE
+
+  </div>
+
+
+  <button
+    class="back"
+    onclick="window.location.href='campus.html'"
+  >
+
+    ← MI CAMPUS
+
+  </button>
+
+</header>
+
+
+
+<main>
+
+
+  <!-- CARGANDO -->
+
+  <section
+    id="loading"
+    class="status-card"
+  >
+
+    <h1>
+      Verificando tu acceso... 🪐
+    </h1>
+
+    <p>
+      Estamos comprobando que este curso
+      esté habilitado en tu cuenta.
+    </p>
+
+  </section>
+
+
+
+  <!-- SIN ACCESO -->
+
+  <section
+    id="denied"
+    class="status-card denied"
+  >
+
+    <h1>
+      Este curso no está habilitado.
+    </h1>
+
+    <p>
+
+      Necesitás tener acceso al curso de Dropshipping
+      dentro de tu cuenta para poder entrar.
+
+    </p>
+
+    <br>
+
+    <button
+      class="back"
+      onclick="window.location.href='campus.html'"
+    >
+
+      VOLVER AL CAMPUS
+
+    </button>
+
+  </section>
+
+
+
+  <!-- ACCESO CORRECTO -->
+
+  <section
+    id="course"
+    class="course"
+  >
+
+
+    <div class="hero">
+
+
+      <div class="access-sticker">
+
+        ✓ ACCESO VERIFICADO
+
+      </div>
+
+
+      <span class="course-label">
+
+        EDUCACIÓN FINANCIERA · CURSO
+
+      </span>
+
+
+      <h1>
+
+        Dropshipping<br>
+        desde Argentina.
+
+      </h1>
+
+
+      <p>
+
+        Bienvenid@ a tu curso.
+
+        Tu cuenta tiene acceso correctamente
+        y ya podemos empezar a conectar acá
+        las clases, actividades, progreso,
+        examen y diploma.
+
+      </p>
+
+
+    </div>
+
+
+
+    <div class="course-grid">
+
+
+      <article class="module">
+
+        <strong>
+          01 · Empezar
+        </strong>
+
+        <p>
+
+          Bienvenida, introducción
+          y primeros conceptos.
+
+        </p>
+
+      </article>
+
+
+      <article class="module">
+
+        <strong>
+          02 · Aprender
+        </strong>
+
+        <p>
+
+          Acá van a aparecer
+          los módulos reales del curso.
+
+        </p>
+
+      </article>
+
+
+      <article class="module">
+
+        <strong>
+          03 · Completar
+        </strong>
+
+        <p>
+
+          Actividades, examen final
+          y desbloqueo del diploma.
+
+        </p>
+
+      </article>
+
+
+    </div>
+
+
+
+    <div class="locked-note">
+
+      🔐 Esta página ya verifica que el usuario tenga
+      el curso habilitado.
+
+      El contenido real de las clases lo vamos a guardar
+      en Supabase para que no quede expuesto dentro
+      del código público de GitHub Pages.
+
+    </div>
+
+
+  </section>
+
+
+</main>
+
+
+
+<script>
+
+/* ==========================================================
+   SUPABASE
+   USÁ LOS MISMOS DATOS DE campus.html
+   ========================================================== */
+
+const SUPABASE_URL =
+  "https://ohlgifhdmqzqymnkjnwe.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_0o_hbYuQFkWQ49u6gCTNgg_2kd6QAiu";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* ID DEL CURSO DROPSHIPPING */
+
+const COURSE_ID = 1;
+
+
+
+/* ==========================================================
+   VERIFICAR ACCESO
+   ========================================================== */
+
+async function verifyAccess(){
+
+
+  const loading =
+    document.getElementById("loading");
+
+
+  const denied =
+    document.getElementById("denied");
+
+
+  const course =
+    document.getElementById("course");
+
+
+  try{
+
+
+    /* VERIFICAR SESIÓN */
+
+    const {
+      data:userData,
+      error:userError
+    } =
+      await supabaseClient.auth.getUser();
+
+
+    if(
+      userError ||
+      !userData.user
+    ){
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    const user =
+      userData.user;
+
+
+
+    /* VERIFICAR INSCRIPCIÓN */
+
+    const {
+      data:enrollments,
+      error:accessError
+    } =
+      await supabaseClient
+        .from("enrollments")
+        .select("id,course_id,status")
+        .eq(
+          "user_id",
+          user.id
+        )
+        .eq(
+          "course_id",
+          COURSE_ID
+        )
+        .eq(
+          "status",
+          "active"
+        )
+        .limit(1);
+
+
+    if(accessError){
+
+      throw accessError;
+
+    }
+
+
+
+    loading.style.display =
+      "none";
+
+
+
+    if(
+      !enrollments ||
+      enrollments.length === 0
+    ){
+
+      denied.style.display =
+        "block";
+
+      return;
+
+    }
+
+
+
+    /* ACCESO CORRECTO */
+
+    course.style.display =
+      "block";
+
+
+  }
+
+  catch(error){
+
+
+    console.error(
+      "Error verificando acceso:",
+      error
+    );
+
+
+    loading.style.display =
+      "none";
+
+
+    denied.style.display =
+      "block";
+
+  }
+
+}
+
+
+
+verifyAccess();
+
+</script>
+
+
+</body>
+
+</html>
