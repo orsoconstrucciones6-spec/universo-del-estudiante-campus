@@ -4603,35 +4603,40 @@ function createCourseCard(
    ABRIR CURSO
    ========================================================== */
 
-function openCourse(
-  courseId,
-  owned
-){
+function openCourse(courseId, owned){
 
-  if(owned){
+  if(!owned){
 
     alert(
-
-      "¡Tu acceso funciona! 🎉\n\n" +
-
-      "Curso ID: " +
-      courseId +
-      "\n\n" +
-
-      "Ahora vamos a construir el interior del curso."
-
+      "Este curso todavía no está habilitado en tu cuenta."
     );
+
+    return;
+
+  }
+
+  const courseRoutes = {
+
+    1: "curso-dropshipping.html"
+
+  };
+
+
+  const route =
+    courseRoutes[courseId];
+
+
+  if(route){
+
+    window.location.href =
+      route;
 
   }
 
   else{
 
     alert(
-
-      "Este curso ya está publicado ✦\n\n" +
-
-      "Más adelante este botón llevará a la página del curso y a Mercado Pago."
-
+      "Este curso todavía no tiene una página asignada."
     );
 
   }
