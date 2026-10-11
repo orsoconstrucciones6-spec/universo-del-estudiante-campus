@@ -2727,6 +2727,7 @@ html[data-theme="dark"] .section-head h2{
 
 }
 
+.campus-note-sheet{margin:22px 0;padding:22px 24px 22px 38px;border:1px solid #c8b994;border-left:5px solid #df8776;border-radius:8px;background:repeating-linear-gradient(#fff9e9 0px,#fff9e9 31px,#ded6bf 32px);color:#263650;overflow-wrap:anywhere}.campus-note-label{font-size:12px;font-weight:800;letter-spacing:1px}.campus-note-sheet h4{font-size:18px;margin:12px 0}.campus-note-ink{white-space:pre-wrap;font-family:'Segoe Print',Georgia,serif;line-height:32px;font-size:17px}
 </style>
 
 </head>
@@ -3857,54 +3858,7 @@ html[data-theme="dark"] .section-head h2{
 
 
 
-      <section class="panel">
-
-
-        <div class="panel-head">
-
-          <h3>
-            Tus apuntes
-          </h3>
-
-        </div>
-
-
-        <p
-          style="
-            margin:0 0 18px;
-            font-size:14px;
-            font-weight:700;
-            color:var(--muted);
-          "
-        >
-
-          Por ahora se guardan en este navegador.
-          Más adelante los vamos a guardar
-          dentro de tu cuenta.
-
-        </p>
-
-
-
-        <textarea
-          id="notebook"
-          class="notebook"
-          placeholder="Escribí acá eso que después jurás que te vas a acordar..."
-        ></textarea>
-
-
-
-        <button
-          class="save-note"
-          onclick="saveNotes()"
-        >
-
-          GUARDAR APUNTES
-
-        </button>
-
-
-      </section>
+      <section class="panel" id="courseNotes" aria-live="polite"><p>Cargando tus apuntes…</p></section>
 
 
     </section>
@@ -4443,6 +4397,7 @@ async function loadCoursesCampus(){
 
 
     renderCampusProgress([],true);
+    renderCourseNotes([],[],true);
     const errorHTML = `
 
       <div class="no-courses">
@@ -4682,14 +4637,28 @@ function courseProgressCard(id){
 async function loadCampusProgress(userId,courses){
  campusProgress=new Map();
  const connected=courses.filter(c=>Number(c.id)===1);
- if(!connected.length){renderCampusProgress(courses,false);return;}
+ if(!connected.length){renderCampusProgress(courses,false);renderCourseNotes(courses,[],false);return;}
  try{
   const {data,error}=await supabaseClient.from('course_progress').select('course_id,state').eq('user_id',userId).in('course_id',connected.map(c=>c.id));
   if(error)throw error;
   for(const course of connected){const saved=(data||[]).find(p=>Number(p.course_id)===Number(course.id));campusProgress.set(Number(course.id),progressSummary(course.id,saved?.state));}
   renderCampusProgress(courses,false);
- }catch(e){renderCampusProgress(courses,true);}
+  renderCourseNotes(courses,data||[],false);
+ }catch(e){renderCampusProgress(courses,true);renderCourseNotes(courses,[],true);}
 }
+
+function renderCourseNotes(courses,rows,failed){
+ const container=document.getElementById('courseNotes');
+ if(failed){container.innerHTML='<h3>No pudimos consultar tus apuntes.</h3><p>Revisá la conexión y reintentá. Tus respuestas guardadas no se borraron.</p><button type="button" onclick="loadCoursesCampus()">Reintentar</button>';return;}
+ const course=courses.find(c=>Number(c.id)===1);
+ if(!course){container.innerHTML='<h3>Tus apuntes de los cursos</h3><p>Cuando tengas acceso a Dropshipping, acá podrás consultar las respuestas que guardes en sus actividades.</p>';return;}
+ const record=rows.find(r=>Number(r.course_id)===1);
+ const notes=record?.state?.notes||{};
+ const titles=['El negocio detrás de la vidriera','Un producto, una necesidad','El proveedor también se evalúa','¿Vende o deja plata?','Una tienda que pueda cumplir','Una prueba chica, una decisión grande'];
+ const count=titles.filter((_,i)=>typeof notes['m'+i]==='string'&&notes['m'+i].trim()).length;
+ container.innerHTML=`<h3>${escapeHTML(course.title||'Dropshipping')}</h3><p>${count} de 6 hojas con respuestas. Estos son tus apuntes guardados en tu cuenta, tal como los escribiste. Para editarlos, abrí la actividad dentro del curso.</p><button type="button" onclick="loadCoursesCampus()">Actualizar apuntes</button>${titles.map((title,i)=>{const text=typeof notes['m'+i]==='string'?notes['m'+i]:'';return `<article class="campus-note-sheet"><p class="campus-note-label">HOJA ${i+1}</p><h4>${escapeHTML(title)}</h4><p class="campus-note-ink">${escapeHTML(text.trim()?text:'Todavía no escribiste en esta actividad.')}</p></article>`}).join('')}<button type="button" onclick="openCourse(1,true)">Abrir curso para editar →</button>`;
+}
+
 function renderCampusProgress(courses,failed){
  const values=[...campusProgress.values()];
  const percent=values.length?Math.round(values.reduce((n,p)=>n+p.count,0)/values.reduce((n,p)=>n+p.total,0)*100):null;
@@ -4845,63 +4814,6 @@ function goToSection(id){
 /* ==========================================================
    CUADERNO
    ========================================================== */
-
-
-const notebook =
-  document
-    .getElementById(
-      "notebook"
-    );
-
-
-notebook.value =
-  localStorage.getItem(
-    "ude-notebook"
-  ) || "";
-
-
-
-function saveNotes(){
-
-
-  localStorage.setItem(
-
-    "ude-notebook",
-
-    notebook.value
-
-  );
-
-
-  const button =
-    document
-      .querySelector(
-        ".save-note"
-      );
-
-
-  button.textContent =
-    "¡GUARDADO!";
-
-
-  setTimeout(
-
-    ()=>{
-
-
-      button.textContent =
-        "GUARDAR APUNTES";
-
-
-    },
-
-    1200
-
-  );
-
-
-}
-
 
 
 /* ==========================================================
