@@ -3460,12 +3460,10 @@ html[data-theme="dark"] .section-head h2{
             <div class="progress-row">
 
               <span>
-                Progreso general
+                Progreso de cursos conectados
               </span>
 
-              <span>
-                0%
-              </span>
+              <span data-campus-progress-percent>—</span>
 
             </div>
 
@@ -3473,7 +3471,7 @@ html[data-theme="dark"] .section-head h2{
 
             <div class="progress-bar">
 
-              <div class="progress-fill"></div>
+              <div class="progress-fill" data-campus-progress-fill></div>
 
             </div>
 
@@ -3790,7 +3788,7 @@ html[data-theme="dark"] .section-head h2{
         <div class="panel-head">
 
           <h3>
-            Progreso general
+            Progreso de cursos conectados
           </h3>
 
         </div>
@@ -3802,16 +3800,14 @@ html[data-theme="dark"] .section-head h2{
             Tu recorrido
           </span>
 
-          <span>
-            0%
-          </span>
+          <span data-campus-progress-percent>—</span>
 
         </div>
 
 
         <div class="progress-bar">
 
-          <div class="progress-fill"></div>
+          <div class="progress-fill" data-campus-progress-fill></div>
 
         </div>
 
@@ -3820,28 +3816,7 @@ html[data-theme="dark"] .section-head h2{
 
 
 
-      <section class="panel">
-
-        <h3>
-          Acá empieza todo.
-        </h3>
-
-        <p
-          style="
-            margin:10px 0 0;
-            font-size:15px;
-            font-weight:700;
-            line-height:1.55;
-          "
-        >
-
-          Cuando empecemos a conectar los cursos,
-          esta sección va a mostrar automáticamente
-          cuánto completaste de cada uno.
-
-        </p>
-
-      </section>
+      <section class="panel" id="courseProgressDetails" aria-live="polite">Cargando tu progreso…</section>
 
 
     </section>
@@ -4237,7 +4212,11 @@ loadUser();
    CURSOS DEL CAMPUS
    ========================================================== */
 
+let campusLoading=false;
+let campusProgress=new Map();
 async function loadCoursesCampus(){
+  if(campusLoading)return;
+  campusLoading=true;
 
   const homeContainer =
     document.getElementById("homeCourses");
@@ -4357,6 +4336,8 @@ async function loadCoursesCampus(){
 
 
 
+    await loadCampusProgress(user.id,ownedCourses);
+
     let myCoursesHTML;
 
 
@@ -4461,6 +4442,7 @@ async function loadCoursesCampus(){
     );
 
 
+    renderCampusProgress([],true);
     const errorHTML = `
 
       <div class="no-courses">
@@ -4492,6 +4474,7 @@ async function loadCoursesCampus(){
 
   }
 
+  finally{campusLoading=false;}
 }
 
 
@@ -4581,6 +4564,7 @@ function createCourseCard(
       </p>
 
 
+      ${owned ? courseProgressCard(id) : ""}
       <button
         class="open-course-button"
         onclick="openCourse(${id}, ${owned})"
@@ -4681,6 +4665,43 @@ function escapeHTML(value){
 }
 
 
+
+
+function progressSummary(courseId,saved){
+ if(Number(courseId)!==1)return null;
+ const state=saved&&typeof saved==='object'?saved:{};
+ const done=[...new Set(Array.isArray(state.done)?state.done:[])].filter(i=>Number.isInteger(i)&&i>=0&&i<6);
+ const count=done.length+(state.examPassed===true&&done.length===6?1:0);
+ return {count,total:7,percent:Math.round(count/7*100)};
+}
+function courseProgressCard(id){
+ const p=campusProgress.get(Number(id));
+ if(!p)return '<p class="small">Progreso no disponible.</p>';
+ return `<p><strong>${p.percent}% completado</strong> · ${p.count} de ${p.total} hitos</p><progress max="7" value="${p.count}" aria-label="Progreso del curso" style="width:100%;accent-color:var(--orange)"></progress>`;
+}
+async function loadCampusProgress(userId,courses){
+ campusProgress=new Map();
+ const connected=courses.filter(c=>Number(c.id)===1);
+ if(!connected.length){renderCampusProgress(courses,false);return;}
+ try{
+  const {data,error}=await supabaseClient.from('course_progress').select('course_id,state').eq('user_id',userId).in('course_id',connected.map(c=>c.id));
+  if(error)throw error;
+  for(const course of connected){const saved=(data||[]).find(p=>Number(p.course_id)===Number(course.id));campusProgress.set(Number(course.id),progressSummary(course.id,saved?.state));}
+  renderCampusProgress(courses,false);
+ }catch(e){renderCampusProgress(courses,true);}
+}
+function renderCampusProgress(courses,failed){
+ const values=[...campusProgress.values()];
+ const percent=values.length?Math.round(values.reduce((n,p)=>n+p.count,0)/values.reduce((n,p)=>n+p.total,0)*100):null;
+ document.querySelectorAll('[data-campus-progress-percent]').forEach(el=>el.textContent=failed?'No disponible':percent===null?'Sin progreso disponible':percent+'%');
+ document.querySelectorAll('[data-campus-progress-fill]').forEach(el=>el.style.width=(failed?0:percent||0)+'%');
+ const details=document.getElementById('courseProgressDetails');
+ if(failed){details.innerHTML='<h3>No pudimos consultar tu progreso.</h3><p>Tu avance guardado no se perdió. Revisá la conexión y volvé a intentar.</p><button type="button" onclick="loadCoursesCampus()">Reintentar</button>';return;}
+ if(!courses.length){details.innerHTML='<h3>Tu recorrido empieza acá.</h3><p>Todavía no tenés cursos habilitados en tu cuenta.</p>';return;}
+ details.innerHTML=courses.map(c=>`<article><h3>${escapeHTML(c.title||'Curso')}</h3>${courseProgressCard(c.id)}<button type="button" onclick="openCourse(${Number(c.id)}, true)">Continuar curso →</button></article>`).join('');
+}
+window.addEventListener('focus',()=>loadCoursesCampus());
+window.addEventListener('pageshow',e=>{if(e.persisted)loadCoursesCampus();});
 
 /* CARGAR TODO */
 
