@@ -2952,6 +2952,12 @@ html[data-theme="dark"] .section-head h2{
 
   <main class="main">
 
+    <aside id="coursePaymentNotice" hidden aria-live="polite" style="background:#fff3d4;border:3px solid #172448;border-radius:18px;padding:20px;margin-bottom:22px;color:#172448">
+      <strong id="coursePaymentHeading">Compra de prueba</strong>
+      <p id="coursePaymentMessage"></p>
+      <button type="button" id="coursePaymentRetry" onclick="retryCoursePayment()" hidden>Comprobar de nuevo</button>
+    </aside>
+
 
 
     <!-- ======================================================
@@ -4150,6 +4156,82 @@ loadUser();
 
 let campusLoading=false;
 let campusProgress=new Map();
+const PAYMENT_TEST_USER='6db82ab5-202c-4bb0-8130-ec58f43d0d9c';
+let campusBuyerId=null;
+let checkoutBusy=false;
+let paymentPollTimer=null;
+let paymentPollCount=0;
+let paymentObservedUser=null;
+const validOrderId=value=>typeof value==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
+
+function paymentNotice(heading,message,retry=false){
+  document.getElementById('coursePaymentNotice').hidden=false;
+  document.getElementById('coursePaymentHeading').textContent=heading;
+  document.getElementById('coursePaymentMessage').textContent=message;
+  document.getElementById('coursePaymentRetry').hidden=!retry;
+}
+function setCheckoutBusy(busy){
+  checkoutBusy=busy;
+  document.querySelectorAll('[data-course-checkout]').forEach(button=>{
+    button.disabled=busy;
+    button.textContent=busy?'Preparando pago…':'PROBAR COMPRA · $1.500 ARS →';
+  });
+}
+async function buyTestCourse(){
+  if(checkoutBusy)return;
+  setCheckoutBusy(true);
+  try{
+    const {data:userData,error:userError}=await supabaseClient.auth.getUser();
+    if(userError||userData.user?.id!==PAYMENT_TEST_USER)throw new Error('Ingresá con la cuenta de prueba del campus.');
+    const {data:sessionData,error:sessionError}=await supabaseClient.auth.getSession();
+    if(sessionError||!sessionData.session||sessionData.session.user.id!==PAYMENT_TEST_USER)throw new Error('Tu sesión venció. Volvé a iniciar sesión.');
+    paymentNotice('Preparando compra de prueba','Estamos conectando con Mercado Pago. Usá únicamente el comprador y la tarjeta de prueba.');
+    const {data,error}=await supabaseClient.functions.invoke('create-course-checkout',{
+      body:{course_id:1},headers:{Authorization:'Bearer '+sessionData.session.access_token}
+    });
+    if(error){
+      let message='No pudimos iniciar el pago. Volvé a intentar.';
+      if(error.context&&typeof error.context.json==='function'){
+        try{const detail=await error.context.json();if(typeof detail.error==='string')message=detail.error;else if(typeof detail.message==='string')message=detail.message;if(typeof detail.step==='string')message+=' (Paso: '+detail.step+')';}catch{}
+      }
+      throw new Error(message);
+    }
+    if(data?.environment!=='test'||!validOrderId(data?.order_id)||typeof data?.checkout_url!=='string')throw new Error('La respuesta del pago no es válida.');
+    const destination=new URL(data.checkout_url);
+    if(destination.protocol!=='https:'||destination.hostname!=='www.mercadopago.com.ar'||destination.port||destination.username||destination.password||!destination.pathname.startsWith('/checkout/'))throw new Error('No pudimos verificar el enlace de pago.');
+    try{sessionStorage.setItem('ude.testOrder.'+PAYMENT_TEST_USER,data.order_id);}catch{}
+    window.location.assign(destination.href);
+  }catch(error){
+    paymentNotice('No se inició la compra',error.message||'Revisá la conexión y volvé a intentar.');
+    setCheckoutBusy(false);
+  }
+}
+function retryCoursePayment(){
+  paymentPollCount=0;
+  loadCoursesCampus();
+}
+async function refreshCoursePayment(user,ownedIds){
+  clearTimeout(paymentPollTimer);
+  if(paymentObservedUser!==user.id){paymentObservedUser=user.id;paymentPollCount=0;document.getElementById('coursePaymentNotice').hidden=true;}
+  if(user.id!==PAYMENT_TEST_USER)return;
+  let orderId=new URLSearchParams(window.location.search).get('order_id');
+  if(!orderId){try{orderId=sessionStorage.getItem('ude.testOrder.'+user.id);}catch{}}
+  if(!validOrderId(orderId))return;
+  const {data:order,error}=await supabaseClient.from('course_orders').select('id,user_id,course_id,status,environment').eq('id',orderId).eq('user_id',user.id).maybeSingle();
+  if(error){paymentNotice('No pudimos comprobar la compra','Tu pago puede seguir procesándose. Comprobalo de nuevo antes de intentar otro pago.',true);return;}
+  if(!order||order.environment!=='test'||Number(order.course_id)!==1){paymentNotice('Compra no encontrada','Esta compra no corresponde a la cuenta de prueba que tiene la sesión iniciada.');return;}
+  // Nunca confiar en payment_result, status o payment_id que lleguen por la URL.
+  if(order.status==='approved'&&ownedIds.has(1)){
+    paymentNotice('¡Compra de prueba confirmada!','Dropshipping ya está en Mis cursos. Podés entrar y comenzar.');
+    try{sessionStorage.removeItem('ude.testOrder.'+user.id);}catch{}
+    const clean=new URL(window.location.href);
+    ['order_id','payment_result','collection_id','collection_status','payment_id','status','external_reference','payment_type','merchant_order_id','preference_id','site_id','processing_mode','merchant_account_id'].forEach(key=>clean.searchParams.delete(key));
+    window.history.replaceState(null,'',clean.pathname+clean.search+clean.hash);
+    return;
+  }
+  paymentNotice('Esperando confirmación del pago','El curso se habilita cuando Mercado Pago confirma el pago. Si cancelaste o fue rechazado, todavía no se habilitará.',true);
+  if(paymentPollCount<10){paymentPollCount++;paymentPollTimer=setTimeout(()=>loadCoursesCampus(),3000);}
+}
 async function loadCoursesCampus(){
   if(campusLoading)return;
   campusLoading=true;
@@ -4192,6 +4274,8 @@ async function loadCoursesCampus(){
 
     const user =
       userData.user;
+
+    campusBuyerId=user.id;
 
 
 
@@ -4367,6 +4451,9 @@ async function loadCoursesCampus(){
       exploreHTML
     );
 
+    setCheckoutBusy(checkoutBusy);
+    await refreshCoursePayment(user,ownedCourseIds);
+
 
   }
 
@@ -4468,6 +4555,10 @@ function createCourseCard(
       ? "course-status"
       : "course-status course-status-available";
 
+  const testBuyButton=!owned&&id===1&&campusBuyerId===PAYMENT_TEST_USER
+    ? `<p><strong>Compra de prueba: $1.500 ARS</strong><br>Usá el comprador de prueba de Mercado Pago y datos de tarjeta de prueba.</p><button type="button" class="open-course-button" data-course-checkout onclick="buyTestCourse()">PROBAR COMPRA · $1.500 ARS →</button>`
+    : '';
+
 
   return `
 
@@ -4503,6 +4594,7 @@ function createCourseCard(
 
 
       ${owned ? courseProgressCard(id) : ""}
+      ${testBuyButton}
       <button
         class="open-course-button"
         onclick="openCourse(${id}, ${owned})"
@@ -4680,6 +4772,8 @@ loadCoursesCampus();
 
 
 async function logout(){
+
+  clearTimeout(paymentPollTimer);
 
 
   await supabaseClient.auth
