@@ -3899,25 +3899,7 @@ html[data-theme="dark"] .section-head h2{
 
 
 
-      <section class="panel">
-
-
-        <div class="empty-state">
-
-          <strong>
-
-            Todavía no hay diplomas.
-
-          </strong>
-
-
-          Cuando completes tu primer curso,
-          su diploma aparecerá acá.
-
-        </div>
-
-
-      </section>
+      <section class="panel" id="courseDiplomas" aria-live="polite">Cargando tus diplomas…</section>
 
 
     </section>
@@ -4398,6 +4380,7 @@ async function loadCoursesCampus(){
 
     renderCampusProgress([],true);
     renderCourseNotes([],[],true);
+    renderCourseDiplomas([],[],true);
     const errorHTML = `
 
       <div class="no-courses">
@@ -4637,14 +4620,28 @@ function courseProgressCard(id){
 async function loadCampusProgress(userId,courses){
  campusProgress=new Map();
  const connected=courses.filter(c=>Number(c.id)===1);
- if(!connected.length){renderCampusProgress(courses,false);renderCourseNotes(courses,[],false);return;}
+ if(!connected.length){renderCampusProgress(courses,false);renderCourseNotes(courses,[],false);renderCourseDiplomas(courses,[],false);return;}
  try{
   const {data,error}=await supabaseClient.from('course_progress').select('course_id,state').eq('user_id',userId).in('course_id',connected.map(c=>c.id));
   if(error)throw error;
   for(const course of connected){const saved=(data||[]).find(p=>Number(p.course_id)===Number(course.id));campusProgress.set(Number(course.id),progressSummary(course.id,saved?.state));}
   renderCampusProgress(courses,false);
   renderCourseNotes(courses,data||[],false);
- }catch(e){renderCampusProgress(courses,true);renderCourseNotes(courses,[],true);}
+  renderCourseDiplomas(courses,data||[],false);
+ }catch(e){renderCampusProgress(courses,true);renderCourseNotes(courses,[],true);renderCourseDiplomas(courses,[],true);}
+}
+
+
+function savedDiplomaEligible(saved){
+ if(!saved||saved.examPassed!==true||!Array.isArray(saved.done))return false;
+ return [0,1,2,3,4,5].every(i=>saved.done.includes(i)&&typeof saved.notes?.['m'+i]==='string'&&saved.notes['m'+i].trim()&&saved.checks?.[i]===true);
+}
+function renderCourseDiplomas(courses,rows,failed){
+ const container=document.getElementById('courseDiplomas');
+ if(failed){container.innerHTML='<h3>No pudimos consultar tus diplomas.</h3><p>Revisá la conexión y volvé a intentar.</p><button type="button" onclick="loadCoursesCampus()">Reintentar</button>';return;}
+ const completed=courses.filter(c=>Number(c.id)===1&&savedDiplomaEligible(rows.find(r=>Number(r.course_id)===Number(c.id))?.state));
+ if(!completed.length){container.innerHTML='<div class="empty-state"><strong>Todavía no hay diplomas.</strong><p>Completá las seis actividades y aprobá la evaluación de Dropshipping para obtener el tuyo. La vista previa de editora es una muestra y no cuenta como finalización.</p></div>';return;}
+ container.innerHTML=completed.map(c=>{const notes=rows.find(r=>Number(r.course_id)===Number(c.id)).state.notes||{};return `<article class="real-course-card"><span class="course-status">CURSO COMPLETADO</span><div class="real-course-category">Educación financiera</div><h3>${escapeHTML(c.title||'Dropshipping')}</h3><p>Tu diploma de finalización está disponible.</p>${typeof notes.diplomaName==='string'&&notes.diplomaName.trim()?`<p><strong>${escapeHTML(notes.diplomaName)}</strong></p>`:''}${typeof notes.diplomaDate==='string'&&notes.diplomaDate.trim()?`<p>Fecha: ${escapeHTML(notes.diplomaDate)}</p>`:''}<a class="open-course-button" href="curso-dropshipping.html?view=diploma">Ver diploma / Guardar PDF →</a><p>Al abrirlo, completá tu nombre y tocá «Imprimir / Guardar diploma como PDF».</p><p>Formación independiente, sin aval ni acreditación oficial.</p></article>`}).join('');
 }
 
 function renderCourseNotes(courses,rows,failed){

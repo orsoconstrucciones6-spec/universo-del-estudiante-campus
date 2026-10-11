@@ -108,9 +108,12 @@ async function startCourse(){
   await loadCloudProgress();
   state.done=[...new Set(state.done)].filter(i=>(state.notes['m'+i]||'').trim()&&state.answers[i]===modules[i].correct&&state.checks[i]===true);
   state.examPassed=state.examPassed&&state.done.length===6&&exam.reduce((n,q,i)=>n+(state.exam[i]===q.c?1:0),0)>=5;
+  const openDiploma=!!location.search&&new URLSearchParams(location.search).get('view')==='diploma';
+  if(openDiploma)state.page='final';
   render();save();
   document.getElementById('accessGate').hidden=true;
   document.getElementById('courseApp').hidden=false;
+  if(openDiploma)document.getElementById('diplomaArea')?.scrollIntoView({behavior:'smooth',block:'start'});
   loadEditorPermission();
   supabaseClient.auth.onAuthStateChange((event,session)=>{
    if(event==='SIGNED_OUT'||(session?.user&&session.user.id!==activeUserId)){
