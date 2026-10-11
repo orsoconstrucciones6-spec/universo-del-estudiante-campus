@@ -40,7 +40,7 @@ main h2{font-family:'Arial Black',system-ui,sans-serif;font-size:clamp(26px,3.6v
 <div id="courseApp" hidden>
 <header class="top"><span>UNIVERSO DEL ESTUDIANTE / LABORATORIO DE HABILIDADES</span><a href="campus.html">← Mi campus</a></header>
 <section class="hero"><div class="eyebrow">EDUCACIÓN FINANCIERA · CURSO</div><h1>DROPSHIPPING.<br><span>PERO SIN HUMO.</span></h1><p>De una idea a un plan de prueba desde Argentina. Entendé el negocio, investigá proveedores y descubrí si los números cierran.</p><div class="chips"><span class="chip">6 módulos + proyecto</span><span class="chip">4–6 h con actividades*</span><span class="chip">A tu ritmo</span></div><a id="start" class="startlink" href="#lesson-0">Empezar el curso →</a></section>
-<div class="wrap"><div class="notice" aria-label="Carácter de la formación"><strong>Formación independiente, sin aval ni acreditación oficial.</strong> Estos cursos no están aprobados, avalados ni acreditados por ninguna entidad educativa o profesional. <a href="#sobre-la-formacion">Conocé cómo se elaboran.</a></div><div class="notice"><strong>Tu espacio de estudio.</strong> En esta etapa, tus respuestas y tu avance se guardan para tu usuario en este navegador. Todavía no se sincronizan entre dispositivos. No ingreses contraseñas ni datos de clientes. <span id="storageState"></span></div><div class="layout"><aside><div class="eyebrow">Tu recorrido</div><h2>Una cosa a la vez.</h2><progress id="progress" value="0" max="7" aria-label="Progreso del curso"></progress><p id="progressText" class="small"></p><nav class="navlist" id="nav" aria-label="Módulos del curso"></nav><p class="status" id="saveState" role="status"></p><button class="navbutton" id="reset">Reiniciar mi avance local</button></aside><main id="main" tabindex="-1"></main></div></div>
+<div class="wrap"><div class="notice" aria-label="Carácter de la formación"><strong>Formación independiente, sin aval ni acreditación oficial.</strong> Estos cursos no están aprobados, avalados ni acreditados por ninguna entidad educativa o profesional. <a href="#sobre-la-formacion">Conocé cómo se elaboran.</a></div><div class="notice"><strong>Tu espacio de estudio.</strong> Tus respuestas y tu avance se guardan en tu cuenta. Antes de cambiar de dispositivo, esperá el aviso «Guardado en tu cuenta ✓». No ingreses contraseñas ni datos de clientes. <span id="storageState"></span></div><div class="layout"><aside><div class="eyebrow">Tu recorrido</div><h2>Una cosa a la vez.</h2><progress id="progress" value="0" max="7" aria-label="Progreso del curso"></progress><p id="progressText" class="small"></p><nav class="navlist" id="nav" aria-label="Módulos del curso"></nav><p class="status" id="saveState" role="status"></p><button id="retrySave" class="navbutton" hidden type="button">Reintentar guardado</button><button id="resolveSync" class="navbutton" hidden type="button">Revisar cambios de otro dispositivo</button><button class="navbutton" id="reset">Reiniciar mi avance</button></aside><main id="main" tabindex="-1"></main></div></div>
 <section id="sobre-la-formacion" aria-labelledby="formacion-title" style="max-width:1192px;margin:0 auto 32px;padding:24px;border-top:1px solid #c9c3d9;scroll-margin-top:20px"><h2 id="formacion-title" style="font-size:21px">Sobre esta propuesta educativa</h2><p>Los cursos del Laboratorio de Habilidades son una propuesta de formación independiente creada por Nadia Lopez. No están aprobados, avalados ni acreditados por ninguna entidad educativa o profesional, ni otorgan títulos oficiales.</p><p>Su contenido se elabora a partir del estudio personal y los aprendizajes de la autora, información consultada en internet y aportes de personas con experiencia en los temas tratados que colaboraron en su elaboración. El objetivo es acercarte esos conocimientos de una manera didáctica y ayudarte a comprender de qué se trata cada tema.</p><p>La evaluación del curso sirve para repasar lo aprendido; no equivale a una acreditación profesional.</p></section><footer class="footer"><b>BY NADIA LOPEZ</b><span>MADE IN ARGENTINA 🇦🇷 · ¡PARA TODO EL MUNDO!</span><a href="https://quokka-jgs7fm.my.canva.site/universo-del-estudiante">Volver al inicio</a></footer><div id="toast" role="status"></div>
 </div>
 <script>
@@ -104,7 +104,7 @@ async function startCourse(){
   exam=finalContent.questions;
   if(exam.some(q=>!textFields(q,['q','e'])||!Array.isArray(q.o)||q.o.length!==3||!q.o.every(o=>typeof o==='string')||!Number.isInteger(q.c)||q.c<0||q.c>=3))throw new Error('Hay una pregunta incompleta en la evaluación.');
   KEY='nadia.dropshipping.campus.v1.'+activeUserId+'.'+COURSE_ID;
-  restoreLocal();
+  await loadCloudProgress();
   state.done=[...new Set(state.done)].filter(i=>(state.notes['m'+i]||'').trim()&&state.answers[i]===modules[i].correct&&state.checks[i]===true);
   state.examPassed=state.examPassed&&state.done.length===6&&exam.reduce((n,q,i)=>n+(state.exam[i]===q.c?1:0),0)>=5;
   render();save();
@@ -112,7 +112,7 @@ async function startCourse(){
   document.getElementById('courseApp').hidden=false;
   supabaseClient.auth.onAuthStateChange((event,session)=>{
    if(event==='SIGNED_OUT'||(session?.user&&session.user.id!==activeUserId)){
-    state=fresh();KEY='';modules=[];exam=[];
+    clearTimeout(syncTimer);cloudReady=false;state=fresh();KEY='';modules=[];exam=[];
     document.getElementById('main').replaceChildren();
     gate('La sesión cambió.','Volvé al campus e iniciá sesión para continuar.');
    }
@@ -130,12 +130,101 @@ try{const saved=JSON.parse(localStorage.getItem(KEY));if(saved&&typeof saved==='
 
 const $=s=>document.querySelector(s);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let toastTimer;function toast(t){$('#toast').textContent=t;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').textContent='',4000)}
-function save(){if(!KEY)return;try{localStorage.setItem(KEY,JSON.stringify(state));storageOK=true;$('#saveState').textContent='Guardado en este navegador ✓'}catch(e){storageOK=false;$('#saveState').textContent='No se pudo guardar en este navegador. Tus cambios podrían perderse al cerrar la página.'}$('#storageState').textContent=storageOK?'':'Guardado local no disponible.';}
+
+let cloudReady=false,cloudStamp=null,dirtyVersion=0,syncedVersion=0;
+let syncTimer=null,savingCloud=false,cloudConflict=false;
+function progressStatus(text,retry=false){
+ $('#saveState').textContent=text;
+ $('#retrySave').hidden=!retry;
+ $('#resolveSync').hidden=!cloudConflict;
+}
+function applyProgress(saved){
+ state=fresh();
+ if(!saved||typeof saved!=='object'||Array.isArray(saved))return;
+ for(const k of ['notes','answers','checks','calc','exam']){
+  if(saved[k]&&typeof saved[k]==='object'&&!Array.isArray(saved[k]))state[k]={...state[k],...saved[k]};
+ }
+ for(const key of Object.keys(state.notes))if(typeof state.notes[key]!=='string')delete state.notes[key];
+ if(Array.isArray(saved.done))state.done=[...new Set(saved.done.filter(v=>Number.isInteger(v)&&v>=0&&v<6))];
+ state.examPassed=saved.examPassed===true;
+ if(typeof saved.page==='string')state.page=saved.page;
+}
+function cacheProgress(pending){
+ try{
+  localStorage.setItem(KEY,JSON.stringify(state));
+  if(pending)localStorage.setItem(KEY+'.pending','1');else localStorage.removeItem(KEY+'.pending');
+  storageOK=true;
+ }catch{storageOK=false;}
+ $('#storageState').textContent=storageOK?'':'La copia local no está disponible: esperá la confirmación del guardado en tu cuenta antes de cerrar.';
+}
+async function loadCloudProgress(){
+ const {data,error}=await supabaseClient.from('course_progress').select('state,updated_at').eq('user_id',activeUserId).eq('course_id',COURSE_ID).maybeSingle();
+ if(error)throw new Error('No pudimos leer tu progreso. Revisá la conexión y que course_progress y sus políticas estén creadas. Tus apuntes locales no se borraron.');
+ let local=null,pending=false;
+ try{local=JSON.parse(localStorage.getItem(KEY));pending=localStorage.getItem(KEY+'.pending')==='1';}catch{}
+ cloudStamp=data?.updated_at||null;
+ let useLocal=!data&&!!local;
+ if(data&&pending&&local){
+  useLocal=confirm('Hay cambios de este navegador que no llegaron a guardarse en tu cuenta. Aceptar: recuperar esta copia local y guardarla en tu cuenta. Cancelar: cargar la versión guardada en tu cuenta.');
+ }
+ applyProgress(useLocal?local:data?.state);
+ cloudReady=true;cloudConflict=false;
+ cacheProgress(useLocal);
+}
+function save(){
+ if(!KEY||!cloudReady)return;
+ dirtyVersion++;cacheProgress(true);
+ if(cloudConflict){progressStatus('Hay cambios en otro dispositivo. Revisalos antes de sincronizar.');return;}
+ progressStatus('Cambios pendientes de guardar…');
+ clearTimeout(syncTimer);syncTimer=setTimeout(flushProgress,700);
+}
+async function flushProgress(){
+ clearTimeout(syncTimer);
+ if(!cloudReady||!KEY||cloudConflict||savingCloud||dirtyVersion===syncedVersion)return;
+ savingCloud=true;
+ const version=dirtyVersion,requestUser=activeUserId,requestKey=KEY;
+ const snapshot=JSON.parse(JSON.stringify(state));
+ const timestamp=new Date(Math.max(Date.now(),(Date.parse(cloudStamp)||0)+1)).toISOString();
+ progressStatus('Guardando en tu cuenta…');
+ let saved=false;
+ try{
+  let result;
+  if(cloudStamp){
+   result=await supabaseClient.from('course_progress').update({state:snapshot,updated_at:timestamp}).eq('user_id',requestUser).eq('course_id',COURSE_ID).eq('updated_at',cloudStamp).select('updated_at').maybeSingle();
+  }else{
+   result=await supabaseClient.from('course_progress').insert({user_id:requestUser,course_id:COURSE_ID,state:snapshot,updated_at:timestamp}).select('updated_at').single();
+  }
+  if(KEY!==requestKey||!cloudReady)return;
+  if(result.error?.code==='23505'||(!result.error&&!result.data)){
+   cloudConflict=true;progressStatus('El progreso cambió en otro dispositivo. Tu copia local está conservada.');return;
+  }
+  if(result.error)throw result.error;
+  cloudStamp=result.data.updated_at;syncedVersion=version;saved=true;
+  if(dirtyVersion===version){cacheProgress(false);progressStatus('Guardado en tu cuenta ✓');}
+ }catch(error){
+  console.error('Guardado de progreso:',error);
+  if(KEY===requestKey&&cloudReady)progressStatus(storageOK?'No se pudo sincronizar. Tus cambios siguen guardados en este navegador.':'No se pudo guardar. Mantené esta página abierta y reintentá.',true);
+ }finally{
+  savingCloud=false;
+  if(saved&&cloudReady&&!cloudConflict&&dirtyVersion>syncedVersion)syncTimer=setTimeout(flushProgress,50);
+ }
+}
+window.addEventListener('online',()=>{if(!cloudConflict)flushProgress();});
+window.addEventListener('pagehide',()=>{if(cloudReady&&dirtyVersion!==syncedVersion){cacheProgress(true);flushProgress();}});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushProgress();});
+document.addEventListener('click',e=>{
+ if(e.target.closest('#retrySave'))flushProgress();
+ if(e.target.closest('#resolveSync')){
+  // Reload reads both versions and asks which pending copy to use.
+  location.reload();
+ }
+});
+
 let modules=[];
 let exam=[];
 let finalContent={};
 function nav(){let count=state.done.length+(state.examPassed?1:0);$('#progress').value=count;$('#progressText').textContent=`${count} de 7 hitos · ${Math.round(count/7*100)}%`;const items=[['welcome','La hoja de ruta','Tiempo y objetivos'],...modules.map((m,i)=>['m'+i,(i+1)+'. '+m.title,m.time]),['notebook','✎ Mi cuaderno','Tus apuntes, hoja por hoja'],['final','Evaluación + proyecto','15–30 min'],['setup','Fuentes del curso','Referencias del recorrido']];$('#nav').innerHTML=items.map(([id,t,sub])=>`<button class="navbutton" data-page="${id}" ${state.page===id?'aria-current="page"':''}>${esc(t)} ${id[0]==='m'&&state.done.includes(+id.slice(1))||id==='final'&&state.examPassed?'<span class="tick">✓</span>':''}<small>${sub}</small></button>`).join('');}
-function note(id,prompt){return `<label class="field" for="note-${id}">${prompt}</label><textarea id="note-${id}" data-note="${id}" maxlength="10000" placeholder="Tus ideas, evidencias y pendientes…">${esc(state.notes[id]||'')}</textarea><p class="small muted">Se suma a tu cuaderno mientras escribís y se guarda en este navegador. No incluyas datos sensibles.</p><div class="notebook-sheet live-note"><div class="notebook-meta">Así va quedando tu apunte</div><p class="ink" id="live-${id}">${esc(state.notes[id]||'Tu hoja empieza con tu primera respuesta…')}</p><button type="button" data-page="notebook">✎ Abrir mi cuaderno completo</button></div>`;}
+function note(id,prompt){return `<label class="field" for="note-${id}">${prompt}</label><textarea id="note-${id}" data-note="${id}" maxlength="10000" placeholder="Tus ideas, evidencias y pendientes…">${esc(state.notes[id]||'')}</textarea><p class="small muted">Se suma a tu cuaderno mientras escribís y se guarda en tu cuenta. No incluyas datos sensibles.</p><div class="notebook-sheet live-note"><div class="notebook-meta">Así va quedando tu apunte</div><p class="ink" id="live-${id}">${esc(state.notes[id]||'Tu hoja empieza con tu primera respuesta…')}</p><button type="button" data-page="notebook">✎ Abrir mi cuaderno completo</button></div>`;}
 function welcome(){return `<span class="tag">EL PLAN</span><h2>Aprender, probar,<br>tomar una decisión.</h2><p>La meta es salir con un producto investigado, una ficha de proveedor, un cálculo económico y un plan de prueba. El enfoque es vender dentro de Argentina con un proveedor local.</p><div class="callout warn"><b>¿Cuánto dura de verdad?</b><p>Recorrer y leer este curso: aproximadamente <b>35–50 minutos</b>. Trabajar todas las actividades con investigación propia: <b>4–6 horas</b>, incluyendo evaluación. Son estimaciones editoriales todavía no medidas con alumnos. La suma del recorrido propuesto es de 255–360 minutos.</p><p>Repartilo en <b>3–5 días</b>. Si contactás proveedores o pedís muestras, el calendario puede extenderse a <b>1–2 semanas o más</b>. Esperar un envío no cuenta como horas de formación.</p></div><div class="grid"><div class="step"><b>Sesión 1 · Entender</b><p>Módulos 1 y 2. Elegí una necesidad y compará tres productos.</p></div><div class="step"><b>Sesión 2 · Investigar</b><p>Módulo 3. Armá preguntas y verificá condiciones.</p></div><div class="step"><b>Sesión 3 · Calcular</b><p>Módulos 4 y 5. Revisá costos y redactá tu oferta.</p></div><div class="step"><b>Sesión 4 · Decidir</b><p>Módulo 6 y evaluación. Definí un experimento limitado.</p></div></div>${futureBoard()}<h3>Cómo se completa</h3><p>En cada módulo, dejá una nota de trabajo, respondé una pregunta y confirmá que realizaste la actividad. El control de las notas es solo de presencia; no evalúa su calidad. La evaluación final requiere 5 de 6 respuestas correctas y los seis módulos completos. Podés reintentar y navegar libremente.</p><div class="empty"><b>Con Nadia al principio y al final.</b> Tus videos de bienvenida y despedida se conectarán en el próximo paso. Ya podés recorrer las lecturas, actividades y calculadora.</div><div class="actions"><button class="primary" data-page="m0">Empezar módulo 1 →</button><button data-page="setup">Ver fuentes</button></div>`;}
 function calc(){const defs=[['price','Precio de venta'],['product','Costo del producto'],['shipping','Envío que absorbés'],['fee','Comisiones por pedido'],['ads','Publicidad por compra'],['returns','Previsión de devoluciones / pedido'],['tax','Impuestos variables / pedido'],['fixed','Costos fijos del mes'],['orders','Pedidos previstos / mes']];return `<section class="panel" aria-label="Calculadora económica"><span class="tag">LABORATORIO DE NÚMEROS</span><h3>Mové los números. Mirá qué pasa.</h3><p class="small">Importes ficticios en pesos argentinos. Ingresá cada costo completo una sola vez. La calculadora no determina impuestos ni comisiones reales.</p><div class="grid">${defs.map(([id,label])=>`<div><label class="field" for="calc-${id}">${label}</label><input id="calc-${id}" data-calc="${id}" type="number" min="0" max="1000000000" step="${id==='orders'?'1':'0.01'}" value="${esc(state.calc[id])}"></div>`).join('')}</div><div id="calcOutput" aria-live="polite" style="margin-top:20px"></div><p class="small">El resultado mensual estima pedidos × contribución − fijos. No es ganancia neta certificada ni flujo de caja. Si usás CAC, incluí todos los pedidos usados en ese cálculo de forma consistente.</p></section>`;}
 function calculate(){const values=Object.values(state.calc).map(v=>v===null||v===''?NaN:Number(v));if(values.some(v=>!Number.isFinite(v)||v<0||v>1e9)||!Number.isInteger(+state.calc.orders)){return {error:true};}const v=state.calc,c=Number(v.price)-['product','shipping','fee','ads','returns','tax'].reduce((a,k)=>a+Number(v[k]),0);return {contribution:c,monthly:c*Number(v.orders)-Number(v.fixed),breakEven:c>0?Math.ceil(Number(v.fixed)/c):null};}
@@ -146,7 +235,7 @@ function finalPage(){return `<span class="tag">EL CIERRE · 15–30 MIN</span><h
 
 function notebookPage(){
 const filled=modules.filter((_,i)=>(state.notes['m'+i]||'').trim()).length;
-return `<span class="tag">APUNTES PERSONALES · ${filled} / 6 HOJAS CON RESPUESTAS</span><div class="notebook-title"><h2>Mi cuaderno de ideas.</h2><span aria-hidden="true">✎</span></div><p>Acá se reúnen tus respuestas escritas y los chequeos que vas resolviendo. Es tu trabajo tal como lo escribiste, sin resumirlo ni cambiarlo.</p><p class="small muted">Se guarda solo en este navegador. Para editar un apunte, volvé a su actividad. No hay opción de descarga.</p><nav class="notebook-tabs" aria-label="Hojas del cuaderno">${modules.map((_,i)=>`<a href="#sheet-${i}">Hoja ${i+1}</a>`).join('')}</nav>${modules.map((m,i)=>{const text=(state.notes['m'+i]||'').trim(),a=state.answers[i],chosen=Number.isInteger(a)&&a>=0&&a<m.options.length;return `<section class="notebook-sheet" id="sheet-${i}"><div class="notebook-meta">HOJA ${String(i+1).padStart(2,'0')} · ${state.done.includes(i)?'ACTIVIDAD COMPLETADA':'EN CONSTRUCCIÓN'}</div><h3>${esc(m.task)}</h3><p class="small">${esc(m.goal)}</p><p class="ink ${text?'':'empty-ink'}">${esc(text||'Todavía no escribiste en esta hoja. Tu respuesta aparecerá acá cuando hagas la actividad.')}</p>${chosen?`<div class="notebook-check"><b>Chequeo: ${a===m.correct?'respuesta correcta ✓':'idea para revisar ↺'}</b><p>${esc(m.question)}</p><p><b>Elegiste:</b> ${esc(m.options[a])}</p><p>${esc(m.why)}</p></div>`:''}<button type="button" data-page="m${i}">Volver a esta actividad →</button></section>`;}).join('')}${notebookNumbers()}<div class="actions"><button data-page="final">Ir a la evaluación →</button></div>`;
+return `<span class="tag">APUNTES PERSONALES · ${filled} / 6 HOJAS CON RESPUESTAS</span><div class="notebook-title"><h2>Mi cuaderno de ideas.</h2><span aria-hidden="true">✎</span></div><p>Acá se reúnen tus respuestas escritas y los chequeos que vas resolviendo. Es tu trabajo tal como lo escribiste, sin resumirlo ni cambiarlo.</p><p class="small muted">Se guarda en tu cuenta cuando aparece la confirmación de guardado. Para editar un apunte, volvé a su actividad. No hay opción de descarga.</p><nav class="notebook-tabs" aria-label="Hojas del cuaderno">${modules.map((_,i)=>`<a href="#sheet-${i}">Hoja ${i+1}</a>`).join('')}</nav>${modules.map((m,i)=>{const text=(state.notes['m'+i]||'').trim(),a=state.answers[i],chosen=Number.isInteger(a)&&a>=0&&a<m.options.length;return `<section class="notebook-sheet" id="sheet-${i}"><div class="notebook-meta">HOJA ${String(i+1).padStart(2,'0')} · ${state.done.includes(i)?'ACTIVIDAD COMPLETADA':'EN CONSTRUCCIÓN'}</div><h3>${esc(m.task)}</h3><p class="small">${esc(m.goal)}</p><p class="ink ${text?'':'empty-ink'}">${esc(text||'Todavía no escribiste en esta hoja. Tu respuesta aparecerá acá cuando hagas la actividad.')}</p>${chosen?`<div class="notebook-check"><b>Chequeo: ${a===m.correct?'respuesta correcta ✓':'idea para revisar ↺'}</b><p>${esc(m.question)}</p><p><b>Elegiste:</b> ${esc(m.options[a])}</p><p>${esc(m.why)}</p></div>`:''}<button type="button" data-page="m${i}">Volver a esta actividad →</button></section>`;}).join('')}${notebookNumbers()}<div class="actions"><button data-page="final">Ir a la evaluación →</button></div>`;
 }
 function notebookNumbers(){const r=calculate();return `<section class="notebook-sheet"><div class="notebook-meta">HOJA EXTRA · MIS NÚMEROS</div><h3>Las cuentas sobre la mesa.</h3><p class="small">Valores actuales de la calculadora. Si todavía no los modificaste, son los ejemplos ficticios del curso.</p>${r.error?'<p class="ink">Hay datos por completar en la calculadora.</p>':`<p class="ink">Precio: ${money(Number(state.calc.price))}
 Contribución por pedido: ${money(r.contribution)}
@@ -173,7 +262,7 @@ function render(focus=false){if(!['welcome','final','setup','notebook',...module
 function go(p){state.page=p;save();render(true)}
 document.addEventListener('input',e=>{const t=e.target;if(t.dataset.note){state.notes[t.dataset.note]=t.value;const live=document.getElementById('live-'+t.dataset.note);if(live)live.textContent=t.value||'Tu hoja empieza con tu primera respuesta…';if(!t.value.trim()){state.done=state.done.filter(v=>v!==Number(t.dataset.note.slice(1)));state.examPassed=false;nav();}save()}if(t.dataset.calc){state.calc[t.dataset.calc]=t.value===''?NaN:Number(t.value);save();updateCalc()}});
 document.addEventListener('change',e=>{const t=e.target;if(t.dataset.module!==undefined){state.answers[t.dataset.module]=Number(t.value);const i=+t.dataset.module;if(state.answers[i]!==modules[i].correct){state.done=state.done.filter(v=>v!==i);state.examPassed=false;}nav();save();$('#answerFeedback').textContent='';}if(t.dataset.check!==undefined){state.checks[t.dataset.check]=t.checked;if(!t.checked){state.done=state.done.filter(v=>v!==+t.dataset.check);state.examPassed=false;}nav();save();}if(t.dataset.exam!==undefined){state.exam[t.dataset.exam]=Number(t.value);state.examPassed=false;nav();save();const out=$('#examResult');if(out)out.textContent='Respuestas modificadas. Volvé a corregir la evaluación.';mountDiploma();}});
-document.addEventListener('click',e=>{const start=e.target.closest('#start');if(start){e.preventDefault();go('m'+(modules.findIndex((_,i)=>!state.done.includes(i))<0?0:modules.findIndex((_,i)=>!state.done.includes(i))));return;}const b=e.target.closest('button');if(!b)return;if(b.dataset.page){go(b.dataset.page);return;}if(b.id==='start'){go(state.page==='welcome'?'m0':state.page);return;}if(b.id==='reset'){if(confirm('¿Borrar las notas y el avance de este curso en este navegador? Esta acción no se puede deshacer.')){state=fresh();save();render();toast('Avance local reiniciado.')}return;}if(b.id==='checkAnswer'){const i=+b.dataset.index,a=state.answers[i],ok=a===modules[i].correct;$('#answerFeedback').innerHTML=`<div class="feedback ${ok?'':'bad'}">${a===undefined?'Elegí una respuesta para comprobar.':(ok?'¡Bien! ':'Revisá esta idea: ')+esc(modules[i].why)}</div>`;return;}if(b.id==='complete'){const i=+b.dataset.index;let msg='';if(!(state.notes['m'+i]||'').trim())msg='Escribí tu actividad antes de completar el módulo.';else if(state.answers[i]!==modules[i].correct)msg='Revisá el chequeo rápido y elegí la respuesta correcta.';else if(!state.checks[i])msg='Confirmá que realizaste la actividad.';if(msg){$('#completionFeedback').textContent=msg;return;}if(!state.done.includes(i))state.done.push(i);go(i===5?'final':'m'+(i+1));toast('Módulo completado ✓');}});
+document.addEventListener('click',e=>{const start=e.target.closest('#start');if(start){e.preventDefault();go('m'+(modules.findIndex((_,i)=>!state.done.includes(i))<0?0:modules.findIndex((_,i)=>!state.done.includes(i))));return;}const b=e.target.closest('button');if(!b)return;if(b.dataset.page){go(b.dataset.page);return;}if(b.id==='start'){go(state.page==='welcome'?'m0':state.page);return;}if(b.id==='reset'){if(confirm('¿Borrar tus notas y el avance de este curso en tu cuenta? El cambio se sincronizará con tus otros dispositivos. Esta acción no se puede deshacer.')){state=fresh();save();render();toast('Avance reiniciado; guardando en tu cuenta.')}return;}if(b.id==='checkAnswer'){const i=+b.dataset.index,a=state.answers[i],ok=a===modules[i].correct;$('#answerFeedback').innerHTML=`<div class="feedback ${ok?'':'bad'}">${a===undefined?'Elegí una respuesta para comprobar.':(ok?'¡Bien! ':'Revisá esta idea: ')+esc(modules[i].why)}</div>`;return;}if(b.id==='complete'){const i=+b.dataset.index;let msg='';if(!(state.notes['m'+i]||'').trim())msg='Escribí tu actividad antes de completar el módulo.';else if(state.answers[i]!==modules[i].correct)msg='Revisá el chequeo rápido y elegí la respuesta correcta.';else if(!state.checks[i])msg='Confirmá que realizaste la actividad.';if(msg){$('#completionFeedback').textContent=msg;return;}if(!state.done.includes(i))state.done.push(i);go(i===5?'final':'m'+(i+1));toast('Módulo completado ✓');}});
 document.addEventListener('submit',e=>{if(e.target.id!=='examForm')return;e.preventDefault();if(exam.some((_,i)=>!Number.isInteger(state.exam[i]))){$('#examResult').innerHTML='<p class="feedback bad">Respondé las seis preguntas.</p>';return;}let score=exam.reduce((s,q,i)=>s+(state.exam[i]===q.c?1:0),0);state.examPassed=score>=5&&state.done.length===6;save();nav();$('#examResult').innerHTML=`<div class="feedback ${state.examPassed?'':'bad'}"><b>${score}/6 respuestas correctas</b><p>${state.examPassed?'Curso completado. Tu próximo paso es verificar los pendientes del proyecto.':score>=5?'Conceptos aprobados. Te falta completar las actividades de los seis módulos.':'Necesitás al menos 5 aciertos. Leé las explicaciones y volvé a intentar.'}</p></div>${exam.map((q,i)=>`<details ${state.exam[i]!==q.c?'open':''}><summary>${state.exam[i]===q.c?'✓':'↺'} Pregunta ${i+1}</summary><p>${esc(q.e)}</p></details>`).join('')}`;mountDiploma();$('#examResult').scrollIntoView({behavior:'auto',block:'start'});});
 startCourse();const fallbackNotice=$('#fallbackNotice');if(fallbackNotice)fallbackNotice.remove();
 </script></body></html>
