@@ -1,969 +1,179 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
-
-<title>Dropshipping | Universo del Estudiante</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link
-  href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Kalam:wght@400;700&family=Manrope:wght@500;600;700;800&display=swap"
-  rel="stylesheet"
->
-
-
+<!doctype html>
+<html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dropshipping sin humo · Laboratorio de habilidades</title>
 <style>
-
-:root{
-
-  --bg:#f8f3e9;
-  --paper:#fffdf8;
-
-  --ink:#17243c;
-  --navy:#193250;
-
-  --orange:#ff7a3d;
-  --orange-light:#ffad72;
-
-  --blue:#87c9f4;
-  --yellow:#ffd966;
-  --green:#94d99c;
-  --purple:#a999ef;
-
-  --line:#d7d3ca;
-
-  --shadow:
-    rgba(45,56,62,.14);
-
-}
-
-
-*{
-  box-sizing:border-box;
-}
-
-
-body{
-
-  margin:0;
-
-  min-height:100vh;
-
-  font-family:
-    "Manrope",
-    sans-serif;
-
-  color:
-    var(--ink);
-
-  background:
-
-    radial-gradient(
-      circle at 85% 8%,
-      rgba(135,201,244,.22),
-      transparent 25%
-    ),
-
-    radial-gradient(
-      circle at 8% 90%,
-      rgba(255,122,61,.17),
-      transparent 25%
-    ),
-
-    var(--bg);
-
-}
-
-
-/* HEADER */
-
-header{
-
-  min-height:78px;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  gap:20px;
-
-  padding:
-    15px 30px;
-
-  background:
-    var(--paper);
-
-  border-bottom:
-    1px solid var(--line);
-
-}
-
-
-.brand{
-
-  display:flex;
-
-  align-items:center;
-
-  gap:12px;
-
-  font-family:
-    "Fredoka",
-    sans-serif;
-
-  font-size:18px;
-
-  font-weight:700;
-
-}
-
-
-.planet{
-
-  position:relative;
-
-  width:42px;
-  height:42px;
-
-  border-radius:50%;
-
-  background:
-    var(--orange);
-
-  border:
-    3px solid var(--navy);
-
-}
-
-
-.planet::after{
-
-  content:"";
-
-  position:absolute;
-
-  width:55px;
-  height:17px;
-
-  border:
-    3px solid var(--navy);
-
-  border-radius:50%;
-
-  left:50%;
-  top:50%;
-
-  transform:
-    translate(-50%,-50%)
-    rotate(-20deg);
-
-}
-
-
-.back{
-
-  padding:
-    10px 15px;
-
-  border:
-    2px solid var(--navy);
-
-  border-radius:
-    14px;
-
-  background:
-    var(--orange);
-
-  color:white;
-
-  cursor:pointer;
-
-  font-family:
-    "Fredoka",
-    sans-serif;
-
-  font-weight:700;
-
-  box-shadow:
-    4px 4px 0 var(--navy);
-
-}
-
-
-/* MAIN */
-
-main{
-
-  width:
-    min(1100px,92%);
-
-  margin:
-    45px auto 80px;
-
-}
-
-
-/* LOADING */
-
-.status-card{
-
-  max-width:
-    650px;
-
-  margin:
-    100px auto;
-
-  padding:
-    45px;
-
-  text-align:center;
-
-  background:
-    var(--paper);
-
-  border:
-    2px solid var(--navy);
-
-  border-radius:
-    30px 23px 34px 25px;
-
-  box-shadow:
-    8px 9px 0 var(--navy);
-
-}
-
-
-.status-card h1{
-
-  margin:
-    0 0 15px;
-
-  font-family:
-    "Kalam",
-    cursive;
-
-  font-size:
-    50px;
-
-  line-height:1;
-
-}
-
-
-.status-card p{
-
-  margin:0;
-
-  font-size:16px;
-
-  font-weight:700;
-
-  line-height:1.6;
-
-}
-
-
-/* DENEGADO */
-
-.denied{
-
-  display:none;
-
-}
-
-
-.denied h1{
-
-  color:
-    var(--orange);
-
-}
-
-
-/* CURSO */
-
-.course{
-
-  display:none;
-
-}
-
-
-.hero{
-
-  position:relative;
-
-  overflow:hidden;
-
-  padding:
-    43px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--orange-light),
-      #fff3e4
-    );
-
-  border:
-    2px solid var(--navy);
-
-  border-radius:
-    35px 25px 40px 27px;
-
-  box-shadow:
-    8px 9px 0 var(--navy);
-
-}
-
-
-.course-label{
-
-  display:inline-block;
-
-  padding:
-    7px 11px;
-
-  background:
-    var(--navy);
-
-  color:white;
-
-  border-radius:
-    11px;
-
-  font-family:
-    "Fredoka",
-    sans-serif;
-
-  font-size:12px;
-
-  font-weight:700;
-
-}
-
-
-.hero h1{
-
-  max-width:
-    800px;
-
-  margin:
-    22px 0 10px;
-
-  font-family:
-    "Kalam",
-    cursive;
-
-  font-size:
-    clamp(55px,8vw,90px);
-
-  line-height:
-    .9;
-
-  color:
-    var(--navy);
-
-}
-
-
-.hero p{
-
-  max-width:
-    700px;
-
-  margin:
-    20px 0 0;
-
-  font-size:
-    18px;
-
-  font-weight:
-    700;
-
-  line-height:
-    1.55;
-
-}
-
-
-.access-sticker{
-
-  position:absolute;
-
-  right:
-    28px;
-
-  top:
-    28px;
-
-  padding:
-    9px 13px;
-
-  background:
-    var(--green);
-
-  border:
-    2px solid var(--navy);
-
-  border-radius:
-    13px;
-
-  color:
-    var(--navy);
-
-  font-family:
-    "Fredoka",
-    sans-serif;
-
-  font-size:
-    12px;
-
-  font-weight:
-    700;
-
-  transform:
-    rotate(2deg);
-
-}
-
-
-/* PRÓXIMA ETAPA */
-
-.course-grid{
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(3,1fr);
-
-  gap:
-    18px;
-
-  margin-top:
-    32px;
-
-}
-
-
-.module{
-
-  min-height:
-    190px;
-
-  padding:
-    22px;
-
-  border:
-    1px solid var(--line);
-
-  border-radius:
-    25px;
-
-  box-shadow:
-    0 12px 25px var(--shadow);
-
-}
-
-
-.module:nth-child(1){
-  background:var(--blue);
-}
-
-
-.module:nth-child(2){
-  background:var(--yellow);
-}
-
-
-.module:nth-child(3){
-  background:var(--purple);
-}
-
-
-.module strong{
-
-  display:block;
-
-  margin-bottom:
-    10px;
-
-  font-family:
-    "Kalam",
-    cursive;
-
-  font-size:
-    27px;
-
-  color:
-    var(--navy);
-
-}
-
-
-.module p{
-
-  margin:0;
-
-  font-size:
-    14px;
-
-  font-weight:
-    700;
-
-  line-height:
-    1.5;
-
-}
-
-
-.locked-note{
-
-  margin-top:
-    28px;
-
-  padding:
-    20px;
-
-  background:
-    var(--paper);
-
-  border:
-    1px dashed var(--line);
-
-  border-radius:
-    18px;
-
-  font-size:
-    14px;
-
-  font-weight:
-    700;
-
-  line-height:
-    1.55;
-
-}
-
-
-@media(max-width:750px){
-
-  .course-grid{
-
-    grid-template-columns:
-      1fr;
-
-  }
-
-
-  .access-sticker{
-
-    position:static;
-
-    display:inline-block;
-
-    margin-bottom:15px;
-
-  }
-
-
-  .hero{
-
-    padding:30px 23px;
-
-  }
-
-}
-
-</style>
-
-</head>
-
-
-
-<body>
-
-
-<header>
-
-  <div class="brand">
-
-    <span class="planet"></span>
-
-    UNIVERSO DEL ESTUDIANTE
-
-  </div>
-
-
-  <button
-    class="back"
-    onclick="window.location.href='campus.html'"
-  >
-
-    ← MI CAMPUS
-
-  </button>
-
-</header>
-
-
-
-<main>
-
-
-  <!-- CARGANDO -->
-
-  <section
-    id="loading"
-    class="status-card"
-  >
-
-    <h1>
-      Verificando tu acceso... 🪐
-    </h1>
-
-    <p>
-      Estamos comprobando que este curso
-      esté habilitado en tu cuenta.
-    </p>
-
-  </section>
-
-
-
-  <!-- SIN ACCESO -->
-
-  <section
-    id="denied"
-    class="status-card denied"
-  >
-
-    <h1>
-      Este curso no está habilitado.
-    </h1>
-
-    <p>
-
-      Necesitás tener acceso al curso de Dropshipping
-      dentro de tu cuenta para poder entrar.
-
-    </p>
-
-    <br>
-
-    <button
-      class="back"
-      onclick="window.location.href='campus.html'"
-    >
-
-      VOLVER AL CAMPUS
-
-    </button>
-
-  </section>
-
-
-
-  <!-- ACCESO CORRECTO -->
-
-  <section
-    id="course"
-    class="course"
-  >
-
-
-    <div class="hero">
-
-
-      <div class="access-sticker">
-
-        ✓ ACCESO VERIFICADO
-
-      </div>
-
-
-      <span class="course-label">
-
-        EDUCACIÓN FINANCIERA · CURSO
-
-      </span>
-
-
-      <h1>
-
-        Dropshipping<br>
-        desde Argentina.
-
-      </h1>
-
-
-      <p>
-
-        Bienvenid@ a tu curso.
-
-        Tu cuenta tiene acceso correctamente
-        y ya podemos empezar a conectar acá
-        las clases, actividades, progreso,
-        examen y diploma.
-
-      </p>
-
-
-    </div>
-
-
-
-    <div class="course-grid">
-
-
-      <article class="module">
-
-        <strong>
-          01 · Empezar
-        </strong>
-
-        <p>
-
-          Bienvenida, introducción
-          y primeros conceptos.
-
-        </p>
-
-      </article>
-
-
-      <article class="module">
-
-        <strong>
-          02 · Aprender
-        </strong>
-
-        <p>
-
-          Acá van a aparecer
-          los módulos reales del curso.
-
-        </p>
-
-      </article>
-
-
-      <article class="module">
-
-        <strong>
-          03 · Completar
-        </strong>
-
-        <p>
-
-          Actividades, examen final
-          y desbloqueo del diploma.
-
-        </p>
-
-      </article>
-
-
-    </div>
-
-
-
-    <div class="locked-note">
-
-      🔐 Esta página ya verifica que el usuario tenga
-      el curso habilitado.
-
-      El contenido real de las clases lo vamos a guardar
-      en Supabase para que no quede expuesto dentro
-      del código público de GitHub Pages.
-
-    </div>
-
-
-  </section>
-
-
-</main>
-
-
-
+:root{--red:#5941a9;--cream:#f8f6ff;--ink:#282139;--green:#315747;--yellow:#d4ed8b;--line:#c9c3d9}*{box-sizing:border-box}body{margin:0;background:#f7efdF;color:var(--ink);font:17px/1.65 system-ui,sans-serif}button,input,textarea,select{font:inherit}button,a,input,textarea,summary{outline-offset:5px}button{cursor:pointer;border:1px solid var(--ink);border-radius:6px;background:var(--cream);color:var(--ink);padding:11px 18px;font-weight:700}button:hover{box-shadow:3px 3px 0 var(--ink);transform:translate(-1px,-1px)}button:disabled{opacity:.6;cursor:default;transform:none;box-shadow:none}a{color:var(--red)}.top{background:var(--red);color:var(--cream);padding:12px 5%;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;letter-spacing:1px}.top a{color:inherit}.hero{background:var(--red);color:var(--cream);padding:48px max(5%,calc((100vw - 1180px)/2));background-image:radial-gradient(#fff1 1px,transparent 1px);background-size:5px 5px}.eyebrow{font:700 12px/1.6 system-ui;letter-spacing:2px;text-transform:uppercase}.hero h1{font:1000 clamp(44px,7vw,88px)/.97 'Arial Black',system-ui;letter-spacing:-3px;max-width:1000px;margin:20px 0}.hero h1 span{color:var(--yellow)}.hero p{max-width:690px}.chips{display:flex;gap:10px;flex-wrap:wrap}.chip{border:1px solid currentColor;padding:4px 12px;font-size:13px;border-radius:50px}.hero button{margin-top:20px;background:var(--yellow)}.wrap{max-width:1240px;margin:auto;padding:28px 24px 60px}.notice{border-left:4px solid var(--red);padding:12px 18px;background:#fff9ed;font-size:14px;margin-bottom:22px}.layout{display:grid;grid-template-columns:260px 1fr;gap:30px}aside{align-self:start;position:sticky;top:16px;border:1px solid var(--line);padding:18px;background:#eee3cb}aside h2{font-size:20px;margin:0 0 8px}progress{accent-color:var(--red);width:100%;height:12px}.navbutton{display:block;text-align:left;width:100%;border:0;border-bottom:1px solid var(--line);border-radius:0;background:none;font-size:14px;padding:13px 7px}.navbutton[aria-current=page]{background:var(--red);color:var(--cream)}.navbutton small{display:block;opacity:.8}.small{font-size:13px}.muted{color:#695b51}main{min-width:0}main h2{font:900 clamp(28px,4vw,42px)/1.15 Georgia,serif;margin:12px 0 24px}main h3{font-size:22px;margin-top:30px;line-height:1.25}p{margin:12px 0}ul,ol{padding-left:23px}li{margin-bottom:9px}.panel{border:1px solid var(--line);padding:24px;background:#fffaf0;margin:20px 0}.tag{display:inline-block;background:var(--yellow);padding:3px 10px;font-size:12px;font-weight:800;letter-spacing:1px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.step{border-top:4px solid var(--red);padding-top:12px}.callout{background:#e0e8d7;border-left:5px solid var(--green);padding:18px;margin:20px 0}.warn{background:#fff0c0;border-left-color:#94600b}.activity{border:2px dashed var(--red);padding:24px;margin:26px 0;position:relative}.activity h3{margin-top:8px}label.field{display:block;font-weight:650;font-size:14px;margin:14px 0 5px}textarea,input,select{width:100%;border:1px solid #947b68;background:#fffdf5;border-radius:4px;padding:10px;color:var(--ink)}textarea{min-height:135px;resize:vertical}input[type=radio],input[type=checkbox]{width:auto;margin-right:10px;accent-color:var(--red)}fieldset{border:1px solid var(--line);padding:18px;margin:18px 0}legend{font-weight:700;padding:0 6px}.option{display:block;padding:9px 6px;cursor:pointer}.option:hover{background:#eee4d0}.feedback{padding:12px 16px;background:#e0e8d7;margin-top:12px;border-radius:4px}.feedback.bad{background:#f8dfd7}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.primary{background:var(--red);color:var(--cream)}.money{font-size:30px;font-weight:900;line-height:1.2}.calcresult{background:var(--green);color:#fff6e2;padding:20px}.calcresult.loss{background:var(--red)}.calcresult .small{color:inherit}.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#eee4cd}details{border-bottom:1px solid var(--line);padding:13px 0}summary{cursor:pointer;font-weight:700}.status{font-size:12px;margin:12px 0}.footer{padding:24px;background:var(--ink);color:var(--cream);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12px;letter-spacing:2px}.footer a{color:inherit}.tick{color:var(--green);font-weight:800}.navbutton[aria-current=page] .tick{color:var(--cream)}#toast{position:fixed;bottom:20px;right:20px;max-width:340px;background:var(--ink);color:white;padding:12px 20px;border-radius:6px;z-index:10}#toast:empty{display:none}.checklabel{display:block;margin:14px 0;font-size:14px}.empty{border:1px dashed #9c8170;padding:18px;font-size:14px}.printonly{display:none}@media(max-width:820px){.layout{grid-template-columns:1fr}aside{position:static}.navlist{display:grid;grid-template-columns:1fr 1fr}.hero{padding:32px 24px}.hero h1{letter-spacing:-2px}.wrap{padding:20px 16px}.grid{grid-template-columns:1fr}.panel,.activity{padding:18px}.navbutton{font-size:13px}body{font-size:16px}}@media print{.top,.hero,aside,.notice,.actions,.footer,button,#toast{display:none}.layout{display:block}.wrap{padding:0}.panel,.activity{break-inside:avoid}textarea{border:0}body{background:white;font-size:12px}}
+
+/* Edición 02: escritorio de estudio Y2K */
+body{background:#eae6f2;background-image:radial-gradient(ellipse at top right,#dce6cd 0,transparent 45%);color:var(--ink)}
+.top{background:#2d2547;color:#f8f6ff;border-bottom:1px solid #8372ac}
+.hero{background:#6955ad;background-image:radial-gradient(ellipse at 90% 10%,#bcb3db55,transparent 45%);position:relative;overflow:hidden;padding-top:44px;padding-bottom:44px}
+.hero::after{content:'✧';position:absolute;right:6%;top:30px;font-size:160px;line-height:1;color:#e8e4f5;transform:rotate(14deg);pointer-events:none;opacity:.65}
+.hero h1{position:relative;z-index:1;font-family:'Arial Black',system-ui,sans-serif;font-size:clamp(40px,6.5vw,78px);font-style:italic;letter-spacing:-2px;text-shadow:3px 3px 0 #332950}
+.hero h1 span{display:inline-block;background:var(--yellow);color:#2c2736;padding:8px 14px;margin-top:12px;transform:rotate(-2deg);text-shadow:none;box-shadow:4px 5px 0 #372c57;font-size:.84em}
+.hero .eyebrow{color:#f3edfF}.chip{border-color:#bfb3dc;background:#40346666;color:#fff}.hero p{position:relative;z-index:1}
+.startlink{display:inline-block;margin-top:24px;background:linear-gradient(#fff,#d3d0de);color:#292235;padding:12px 22px;border:1px solid #282139;border-radius:7px;box-shadow:4px 4px 0 #30263f;font-weight:800;text-decoration:none}
+.startlink:hover{background:var(--yellow)}
+.notice{background:#f7f4fc;border-color:#7660ba;border-radius:0 12px 12px 0}
+.layout{gap:26px}aside{background:#e2ddee;border:1px solid #aaa0c1;box-shadow:4px 4px 0 #d0c9df;border-radius:12px;padding:18px;overflow:hidden}
+aside::before{content:'● ● ●   MY CLASSROOM';display:block;margin:-18px -18px 18px;padding:9px 15px;font-size:11px;letter-spacing:2px;background:linear-gradient(#fafaff,#c7c3d3);border-bottom:1px solid #aaa0c1;color:#55466e}
+main{background:#faf9fd;border:1px solid #c5bdd6;border-radius:14px;padding:30px;box-shadow:6px 6px 0 #d9d2e6;scroll-margin-top:20px}
+main h2{font-family:'Arial Black',system-ui,sans-serif;font-size:clamp(26px,3.6vw,38px);letter-spacing:-1px}
+.navbutton{font-size:13px;text-decoration:none;color:var(--ink)}.navbutton[aria-current=page]{border-radius:7px;background:#5941a9}
+.tag{border:1px solid #9ab454;border-radius:4px;transform:rotate(-1deg);color:#263525}.panel{background:#f0ecf7;border-color:#ccc4dc;border-radius:10px}.activity{border:1px solid #b6a5d4;border-top:6px solid #8872b5;background:#f0eaf9;border-radius:5px;box-shadow:3px 3px 0 #ded5ed}
+.activity .eyebrow{color:#514071}textarea,input,select{background:#fff;border-color:#9f92b8;border-radius:6px}.callout,.feedback{background:#e7efd9}.warn{background:#eff2dc;border-color:#7d8b49}.feedback.bad{background:#f1e3d3}.option:hover{background:#e6e0f0}.muted{color:#665c73}.empty{border-color:#a59bb8;background:#f3f0f8;border-radius:8px}th{background:#e2dbea}.calcresult{border-radius:8px}.footer{background:#2d2547}.readOnlyLesson{padding-bottom:35px;margin-bottom:35px;border-bottom:2px solid #cec6df;scroll-margin-top:20px}
+@media(max-width:820px){main{padding:20px 16px}.hero::after{font-size:100px;right:12px;top:8px}.hero h1{font-size:clamp(34px,8vw,60px)}.navlist{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media print{main{border:0;box-shadow:none;padding:0}.startlink,#fallbackNotice{display:none}}
+
+/* Apuntes personales: papel rayado y tinta azul. */
+.notebook-sheet{position:relative;margin:26px 0;padding:28px 24px 28px 52px;border:1px solid #c5c5c8;border-radius:3px 14px 14px 3px;background-color:#fffef7;background-image:linear-gradient(90deg,transparent 37px,#ce929d 37px,#ce929d 39px,transparent 39px),repeating-linear-gradient(180deg,transparent 0,transparent 31px,#b4c9e780 31px,#b4c9e780 32px);box-shadow:3px 4px 0 #d4d0df,6px 7px 0 #e5e1eb;color:#233f75;overflow-wrap:anywhere}
+.notebook-sheet::before{content:'';position:absolute;top:0;bottom:0;left:10px;width:13px;background:radial-gradient(circle at center,#d8d4e1 0 4px,#aca7b7 4px 5px,transparent 6px) center 0/13px 80px repeat-y;pointer-events:none}
+.notebook-sheet h3{font-family:'Segoe Print','Bradley Hand','Comic Sans MS',cursive;color:#253f72;margin:0 0 20px;line-height:1.5;font-size:23px}.ink{font-family:'Segoe Print','Bradley Hand','Comic Sans MS',cursive;font-size:18px;line-height:32px;white-space:pre-wrap;margin:0;color:#23487e}.notebook-sheet .small{line-height:1.6;background:#fffef7e8;display:block;padding:4px 0}.notebook-meta{font:700 11px/1.5 system-ui,sans-serif;letter-spacing:1px;text-transform:uppercase;color:#665879;margin-bottom:12px}.notebook-sheet button{margin-top:16px;font-size:13px;background:#ece7f6}.notebook-check{margin-top:24px;padding:12px;background:#eef1f8;border-radius:5px;font:14px/1.6 system-ui,sans-serif}.notebook-check p{margin:5px 0}.notebook-sheet .empty-ink{color:#657491;font-style:italic}.notebook-tabs{display:flex;gap:8px;flex-wrap:wrap}.notebook-tabs a{font-size:13px;padding:6px 10px;border:1px solid #b9accc;background:#eee7f7;border-radius:4px;text-decoration:none}.notebook-sheet{scroll-margin-top:18px}.live-note{margin-bottom:8px}.live-note h3{font-size:19px}.notebook-title{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.notebook-title span{font-size:40px}@media(max-width:500px){.notebook-sheet{padding-left:44px;padding-right:12px}.ink{font-size:17px}.notebook-sheet h3{font-size:20px}}
+
+.diploma-frame{background:repeating-linear-gradient(0deg,#f0e5ce 0px,#f0e5ce 7px,#923e48 7px,#923e48 10px,#e1c6ab 10px,#e1c6ab 12px);border:9px solid #30271f;padding:24px;box-shadow:3px 6px 0 #b7afc1;margin:22px 0;color:#352e23}.diploma-paper{background:#fff6dc;border:1px solid #b6a486;padding:32px 28px 20px;text-align:center;font-family:Georgia,'Times New Roman',serif}.diploma-brand{font-weight:800;font-size:clamp(22px,3vw,34px);line-height:1.2;margin:0 0 5px}.diploma-lab{font:11px/1.5 system-ui;letter-spacing:2px;text-transform:uppercase}.diploma-seal{border:2px double #827248;border-radius:50%;width:52px;height:52px;margin:15px auto;display:grid;place-items:center;font:bold 20px Georgia;color:#746039}.diploma-paper h3{font:22px/1.2 Georgia;margin:12px 0}.diploma-person{font:italic 30px/1.3 'Segoe Print','Bradley Hand',Georgia,serif;min-height:44px;margin:12px 0;border-bottom:1px solid #b6a486;padding-bottom:8px;overflow-wrap:anywhere;color:#2e3c53}.diploma-course{font-size:21px;font-weight:bold;line-height:1.3;margin:12px 0}.diploma-copy{font-size:14px;line-height:1.6;margin:9px auto;max-width:620px}.diploma-quote{font-size:16px;line-height:1.5;font-style:italic;margin:20px 0}.diploma-disclaimer{font:11px/1.5 system-ui;color:#514b40;margin:15px 0}.diploma-bottom{display:flex;justify-content:space-between;gap:12px;font:9px/1.5 system-ui;letter-spacing:1px;padding-top:14px;border-top:1px solid #b6a486}.diploma-date{font-size:12px}.diploma-controls{margin:22px 0}.future-board{border:1px dashed #a492b8;padding:18px;margin:22px 0;background:#f0eaf8}.future-board b{display:block}.future-board p{font-size:14px}.future-board .tag{font-size:10px}.diploma-preview-only{font:bold 11px/1.5 system-ui;letter-spacing:1px;background:#eee0c5;padding:4px}#printDiploma{display:none}@media(max-width:540px){.diploma-frame{border-width:5px;padding:12px}.diploma-paper{padding:20px 12px}.diploma-person{font-size:24px}.diploma-course{font-size:18px}}@page{size:A4 landscape;margin:10mm}@media print{body.printing-diploma>*{display:none!important}body.printing-diploma>#printDiploma{display:block!important}body.printing-diploma{background:white!important;margin:0!important}#printDiploma .diploma-frame{width:277mm;height:187mm;margin:0;padding:8mm;border:3mm solid #30271f;box-shadow:none;box-sizing:border-box;print-color-adjust:exact;-webkit-print-color-adjust:exact;break-inside:avoid}#printDiploma .diploma-paper{height:100%;padding:7mm 9mm 4mm;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center}#printDiploma .diploma-brand{font-size:29px}#printDiploma .diploma-person{font-size:29px;margin:7px 0;min-height:37px}#printDiploma .diploma-seal{margin:8px auto;width:40px;height:40px}#printDiploma .diploma-paper h3{margin:6px 0}#printDiploma .diploma-quote{margin:9px 0}#printDiploma .diploma-disclaimer{margin:7px 0}#printDiploma .diploma-course{margin:6px 0}#printDiploma .diploma-bottom{margin-top:auto}}
+
+.course-video{margin:24px 0;padding:16px;background:#eee9f6;border:1px solid #c4b7d9;border-radius:12px}.course-video h3{margin:6px 0 12px;font-size:22px}.course-video video{display:block;width:100%;height:auto;aspect-ratio:910/512;object-fit:contain;background:#211b30;border-radius:7px}.course-video .small{margin-bottom:0}.video-error{color:#693349;font-size:14px}.course-video label{display:block}.course-video .eyebrow{font-size:11px}
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>[hidden]{display:none!important}.access-gate{max-width:650px;margin:12vh auto;padding:32px;background:#faf9fd;border:2px solid #5941a9;border-radius:16px;font:17px/1.6 system-ui;color:#282139}.access-gate a{display:inline-block;margin:16px 16px 0 0}.access-gate h1{font-size:28px}</style>
+</head><body>
+<section id="accessGate" class="access-gate" aria-live="polite"><h1 id="gateTitle">Verificando tu acceso…</h1><p id="gateMessage">Estamos preparando tu curso.</p><a href="campus.html">← Volver al campus</a><button id="retryLoad" hidden onclick="location.reload()">Reintentar</button></section>
+<div id="courseApp" hidden>
+<header class="top"><span>UNIVERSO DEL ESTUDIANTE / LABORATORIO DE HABILIDADES</span><a href="campus.html">← Mi campus</a></header>
+<section class="hero"><div class="eyebrow">EDUCACIÓN FINANCIERA · CURSO</div><h1>DROPSHIPPING.<br><span>PERO SIN HUMO.</span></h1><p>De una idea a un plan de prueba desde Argentina. Entendé el negocio, investigá proveedores y descubrí si los números cierran.</p><div class="chips"><span class="chip">6 módulos + proyecto</span><span class="chip">4–6 h con actividades*</span><span class="chip">A tu ritmo</span></div><a id="start" class="startlink" href="#lesson-0">Empezar el curso →</a></section>
+<div class="wrap"><div class="notice" aria-label="Carácter de la formación"><strong>Formación independiente, sin aval ni acreditación oficial.</strong> Estos cursos no están aprobados, avalados ni acreditados por ninguna entidad educativa o profesional. <a href="#sobre-la-formacion">Conocé cómo se elaboran.</a></div><div class="notice"><strong>Tu espacio de estudio.</strong> En esta etapa, tus respuestas y tu avance se guardan para tu usuario en este navegador. Todavía no se sincronizan entre dispositivos. No ingreses contraseñas ni datos de clientes. <span id="storageState"></span></div><div class="layout"><aside><div class="eyebrow">Tu recorrido</div><h2>Una cosa a la vez.</h2><progress id="progress" value="0" max="7" aria-label="Progreso del curso"></progress><p id="progressText" class="small"></p><nav class="navlist" id="nav" aria-label="Módulos del curso"></nav><p class="status" id="saveState" role="status"></p><button class="navbutton" id="reset">Reiniciar mi avance local</button></aside><main id="main" tabindex="-1"></main></div></div>
+<section id="sobre-la-formacion" aria-labelledby="formacion-title" style="max-width:1192px;margin:0 auto 32px;padding:24px;border-top:1px solid #c9c3d9;scroll-margin-top:20px"><h2 id="formacion-title" style="font-size:21px">Sobre esta propuesta educativa</h2><p>Los cursos del Laboratorio de Habilidades son una propuesta de formación independiente creada por Nadia Lopez. No están aprobados, avalados ni acreditados por ninguna entidad educativa o profesional, ni otorgan títulos oficiales.</p><p>Su contenido se elabora a partir del estudio personal y los aprendizajes de la autora, información consultada en internet y aportes de personas con experiencia en los temas tratados que colaboraron en su elaboración. El objetivo es acercarte esos conocimientos de una manera didáctica y ayudarte a comprender de qué se trata cada tema.</p><p>La evaluación del curso sirve para repasar lo aprendido; no equivale a una acreditación profesional.</p></section><footer class="footer"><b>BY NADIA LOPEZ</b><span>MADE IN ARGENTINA 🇦🇷 · ¡PARA TODO EL MUNDO!</span><a href="https://quokka-jgs7fm.my.canva.site/universo-del-estudiante">Volver al inicio</a></footer><div id="toast" role="status"></div>
+</div>
 <script>
+'use strict';
 
-/* ==========================================================
-   SUPABASE
-   USÁ LOS MISMOS DATOS DE campus.html
-   ========================================================== */
-
-const SUPABASE_URL =
-  "https://ohlgifhdmqzqymnkjnwe.supabase.co";
-
-
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_0o_hbYuQFkWQ49u6gCTNgg_2kd6QAiu";
-
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
+const COURSE_ID=1;
+let supabaseClient=null,activeUserId=null;
+function gate(title,message,retry=false){
+  document.getElementById('courseApp').hidden=true;
+  document.getElementById('accessGate').hidden=false;
+  document.getElementById('gateTitle').textContent=title;
+  document.getElementById('gateMessage').textContent=message;
+  document.getElementById('retryLoad').hidden=!retry;
+}
+function cleanBody(html){
+  const t=document.createElement('template');t.innerHTML=html;
+  const allowed=new Set(['H3','P','DIV','B','STRONG','OL','UL','LI','EM','BR']);
+  function walk(parent){for(const n of [...parent.childNodes]){
+    if(n.nodeType===Node.ELEMENT_NODE){
+      if(!allowed.has(n.tagName)){n.remove();continue;}
+      for(const a of [...n.attributes])if(a.name!=='class')n.removeAttribute(a.name);
+      if(n.hasAttribute('class'))n.className=n.className.split(/\s+/).filter(c=>['panel','callout','warn'].includes(c)).join(' ');
+      walk(n);
+    }else if(n.nodeType!==Node.TEXT_NODE)n.remove();
+  }}walk(t.content);return t.innerHTML;
+}
+function textFields(obj,keys){return obj&&keys.every(k=>typeof obj[k]==='string');}
+async function startCourse(){
+ try{
+  if(!window.supabase)throw new Error('No se pudo cargar la conexión. Revisá tu conexión a internet y reintentá.');
+  supabaseClient=window.supabase.createClient(
+   'https://ohlgifhdmqzqymnkjnwe.supabase.co',
+   'sb_publishable_0o_hbYuQFkWQ49u6gCTNgg_2kd6QAiu'
   );
-
-
-/* ID DEL CURSO DROPSHIPPING */
-
-const COURSE_ID = 1;
-
-
-
-/* ==========================================================
-   VERIFICAR ACCESO
-   ========================================================== */
-
-async function verifyAccess(){
-
-
-  const loading =
-    document.getElementById("loading");
-
-
-  const denied =
-    document.getElementById("denied");
-
-
-  const course =
-    document.getElementById("course");
-
-
-  try{
-
-
-    /* VERIFICAR SESIÓN */
-
-    const {
-      data:userData,
-      error:userError
-    } =
-      await supabaseClient.auth.getUser();
-
-
-    if(
-      userError ||
-      !userData.user
-    ){
-
-      window.location.href =
-        "login.html";
-
-      return;
-
-    }
-
-
-    const user =
-      userData.user;
-
-
-
-    /* VERIFICAR INSCRIPCIÓN */
-
-    const {
-      data:enrollments,
-      error:accessError
-    } =
-      await supabaseClient
-        .from("enrollments")
-        .select("id,course_id,status")
-        .eq(
-          "user_id",
-          user.id
-        )
-        .eq(
-          "course_id",
-          COURSE_ID
-        )
-        .eq(
-          "status",
-          "active"
-        )
-        .limit(1);
-
-
-    if(accessError){
-
-      throw accessError;
-
-    }
-
-
-
-    loading.style.display =
-      "none";
-
-
-
-    if(
-      !enrollments ||
-      enrollments.length === 0
-    ){
-
-      denied.style.display =
-        "block";
-
-      return;
-
-    }
-
-
-
-    /* ACCESO CORRECTO */
-
-    course.style.display =
-      "block";
-
-
-  }
-
-  catch(error){
-
-
-    console.error(
-      "Error verificando acceso:",
-      error
-    );
-
-
-    loading.style.display =
-      "none";
-
-
-    denied.style.display =
-      "block";
-
-  }
-
+  const {data:u,error:ue}=await supabaseClient.auth.getUser();
+  if(ue)throw new Error('No pudimos verificar tu sesión. Reintentá o volvé a iniciar sesión desde el campus.');
+  if(!u.user){location.replace('login.html');return;}
+  activeUserId=u.user.id;
+  const {data:enrollments,error:ee}=await supabaseClient.from('enrollments').select('id').eq('user_id',activeUserId).eq('course_id',COURSE_ID).eq('status','active').limit(1);
+  if(ee)throw new Error('No pudimos comprobar la inscripción. Reintentá en un momento.');
+  if(!enrollments?.length){gate('Este curso no está habilitado.','Tu cuenta todavía no tiene acceso activo al curso de Dropshipping.');return;}
+  const {data:rows,error:me}=await supabaseClient.from('course_modules').select('id,position,title').eq('course_id',COURSE_ID).eq('is_published',true).order('position');
+  if(me)throw new Error('No pudimos leer los módulos del curso. Revisá las políticas de acceso en Supabase.');
+  if(!rows||rows.length!==7||rows.some((r,i)=>r.position!==i+1))throw new Error('El curso necesita sus siete módulos publicados, ordenados del 1 al 7.');
+  const {data:lessons,error:le}=await supabaseClient.from('course_lessons').select('id,module_id,position,lesson_type,content').in('module_id',rows.map(r=>r.id)).eq('is_published',true).eq('position',1);
+  if(le)throw new Error('No pudimos leer las clases. Revisá las políticas de acceso en Supabase.');
+  const payloads=rows.map((m,i)=>{
+   const matches=(lessons||[]).filter(l=>String(l.module_id)===String(m.id));
+   if(matches.length!==1)throw new Error('El módulo '+m.position+' debe tener una clase publicada en la posición 1.');
+   const l=matches[0];
+   if(l.lesson_type!==(i<6?'module_json':'exam_json'))throw new Error('Revisá el tipo de contenido del módulo '+m.position+'.');
+   let p;try{p=JSON.parse(l.content);}catch{throw new Error('El contenido del módulo '+m.position+' no tiene un JSON válido.');}
+   return p;
+  });
+  modules=payloads.slice(0,6).map((p,i)=>{
+   if(!textFields(p,['title','time','goal','body','task','prompt','hint','question','why'])||!Array.isArray(p.options)||p.options.length!==3||!p.options.every(o=>typeof o==='string')||!Number.isInteger(p.correct)||p.correct<0||p.correct>=3)throw new Error('Faltan datos en el módulo '+(i+1)+'.');
+   return {...p,body:cleanBody(p.body)};
+  });
+  finalContent=payloads[6];
+  if(!textFields(finalContent,['title','introduction'])||finalContent.passing_score!==5||finalContent.required_modules!==6||!Array.isArray(finalContent.questions)||finalContent.questions.length!==6)throw new Error('Revisá la configuración de la evaluación.');
+  exam=finalContent.questions;
+  if(exam.some(q=>!textFields(q,['q','e'])||!Array.isArray(q.o)||q.o.length!==3||!q.o.every(o=>typeof o==='string')||!Number.isInteger(q.c)||q.c<0||q.c>=3))throw new Error('Hay una pregunta incompleta en la evaluación.');
+  KEY='nadia.dropshipping.campus.v1.'+activeUserId+'.'+COURSE_ID;
+  restoreLocal();
+  state.done=[...new Set(state.done)].filter(i=>(state.notes['m'+i]||'').trim()&&state.answers[i]===modules[i].correct&&state.checks[i]===true);
+  state.examPassed=state.examPassed&&state.done.length===6&&exam.reduce((n,q,i)=>n+(state.exam[i]===q.c?1:0),0)>=5;
+  render();save();
+  document.getElementById('accessGate').hidden=true;
+  document.getElementById('courseApp').hidden=false;
+  supabaseClient.auth.onAuthStateChange((event,session)=>{
+   if(event==='SIGNED_OUT'||(session?.user&&session.user.id!==activeUserId)){
+    state=fresh();KEY='';modules=[];exam=[];
+    document.getElementById('main').replaceChildren();
+    gate('La sesión cambió.','Volvé al campus e iniciá sesión para continuar.');
+   }
+  });
+ }catch(error){console.error('Carga del curso:',error);gate('No pudimos cargar el curso.',error.message||'Reintentá en un momento.',true);}
 }
 
+const COURSE_VIDEO_SOURCES={};
+let KEY='';
+const fresh=()=>({page:'m0',notes:{},answers:{},done:[],checks:{},calc:{price:30000,product:15000,shipping:4000,fee:2000,ads:6000,returns:1000,tax:0,fixed:10000,orders:20},exam:{},examPassed:false});
+let state=fresh(),storageOK=true;
+function restoreLocal(){
+try{const saved=JSON.parse(localStorage.getItem(KEY));if(saved&&typeof saved==='object'&&!Array.isArray(saved)){for(const k of ['notes','answers','checks','calc','exam'])if(saved[k]&&typeof saved[k]==='object'&&!Array.isArray(saved[k]))state[k]={...state[k],...saved[k]};if(Array.isArray(saved.done))state.done=saved.done.filter(v=>Number.isInteger(v)&&v>=0&&v<6);state.examPassed=saved.examPassed===true;if(typeof saved.page==='string')state.page=saved.page;}}catch(e){storageOK=false;}
+}
+
+const $=s=>document.querySelector(s);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let toastTimer;function toast(t){$('#toast').textContent=t;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').textContent='',4000)}
+function save(){if(!KEY)return;try{localStorage.setItem(KEY,JSON.stringify(state));storageOK=true;$('#saveState').textContent='Guardado en este navegador ✓'}catch(e){storageOK=false;$('#saveState').textContent='No se pudo guardar en este navegador. Tus cambios podrían perderse al cerrar la página.'}$('#storageState').textContent=storageOK?'':'Guardado local no disponible.';}
+let modules=[];
+let exam=[];
+let finalContent={};
+function nav(){let count=state.done.length+(state.examPassed?1:0);$('#progress').value=count;$('#progressText').textContent=`${count} de 7 hitos · ${Math.round(count/7*100)}%`;const items=[['welcome','La hoja de ruta','Tiempo y objetivos'],...modules.map((m,i)=>['m'+i,(i+1)+'. '+m.title,m.time]),['notebook','✎ Mi cuaderno','Tus apuntes, hoja por hoja'],['final','Evaluación + proyecto','15–30 min'],['setup','Fuentes del curso','Referencias del recorrido']];$('#nav').innerHTML=items.map(([id,t,sub])=>`<button class="navbutton" data-page="${id}" ${state.page===id?'aria-current="page"':''}>${esc(t)} ${id[0]==='m'&&state.done.includes(+id.slice(1))||id==='final'&&state.examPassed?'<span class="tick">✓</span>':''}<small>${sub}</small></button>`).join('');}
+function note(id,prompt){return `<label class="field" for="note-${id}">${prompt}</label><textarea id="note-${id}" data-note="${id}" maxlength="10000" placeholder="Tus ideas, evidencias y pendientes…">${esc(state.notes[id]||'')}</textarea><p class="small muted">Se suma a tu cuaderno mientras escribís y se guarda en este navegador. No incluyas datos sensibles.</p><div class="notebook-sheet live-note"><div class="notebook-meta">Así va quedando tu apunte</div><p class="ink" id="live-${id}">${esc(state.notes[id]||'Tu hoja empieza con tu primera respuesta…')}</p><button type="button" data-page="notebook">✎ Abrir mi cuaderno completo</button></div>`;}
+function welcome(){return `<span class="tag">EL PLAN</span><h2>Aprender, probar,<br>tomar una decisión.</h2><p>La meta es salir con un producto investigado, una ficha de proveedor, un cálculo económico y un plan de prueba. El enfoque es vender dentro de Argentina con un proveedor local.</p><div class="callout warn"><b>¿Cuánto dura de verdad?</b><p>Recorrer y leer este curso: aproximadamente <b>35–50 minutos</b>. Trabajar todas las actividades con investigación propia: <b>4–6 horas</b>, incluyendo evaluación. Son estimaciones editoriales todavía no medidas con alumnos. La suma del recorrido propuesto es de 255–360 minutos.</p><p>Repartilo en <b>3–5 días</b>. Si contactás proveedores o pedís muestras, el calendario puede extenderse a <b>1–2 semanas o más</b>. Esperar un envío no cuenta como horas de formación.</p></div><div class="grid"><div class="step"><b>Sesión 1 · Entender</b><p>Módulos 1 y 2. Elegí una necesidad y compará tres productos.</p></div><div class="step"><b>Sesión 2 · Investigar</b><p>Módulo 3. Armá preguntas y verificá condiciones.</p></div><div class="step"><b>Sesión 3 · Calcular</b><p>Módulos 4 y 5. Revisá costos y redactá tu oferta.</p></div><div class="step"><b>Sesión 4 · Decidir</b><p>Módulo 6 y evaluación. Definí un experimento limitado.</p></div></div>${futureBoard()}<h3>Cómo se completa</h3><p>En cada módulo, dejá una nota de trabajo, respondé una pregunta y confirmá que realizaste la actividad. El control de las notas es solo de presencia; no evalúa su calidad. La evaluación final requiere 5 de 6 respuestas correctas y los seis módulos completos. Podés reintentar y navegar libremente.</p><div class="empty"><b>Con Nadia al principio y al final.</b> Tus videos de bienvenida y despedida se conectarán en el próximo paso. Ya podés recorrer las lecturas, actividades y calculadora.</div><div class="actions"><button class="primary" data-page="m0">Empezar módulo 1 →</button><button data-page="setup">Ver fuentes</button></div>`;}
+function calc(){const defs=[['price','Precio de venta'],['product','Costo del producto'],['shipping','Envío que absorbés'],['fee','Comisiones por pedido'],['ads','Publicidad por compra'],['returns','Previsión de devoluciones / pedido'],['tax','Impuestos variables / pedido'],['fixed','Costos fijos del mes'],['orders','Pedidos previstos / mes']];return `<section class="panel" aria-label="Calculadora económica"><span class="tag">LABORATORIO DE NÚMEROS</span><h3>Mové los números. Mirá qué pasa.</h3><p class="small">Importes ficticios en pesos argentinos. Ingresá cada costo completo una sola vez. La calculadora no determina impuestos ni comisiones reales.</p><div class="grid">${defs.map(([id,label])=>`<div><label class="field" for="calc-${id}">${label}</label><input id="calc-${id}" data-calc="${id}" type="number" min="0" max="1000000000" step="${id==='orders'?'1':'0.01'}" value="${esc(state.calc[id])}"></div>`).join('')}</div><div id="calcOutput" aria-live="polite" style="margin-top:20px"></div><p class="small">El resultado mensual estima pedidos × contribución − fijos. No es ganancia neta certificada ni flujo de caja. Si usás CAC, incluí todos los pedidos usados en ese cálculo de forma consistente.</p></section>`;}
+function calculate(){const values=Object.values(state.calc).map(v=>v===null||v===''?NaN:Number(v));if(values.some(v=>!Number.isFinite(v)||v<0||v>1e9)||!Number.isInteger(+state.calc.orders)){return {error:true};}const v=state.calc,c=Number(v.price)-['product','shipping','fee','ads','returns','tax'].reduce((a,k)=>a+Number(v[k]),0);return {contribution:c,monthly:c*Number(v.orders)-Number(v.fixed),breakEven:c>0?Math.ceil(Number(v.fixed)/c):null};}
+const money=n=>new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(n);
+function updateCalc(){let el=$('#calcOutput');if(!el)return;const r=calculate();if(r.error){el.innerHTML='<p class="feedback bad">Completá todos los campos con números no negativos. Los pedidos deben ser enteros.</p>';return;}el.innerHTML=`<div class="calcresult ${r.contribution<=0?'loss':''}"><div class="small">CONTRIBUCIÓN POR PEDIDO</div><div class="money">${money(r.contribution)}</div><p>Resultado mensual estimado: <b>${money(r.monthly)}</b></p><p class="small">${r.breakEven===null?'Con esta contribución no hay un punto de equilibrio alcanzable por volumen.':'Para cubrir los fijos: '+r.breakEven+' pedidos por mes.'}</p></div>`;}
+function modulePage(i){const m=modules[i];return `<span class="tag">MÓDULO ${i+1} / 6 · ${m.time} CON ACTIVIDAD</span><h2>${esc(m.title)}</h2><p><b>Al terminar vas a poder:</b> ${esc(m.goal)}</p>${m.body}${i===3?calc():''}<section class="activity"><span class="eyebrow">Tu turno / aprender haciendo</span><h3>${esc(m.task)}</h3>${note('m'+i,m.prompt)}<p class="small">${esc(m.hint)}</p></section><fieldset><legend>Chequeo rápido</legend><p>${esc(m.question)}</p>${m.options.map((o,j)=>`<label class="option"><input type="radio" name="module-answer" data-module="${i}" value="${j}" ${state.answers[i]===j?'checked':''}>${esc(o)}</label>`).join('')}<button id="checkAnswer" data-index="${i}">Comprobar respuesta</button><div id="answerFeedback" role="status"></div></fieldset><label class="checklabel"><input type="checkbox" data-check="${i}" ${state.checks[i]?'checked':''}>Realicé la actividad y distinguí los datos verificados de los supuestos.</label><div class="actions"><button class="primary" id="complete" data-index="${i}">${state.done.includes(i)?'Guardar y continuar':'Completar módulo y continuar'} →</button><button data-page="${i?'m'+(i-1):'welcome'}">← Anterior</button></div><p id="completionFeedback" role="status" class="small"></p>`;}
+function finalPage(){return `<span class="tag">EL CIERRE · 15–30 MIN</span><h2>${esc(finalContent.title)}</h2><p>${esc(finalContent.introduction)}</p><div class="panel"><b>Tu carpeta de trabajo</b><p><button type="button" data-page="notebook">✎ Ver mis apuntes en el cuaderno</button></p><ul>${modules.map((m,i)=>`<li>${state.done.includes(i)?'✓':'○'} ${esc(m.task)} <button class="small" data-page="m${i}">Revisar</button></li>`).join('')}</ul></div><h3>Evaluación de conceptos</h3><p>Se aprueba con al menos <b>5 de 6</b>. Podés volver a estudiar y reintentar; no hay reloj corriendo.</p><form id="examForm">${exam.map((q,i)=>`<fieldset><legend>${i+1}. ${esc(q.q)}</legend>${q.o.map((o,j)=>`<label class="option"><input required type="radio" name="exam${i}" data-exam="${i}" value="${j}" ${state.exam[i]===j?'checked':''}>${esc(o)}</label>`).join('')}</fieldset>`).join('')}<button class="primary" type="submit">Corregir evaluación</button></form><div id="examResult" aria-live="polite">${state.examPassed?'<div class="feedback"><b>Curso completado ✓</b><p>Conceptos aprobados y actividades declaradas completas. No representa ventas verificadas, acreditación oficial ni promesa de rentabilidad.</p></div>':''}</div>`;}
+
+function notebookPage(){
+const filled=modules.filter((_,i)=>(state.notes['m'+i]||'').trim()).length;
+return `<span class="tag">APUNTES PERSONALES · ${filled} / 6 HOJAS CON RESPUESTAS</span><div class="notebook-title"><h2>Mi cuaderno de ideas.</h2><span aria-hidden="true">✎</span></div><p>Acá se reúnen tus respuestas escritas y los chequeos que vas resolviendo. Es tu trabajo tal como lo escribiste, sin resumirlo ni cambiarlo.</p><p class="small muted">Se guarda solo en este navegador. Para editar un apunte, volvé a su actividad. No hay opción de descarga.</p><nav class="notebook-tabs" aria-label="Hojas del cuaderno">${modules.map((_,i)=>`<a href="#sheet-${i}">Hoja ${i+1}</a>`).join('')}</nav>${modules.map((m,i)=>{const text=(state.notes['m'+i]||'').trim(),a=state.answers[i],chosen=Number.isInteger(a)&&a>=0&&a<m.options.length;return `<section class="notebook-sheet" id="sheet-${i}"><div class="notebook-meta">HOJA ${String(i+1).padStart(2,'0')} · ${state.done.includes(i)?'ACTIVIDAD COMPLETADA':'EN CONSTRUCCIÓN'}</div><h3>${esc(m.task)}</h3><p class="small">${esc(m.goal)}</p><p class="ink ${text?'':'empty-ink'}">${esc(text||'Todavía no escribiste en esta hoja. Tu respuesta aparecerá acá cuando hagas la actividad.')}</p>${chosen?`<div class="notebook-check"><b>Chequeo: ${a===m.correct?'respuesta correcta ✓':'idea para revisar ↺'}</b><p>${esc(m.question)}</p><p><b>Elegiste:</b> ${esc(m.options[a])}</p><p>${esc(m.why)}</p></div>`:''}<button type="button" data-page="m${i}">Volver a esta actividad →</button></section>`;}).join('')}${notebookNumbers()}<div class="actions"><button data-page="final">Ir a la evaluación →</button></div>`;
+}
+function notebookNumbers(){const r=calculate();return `<section class="notebook-sheet"><div class="notebook-meta">HOJA EXTRA · MIS NÚMEROS</div><h3>Las cuentas sobre la mesa.</h3><p class="small">Valores actuales de la calculadora. Si todavía no los modificaste, son los ejemplos ficticios del curso.</p>${r.error?'<p class="ink">Hay datos por completar en la calculadora.</p>':`<p class="ink">Precio: ${money(Number(state.calc.price))}
+Contribución por pedido: ${money(r.contribution)}
+Resultado mensual estimado: ${money(r.monthly)}
+Punto de equilibrio: ${r.breakEven===null?'no alcanzable con estos costos':r.breakEven+' pedidos'}</p>`}<p class="small">Son estimaciones bajo los supuestos ingresados, no ingresos comprobados.</p><button type="button" data-page="m3">Revisar mis cálculos →</button></section>`;}
 
 
-verifyAccess();
 
-</script>
+function courseVideo(kind){if(!COURSE_VIDEO_SOURCES[kind])return '';const welcome=kind==='welcome';return `<section class="course-video" id="video-${kind}"><div class="eyebrow">NADIA TE ACOMPAÑA · ${welcome?'1 min 25 s':'43 s'}</div><h3>${welcome?'Antes de empezar…':'Nos vemos en el próximo experimento.'}</h3><video controls playsinline preload="none" controlslist="nodownload" aria-label="Video de ${welcome?'bienvenida':'despedida'} de Nadia Lopez" src="${COURSE_VIDEO_SOURCES[kind]}">Tu navegador no puede reproducir este video.</video><p class="small">${welcome?'Dale play para escuchar la bienvenida de Nadia.':'Un mensaje de Nadia para cerrar tu recorrido.'}</p><p class="video-error" hidden>No se pudo cargar el video. Abrí el archivo completo con Chrome, Edge o Safari y volvé a intentar.</p></section>`;}
+function mountCourseVideos(){if(state.page==='welcome'||state.page==='m0'){$('#main').insertAdjacentHTML('afterbegin',courseVideo('welcome'));}}
+document.addEventListener('error',e=>{if(e.target.tagName==='VIDEO'){const msg=e.target.closest('.course-video')?.querySelector('.video-error');if(msg)msg.hidden=false;}},true);
 
+function diplomaEligible(){return state.examPassed===true&&state.done.length===6;}
+function diplomaMarkup(){const name=(state.notes.diplomaName||'').trim();const date=state.notes.diplomaDate||new Date().toLocaleDateString('es-AR');return `<article class="diploma-frame" aria-label="Diploma de finalización"><div class="diploma-paper"><div class="diploma-brand">El Universo del Estudiante</div><div class="diploma-lab">Laboratorio de Habilidades · Educación financiera</div><div class="diploma-seal" aria-hidden="true">UE</div><h3>Diploma de finalización</h3><p class="diploma-copy">Se deja constancia de que</p><div class="diploma-person" data-diploma-name>${esc(name||'Tu nombre y apellido')}</div><p class="diploma-copy">completó las actividades y aprobó la evaluación de conceptos del curso</p><div class="diploma-course">Dropshipping desde Argentina:<br>de la idea a una prueba real</div><p class="diploma-copy">Recorrido introductorio sobre productos, proveedores, costos<br>y planificación de una prueba de negocio.</p><p class="diploma-quote">«Cada idea crece cuando te animás a ponerla a prueba».</p><div class="diploma-date">Fecha de finalización: ${esc(date)}</div><p class="diploma-disclaimer">Constancia de formación independiente, sin aval ni acreditación oficial.<br>No otorga un título ni habilitación profesional. Edición de prueba.</p><div class="diploma-bottom"><span>BY NADIA LOPEZ</span><span>MADE IN ARGENTINA</span></div></div></article>`;}
+function futureBoard(){return `<div class="future-board"><span class="tag">IDEA PARA UNA PRÓXIMA ETAPA</span><b>Tu afiche de diplomas</b><p>Queremos que puedas reunir los diplomas de cada curso en un afiche virtual dentro de tu cuenta. La colección todavía no está disponible en esta demo.</p></div>`;}
+function diplomaSection(){if(!diplomaEligible())return '';if(!state.notes.diplomaDate){state.notes.diplomaDate=new Date().toLocaleDateString('es-AR');save();}return `<section class="diploma-controls" aria-labelledby="diploma-title"><h3 id="diploma-title">Un recuerdo de lo que aprendiste.</h3><p>Escribí tu nombre como querés que aparezca. Solo el diploma se puede imprimir o guardar como PDF; los apuntes permanecen dentro del curso.</p><label class="field" for="diplomaName">Nombre y apellido</label><input id="diplomaName" type="text" autocomplete="name" maxlength="70" value="${esc(state.notes.diplomaName||'')}" placeholder="Tu nombre y apellido"><div id="diplomaPreview">${diplomaMarkup()}</div><button type="button" class="primary" id="printCertificate">Imprimir / Guardar diploma como PDF</button><p class="small">En la ventana de impresión, elegí «Guardar como PDF» o tu impresora. Usá A4 horizontal, escala 100%, sin encabezados ni pies del navegador. Activá los gráficos de fondo para conservar las rayas.</p><p id="diplomaMessage" role="status" class="small"></p>${futureBoard()}</section>`;}
+function mountDiploma(){const old=$('#diplomaArea');if(old)old.remove();const out=$('#examResult');if(out&&diplomaEligible()){const area=document.createElement('div');area.id='diplomaArea';area.innerHTML=courseVideo('farewell')+diplomaSection();out.insertAdjacentElement('afterend',area);}}
+document.addEventListener('input',e=>{if(e.target.id==='diplomaName'){state.notes.diplomaName=e.target.value;document.querySelectorAll('[data-diploma-name]').forEach(el=>el.textContent=e.target.value.trim()||'Tu nombre y apellido');save();}});
+document.addEventListener('click',e=>{if(!e.target.closest('#printCertificate'))return;if(!diplomaEligible()){toast('Completá los módulos y aprobá la evaluación para obtener tu diploma.');return;}const name=(state.notes.diplomaName||'').trim();if(!name){$('#diplomaMessage').textContent='Escribí tu nombre y apellido antes de imprimir.';$('#diplomaName').focus();return;}let print=document.getElementById('printDiploma');if(!print){print=document.createElement('div');print.id='printDiploma';document.body.appendChild(print);}print.innerHTML=diplomaMarkup();document.body.classList.add('printing-diploma');window.print();});
+window.addEventListener('afterprint',()=>{document.body.classList.remove('printing-diploma');const el=$('#printDiploma');if(el)el.remove();});
 
-</body>
-
-</html>
+function setup(){return `<span class="tag">PARA CONSULTAR</span><h2>Fuentes del curso.</h2><h3>Fuentes para revisar</h3><p class="small">Consultadas para esta demo el 3 de octubre de 2026. Las normas, productos y condiciones pueden cambiar. El contenido es introductorio y no reemplaza asesoramiento para una operación concreta.</p><ul><li><a target="_blank" rel="noopener noreferrer" href="https://www.arca.gob.ar/envios-internacionales/courier/pequenios-envios.asp">ARCA: pequeños envíos, sin finalidad comercial</a></li><li><a target="_blank" rel="noopener noreferrer" href="https://www.arca.gob.ar/facturacion/monotributo/modalidades.asp">ARCA: modalidades de facturación para monotributistas</a></li><li><a target="_blank" rel="noopener noreferrer" href="https://www.argentina.gob.ar/justicia/derechofacil/leysimple/boton-arrepentimiento">Argentina.gob.ar: botón de arrepentimiento</a></li><li><a target="_blank" rel="noopener noreferrer" href="https://www.mercadopago.com.ar/developers/es/docs/checkout-pro/overview">Mercado Pago: Checkout Pro</a></li><li><a target="_blank" rel="noopener noreferrer" href="https://supabase.com/docs/guides/auth">Supabase: cuentas y autenticación</a></li><li><a target="_blank" rel="noopener noreferrer" href="https://supabase.com/docs/guides/database/postgres/row-level-security">Supabase: protección de datos por usuario</a></li></ul><div class="actions"><button data-page="welcome">Volver al recorrido</button></div>`;}
+function render(focus=false){if(!['welcome','final','setup','notebook',...modules.map((_,i)=>'m'+i)].includes(state.page))state.page='welcome';nav();$('#main').innerHTML=state.page==='welcome'?welcome():state.page==='final'?finalPage():state.page==='setup'?setup():state.page==='notebook'?notebookPage():modulePage(+state.page.slice(1));updateCalc();mountDiploma();mountCourseVideos();if(focus){try{$('#main').focus({preventScroll:true});if(typeof $('#main').scrollIntoView==='function')$('#main').scrollIntoView({behavior:'auto',block:'start'});}catch(e){location.hash='main';}}}
+function go(p){state.page=p;save();render(true)}
+document.addEventListener('input',e=>{const t=e.target;if(t.dataset.note){state.notes[t.dataset.note]=t.value;const live=document.getElementById('live-'+t.dataset.note);if(live)live.textContent=t.value||'Tu hoja empieza con tu primera respuesta…';if(!t.value.trim()){state.done=state.done.filter(v=>v!==Number(t.dataset.note.slice(1)));state.examPassed=false;nav();}save()}if(t.dataset.calc){state.calc[t.dataset.calc]=t.value===''?NaN:Number(t.value);save();updateCalc()}});
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset.module!==undefined){state.answers[t.dataset.module]=Number(t.value);const i=+t.dataset.module;if(state.answers[i]!==modules[i].correct){state.done=state.done.filter(v=>v!==i);state.examPassed=false;}nav();save();$('#answerFeedback').textContent='';}if(t.dataset.check!==undefined){state.checks[t.dataset.check]=t.checked;if(!t.checked){state.done=state.done.filter(v=>v!==+t.dataset.check);state.examPassed=false;}nav();save();}if(t.dataset.exam!==undefined){state.exam[t.dataset.exam]=Number(t.value);state.examPassed=false;nav();save();const out=$('#examResult');if(out)out.textContent='Respuestas modificadas. Volvé a corregir la evaluación.';mountDiploma();}});
+document.addEventListener('click',e=>{const start=e.target.closest('#start');if(start){e.preventDefault();go('m'+(modules.findIndex((_,i)=>!state.done.includes(i))<0?0:modules.findIndex((_,i)=>!state.done.includes(i))));return;}const b=e.target.closest('button');if(!b)return;if(b.dataset.page){go(b.dataset.page);return;}if(b.id==='start'){go(state.page==='welcome'?'m0':state.page);return;}if(b.id==='reset'){if(confirm('¿Borrar las notas y el avance de este curso en este navegador? Esta acción no se puede deshacer.')){state=fresh();save();render();toast('Avance local reiniciado.')}return;}if(b.id==='checkAnswer'){const i=+b.dataset.index,a=state.answers[i],ok=a===modules[i].correct;$('#answerFeedback').innerHTML=`<div class="feedback ${ok?'':'bad'}">${a===undefined?'Elegí una respuesta para comprobar.':(ok?'¡Bien! ':'Revisá esta idea: ')+esc(modules[i].why)}</div>`;return;}if(b.id==='complete'){const i=+b.dataset.index;let msg='';if(!(state.notes['m'+i]||'').trim())msg='Escribí tu actividad antes de completar el módulo.';else if(state.answers[i]!==modules[i].correct)msg='Revisá el chequeo rápido y elegí la respuesta correcta.';else if(!state.checks[i])msg='Confirmá que realizaste la actividad.';if(msg){$('#completionFeedback').textContent=msg;return;}if(!state.done.includes(i))state.done.push(i);go(i===5?'final':'m'+(i+1));toast('Módulo completado ✓');}});
+document.addEventListener('submit',e=>{if(e.target.id!=='examForm')return;e.preventDefault();if(exam.some((_,i)=>!Number.isInteger(state.exam[i]))){$('#examResult').innerHTML='<p class="feedback bad">Respondé las seis preguntas.</p>';return;}let score=exam.reduce((s,q,i)=>s+(state.exam[i]===q.c?1:0),0);state.examPassed=score>=5&&state.done.length===6;save();nav();$('#examResult').innerHTML=`<div class="feedback ${state.examPassed?'':'bad'}"><b>${score}/6 respuestas correctas</b><p>${state.examPassed?'Curso completado. Tu próximo paso es verificar los pendientes del proyecto.':score>=5?'Conceptos aprobados. Te falta completar las actividades de los seis módulos.':'Necesitás al menos 5 aciertos. Leé las explicaciones y volvé a intentar.'}</p></div>${exam.map((q,i)=>`<details ${state.exam[i]!==q.c?'open':''}><summary>${state.exam[i]===q.c?'✓':'↺'} Pregunta ${i+1}</summary><p>${esc(q.e)}</p></details>`).join('')}`;mountDiploma();$('#examResult').scrollIntoView({behavior:'auto',block:'start'});});
+startCourse();const fallbackNotice=$('#fallbackNotice');if(fallbackNotice)fallbackNotice.remove();
+</script></body></html>
