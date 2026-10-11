@@ -76,8 +76,9 @@ async function startCourse(){
    'sb_publishable_0o_hbYuQFkWQ49u6gCTNgg_2kd6QAiu'
   );
   const {data:u,error:ue}=await supabaseClient.auth.getUser();
+  if(ue?.name==='AuthSessionMissingError'){location.replace('login.html');return;}
   if(ue)throw new Error('No pudimos verificar tu sesión. Reintentá o volvé a iniciar sesión desde el campus.');
-  if(!u.user){location.replace('login.html');return;}
+  if(!u?.user){location.replace('login.html');return;}
   activeUserId=u.user.id;
   const {data:enrollments,error:ee}=await supabaseClient.from('enrollments').select('id').eq('user_id',activeUserId).eq('course_id',COURSE_ID).eq('status','active').limit(1);
   if(ee)throw new Error('No pudimos comprobar la inscripción. Reintentá en un momento.');
