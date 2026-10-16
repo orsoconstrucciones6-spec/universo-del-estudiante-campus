@@ -58,8 +58,8 @@ window.addEventListener('message',(e)=>{
     html=html.replaceAll('localStorage.setItem(KEY,JSON.stringify(S))', 'window.__courseStore.setItem(KEY,JSON.stringify(S))');
     const progress=localStorage.getItem(progressKey);
     const shim=`<script>window.__courseStore={getItem:function(k){return k==='${PROGRESS_NAME}'?${JSON.stringify(progress)}:null},setItem:function(k,v){if(k==='${PROGRESS_NAME}')parent.postMessage({type:'de-a2-save-progress',key:k,value:v},'*')}};<\/script>`;
-    if(!html.startsWith('<!doctype html>') || !html.includes('<script>const DATA='))throw new Error('Formato inesperado del archivo privado');
-    html=html.replace('<script>const DATA=',shim+'<script>const DATA=');
+    if(!/^<!doctype html>/i.test(html.trimStart()) || !/<script>\s*const DATA=/.test(html))throw new Error('Formato inesperado del archivo privado');
+    html=html.replace(/<script>(\s*const DATA=)/,(_,prefix)=>shim+'<script>'+prefix);
     // Keep the complete untrusted course away from parent origin and session tokens.
     frame.srcdoc=html;
     allowedSource=frame.contentWindow;
