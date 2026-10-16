@@ -2728,6 +2728,23 @@ html[data-theme="dark"] .section-head h2{
 }
 
 .campus-note-sheet{margin:22px 0;padding:22px 24px 22px 38px;border:1px solid #c8b994;border-left:5px solid #df8776;border-radius:8px;background:repeating-linear-gradient(#fff9e9 0px,#fff9e9 31px,#ded6bf 32px);color:#263650;overflow-wrap:anywhere}.campus-note-label{font-size:12px;font-weight:800;letter-spacing:1px}.campus-note-sheet h4{font-size:18px;margin:12px 0}.campus-note-ink{white-space:pre-wrap;font-family:'Segoe Print',Georgia,serif;line-height:32px;font-size:17px}
+
+/* Catálogo de Idiomas · agregado sin alterar el campus existente */
+.language-intro{border-radius:28px;padding:26px;background:linear-gradient(120deg,#dfedff,var(--paper));border:2px solid var(--navy);box-shadow:6px 7px 0 var(--orange);margin-bottom:22px}
+html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c65,var(--paper))}
+.language-intro h3{font:700 clamp(30px,5vw,47px)/1.1 "Fredoka",sans-serif;margin:5px 0;color:var(--ink)}
+.language-video{min-height:185px;border:2px dashed var(--navy);border-radius:20px;background:var(--paper-soft);display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column;gap:9px;padding:23px;margin:18px 0}
+.language-video-icon{font-size:47px}.language-video p{max-width:470px;margin:0;color:var(--muted)}
+.language-note{padding:18px 22px;background:var(--paper);border-left:7px solid var(--orange);border-radius:16px;margin:18px 0;line-height:1.7}
+.language-toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:22px 0}
+.language-toolbar label{font-size:13px;font-weight:800}.language-select{background:var(--paper);color:var(--ink);padding:11px 14px;border:2px solid var(--navy);border-radius:13px;font:700 14px "Manrope",sans-serif;max-width:100%}
+.language-levels{display:flex;gap:8px;flex-wrap:wrap}.language-filter{background:var(--paper);color:var(--ink);padding:9px 13px;border:2px solid var(--line);border-radius:11px;cursor:pointer;font-weight:800}.language-filter.chosen{background:var(--navy);color:white;border-color:var(--navy)}
+.language-count{margin:6px 0 18px;font-weight:800}.language-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.language-course{--lang:#3568AD;position:relative;background:var(--paper);color:var(--ink);border:2px solid var(--line);border-top:9px solid var(--lang);border-radius:19px;padding:18px;min-height:245px;display:flex;flex-direction:column;gap:10px}
+.language-course h4{font:700 25px/1.12 "Fredoka",sans-serif;margin:0}.language-course p{margin:0;line-height:1.5;font-size:13px}.language-course .price{font:700 24px "Fredoka",sans-serif;color:var(--ink)}.language-course .level{background:var(--lang);color:white;font-weight:800;font-size:12px;border-radius:8px;padding:5px 9px;display:inline-block;align-self:flex-start}.language-course .course-action{margin-top:auto;border:2px solid var(--navy);background:var(--orange);color:white;border-radius:12px;padding:10px 12px;font-weight:800;cursor:pointer}.language-course .course-action:disabled{background:var(--paper-soft);color:var(--muted);border-color:var(--line);cursor:not-allowed}.language-course .course-action.secondary-action{background:var(--blue-light);color:var(--navy)}
+.language-smallprint{font-size:12px;color:var(--muted);line-height:1.55}.language-coming{margin:20px 0;background:var(--paper-soft);border-radius:15px;padding:17px;border:1px solid var(--line)}
+@media(max-width:1100px){.language-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.language-grid{grid-template-columns:1fr}.language-intro{padding:19px}.language-toolbar{align-items:stretch}.language-select{width:100%}}
+
 </style>
 
 </head>
@@ -3362,7 +3379,7 @@ html[data-theme="dark"] .section-head h2{
   </article>
 
 
-  <article class="category">
+  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de idiomas" onclick="goToSection('languages')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('languages')}" style="cursor:pointer">
 
     <span class="category-badge">
       02
@@ -3644,7 +3661,7 @@ html[data-theme="dark"] .section-head h2{
   </article>
 
 
-  <article class="category">
+  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de idiomas" onclick="goToSection('languages')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('languages')}" style="cursor:pointer">
 
     <span class="category-badge">
       02
@@ -3754,6 +3771,37 @@ html[data-theme="dark"] .section-head h2{
     </section>
 
 
+
+    <!-- ======================================================
+         IDIOMAS · CATÁLOGO (30 CURSOS)
+         ====================================================== -->
+    <section id="languages" class="section-view">
+      <div class="section-head"><h2>Idiomas</h2><button class="back-button" onclick="goToSection('explore')">← EXPLORAR</button></div>
+      <div class="language-intro">
+        <span class="hero-label">30 CURSOS · 5 IDIOMAS · 6 NIVELES</span>
+        <h3>¡Un mundo entero para conversar! 🌎</h3>
+        <p>Explorá idiomas a tu ritmo, desde las primeras palabras hasta conversaciones complejas. Cada nivel tiene su propia forma de aprender y un montón de actividades para practicar.</p>
+        <div class="language-video" id="languagesVideoSlot">
+          <div class="language-video-icon">🎬</div>
+          <strong>Próximamente: video de presentación</strong>
+          <p>Acá vamos a colocar el video de bienvenida a los cursos de idiomas.</p>
+        </div>
+        <div class="language-note"><strong>Para aprovechar estos cursos</strong><p>Reservate un momento tranquilo para leer con atención, escuchar los audios y hacer las actividades sin apuro. No hay que terminar todo en un día: volver a escuchar, practicar y equivocarse también forma parte del aprendizaje.</p><p><strong>Duración orientativa:</strong> entre 6 y 12 horas de dedicación por curso, según el nivel y tu ritmo. Es una estimación inicial, no un tiempo medido ni un promedio exacto.</p><p><strong>Precio:</strong> $2.000 ARS por curso individual.</p></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Elegí tu próximo curso</h3></div>
+        <div class="language-toolbar">
+          <label for="languageSelect">Idioma</label>
+          <select id="languageSelect" class="language-select" onchange="setLanguageFilter(this.value)">
+            <option value="all">Todos los idiomas</option><option value="ingles">🇬🇧 Inglés</option><option value="portugues">🇧🇷 Portugués</option><option value="italiano">🇮🇹 Italiano</option><option value="frances">🇫🇷 Francés</option><option value="aleman">🇩🇪 Alemán</option>
+          </select>
+          <div class="language-levels" id="languageLevelButtons" aria-label="Filtrar nivel"></div>
+        </div>
+        <p id="languageCount" class="language-count" aria-live="polite"></p>
+        <div class="language-grid" id="languageCourseGrid"></div>
+        <div class="language-coming"><strong>Sobre las compras</strong><p style="margin:6px 0 0">Estos 30 cursos ya figuran en el catálogo a $2.000 cada uno, pero las compras aún no están habilitadas. Debemos darlos de alta en Supabase, configurar el precio y verificar la habilitación segura con Mercado Pago antes de aceptar pagos reales.</p></div>
+      </div>
+    </section>
 
     <!-- ======================================================
          PROGRESO
@@ -5005,6 +5053,43 @@ themeToggle
     }
   );
 
+
+
+/* ==========================================================
+   IDIOMAS: catálogo local de presentación. La venta está deshabilitada
+   hasta que existan registros y pagos verificados en el backend.
+   ========================================================== */
+const LANGUAGE_INFO=[
+  {id:'ingles',name:'Inglés',flag:'🇬🇧',color:'#3568AD'},
+  {id:'portugues',name:'Portugués',flag:'🇧🇷',color:'#31965C'},
+  {id:'italiano',name:'Italiano',flag:'🇮🇹',color:'#CF704B'},
+  {id:'frances',name:'Francés',flag:'🇫🇷',color:'#8870B5'},
+  {id:'aleman',name:'Alemán',flag:'🇩🇪',color:'#D4A83C'}
+];
+const LEVEL_INFO=[
+  {id:'A1',description:'Primeros pasos, palabras esenciales y mucha práctica desde cero.'},
+  {id:'A2',description:'Verbos, vocabulario cotidiano y construcción de oraciones.'},
+  {id:'B1',description:'Historias conectadas, diálogos y comprensión contextual.'},
+  {id:'B2',description:'Una historia de tres días con escenas, decisiones y conversaciones.'},
+  {id:'C1',description:'Serie interactiva con misterio, pistas y conversaciones avanzadas.'},
+  {id:'C2',description:'Misiones con diálogos, matices, audios y desafíos avanzados.'}
+];
+const LANGUAGE_COURSES=LANGUAGE_INFO.flatMap(lang=>LEVEL_INFO.map(level=>({
+  key:lang.id+'_'+level.id.toLowerCase(),lang:lang.id,name:lang.name,flag:lang.flag,color:lang.color,
+  level:level.id,description:level.description,price:2000
+})));
+let languageSelected='all',languageLevelSelected='all';
+function setLanguageFilter(value){languageSelected=value;renderLanguagesCatalog()}
+function setLanguageLevel(level){languageLevelSelected=level;renderLanguagesCatalog()}
+function renderLanguagesCatalog(){
+  const grid=document.getElementById('languageCourseGrid'),buttons=document.getElementById('languageLevelButtons');
+  if(!grid||!buttons)return;
+  buttons.innerHTML=['all',...LEVEL_INFO.map(item=>item.id)].map(level=>`<button type="button" class="language-filter ${languageLevelSelected===level?'chosen':''}" aria-pressed="${languageLevelSelected===level}" onclick="setLanguageLevel('${level}')">${level==='all'?'Todos los niveles':level}</button>`).join('');
+  const filtered=LANGUAGE_COURSES.filter(c=>(languageSelected==='all'||c.lang===languageSelected)&&(languageLevelSelected==='all'||c.level===languageLevelSelected));
+  document.getElementById('languageCount').textContent=`${filtered.length} ${filtered.length===1?'curso disponible en el catálogo':'cursos en el catálogo'} · $2.000 ARS cada uno`;
+  grid.innerHTML=filtered.map(c=>`<article class="language-course" style="--lang:${c.color}"><span class="level">${c.flag} ${c.level}</span><h4>${c.name} ${c.level}</h4><p>${c.description}</p><p class="language-smallprint">Actividades interactivas · audios · evaluación</p><div class="price">$2.000 <span style="font-size:13px">ARS</span></div><button class="course-action" type="button" disabled aria-label="Compra de ${c.name} ${c.level} próximamente">Compra próximamente</button></article>`).join('');
+}
+renderLanguagesCatalog();
 
 </script>
 
