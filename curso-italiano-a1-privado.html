@@ -52,7 +52,7 @@ window.addEventListener('message',(e)=>{
     const response=await fetch(data.signed_url,{cache:'no-store'});
     if(!response.ok)throw new Error('No se pudo recuperar el archivo privado');
     let html=await response.text();
-    if(!html.includes("const KEY='ue_portugues_c2_missions_v1'")||!html.includes('const DATA='))throw new Error('El archivo del curso no coincide con la versión esperada');
+    if(!html.includes("KEY='ude_italiano_a1_strict_v1'")||!html.includes('id="course-data"'))throw new Error('El archivo del curso no coincide con Italiano A1');
     // Italiano A1 saves progress through the course-specific KEY.
     // The iframe has an opaque origin. Use a narrowly scoped progress adapter instead of localStorage.
     html=html.replaceAll('localStorage.getItem(KEY)','window.__courseStore.getItem(KEY)');
