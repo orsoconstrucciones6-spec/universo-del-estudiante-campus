@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Italiano A2 · Acceso privado · Universo del Estudiante</title>
+<style>
+:root{font-family:system-ui,Arial,sans-serif;color:#17243c;background:#f8f3e9}
+*{box-sizing:border-box}body{margin:0}header{background:#193250;color:#fff;padding:15px 5%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+a{color:inherit}main{max-width:1250px;margin:28px auto;padding:0 16px}.panel{background:#fff;border:2px solid #193250;border-radius:20px;padding:24px;box-shadow:5px 6px 0 #ff7a3d}h1{margin:0 0 10px}p{line-height:1.5}
+#courseFrame{width:100%;height:calc(100vh - 130px);min-height:560px;border:2px solid #193250;border-radius:14px;background:#fff;display:none}
+#state{font-weight:700}#retry{background:#ff7a3d;border:2px solid #193250;border-radius:12px;padding:10px 18px;font-weight:800;cursor:pointer;display:none}
+</style></head><body>
+<header><strong>🌎 UNIVERSO DEL ESTUDIANTE · ITALIANO A2</strong><a href="campus.html">← Volver al Campus</a></header>
+<main><div id="loading" class="panel" role="status" aria-live="polite"><h1>Italiano A2 🇮🇹</h1><p id="state">Comprobando tu acceso en Supabase…</p><button id="retry" type="button">Volver a intentar</button></div>
+<iframe id="courseFrame" title="Curso privado de Italiano A2" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+'use strict';
+const SUPABASE_URL='https://ohlgifhdmqzqymnkjnwe.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_0o_hbYuQFkWQ49u6gCTNgg_2kd6QAiu';
+const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const panel=document.querySelector('#loading'),state=document.querySelector('#state'),retry=document.querySelector('#retry'),frame=document.querySelector('#courseFrame');
+const COURSE_ID=9,PROGRESS_NAME='ude_italiano_a2_full_v1';
+let allowedSource=null,progressKey=null;
+function showError(message){state.textContent=message;retry.style.display='inline-block';}
+retry.addEventListener('click',()=>window.location.reload());
+window.addEventListener('message',(e)=>{
+  if(e.source!==allowedSource||!progressKey||!e.data||e.data.type!=='it-a2-save-progress'||e.data.key!==PROGRESS_NAME)return;
+  if(typeof e.data.value!=='string'||e.data.value.length>100000)return;
+  try{JSON.parse(e.data.value);localStorage.setItem(progressKey,e.data.value)}catch{}
+});
+(async()=>{
+  try{
+    const {data:sessionResult,error:sessionError}=await client.auth.getSession();
+    const session=sessionResult?.session;
+    if(sessionError||!session){showError('Necesitás iniciar sesión para abrir Italiano A2. Volvé al Campus e ingresá con tu cuenta.');return}
+    const {data:userResult,error:userError}=await client.auth.getUser();
+    if(userError||!userResult?.user||userResult.user.id!==session.user.id){showError('No pudimos validar tu sesión. Volvé a iniciar sesión.');return}
+    progressKey='ue_it_a2_progress_'+userResult.user.id;
+    const {data,error}=await client.functions.invoke('abrir-curso-privado',{
+      body:{course_id:COURSE_ID},headers:{Authorization:'Bearer '+session.access_token}
+    });
+    if(error){
+      let message='No pudimos comprobar el acceso. Intentá de nuevo.';
+      if(error.context&&typeof error.context.json==='function'){
+        try{const response=await error.context.json();if(typeof response.error==='string')message=response.error}catch{}
+      }
+      if(error.context?.status===403)message='Todavía no tenés acceso a Italiano A2. La compra sigue desactivada por el momento.';
+      showError(message);return;
+    }
+    if(data?.course_id!==COURSE_ID||typeof data.signed_url!=='string')throw new Error('Respuesta de acceso incompleta');
+    state.textContent='Acceso autorizado. Cargando tus actividades…';
+    const response=await fetch(data.signed_url,{cache:'no-store'});
+    if(!response.ok)throw new Error('No se pudo recuperar el archivo privado');
+    let html=await response.text();
+    if(!html.includes("KEY='ude_italiano_a2_full_v1'")||!html.includes('const DATA='))throw new Error('El archivo privado no coincide con Italiano A2');
+    // Validar el curso antes de cargarlo en el iframe aislado.
+    // The iframe has an opaque origin. Use a narrowly scoped progress adapter instead of localStorage.
+    html=html.replaceAll('localStorage.getItem(KEY)','window.__courseStore.getItem(KEY)');
+    html=html.replaceAll('localStorage.setItem(KEY,JSON.stringify(S))','window.__courseStore.setItem(KEY,JSON.stringify(S))');
+    const progress=localStorage.getItem(progressKey);
+    const safeProgress=JSON.stringify(progress).replace(/</g,'\\u003c');
+    const shim=`<script>window.__courseStore={getItem:function(k){return k==='${PROGRESS_NAME}'?${safeProgress}:null},setItem:function(k,v){if(k==='${PROGRESS_NAME}')parent.postMessage({type:'it-a2-save-progress',key:k,value:v},'*')}};<\/script>`;
+    html=html.replace('<script>',shim+'<script>');
+    // Keep the complete untrusted course away from parent origin and session tokens.
+    frame.srcdoc=html;
+    allowedSource=frame.contentWindow;
+    frame.style.display='block';panel.style.display='none';
+  }catch(e){console.error('No se pudo abrir Italiano A2:',e?.message||'error');showError('No se pudo abrir el curso privado. Revisaremos esta prueba antes de habilitar las ventas.')}
+})();
+</script></body></html>
