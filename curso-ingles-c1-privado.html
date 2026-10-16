@@ -57,7 +57,7 @@ window.addEventListener('message',(e)=>{
     // The iframe has an opaque origin. Use a narrowly scoped progress adapter instead of localStorage.
     html=html.replaceAll('localStorage.getItem(KEY)','window.__courseStore.getItem(KEY)');
     html=html.replaceAll('localStorage.setItem(KEY, JSON.stringify(state))','window.__courseStore.setItem(KEY,JSON.stringify(state))');
-    const progress=localStorage.getItem(progressKey)||'{}';
+    const progress=localStorage.getItem(progressKey);
     const shim=`<script>window.__courseStore={getItem:function(k){return k==='${PROGRESS_NAME}'?${JSON.stringify(progress)}:null},setItem:function(k,v){if(k==='${PROGRESS_NAME}')parent.postMessage({type:'c1-save-progress',key:k,value:v},'*')}};<\/script>`;
     html=html.replace('<script>',shim+'<script>');
     // Keep the complete untrusted course away from parent origin and session tokens.
