@@ -2745,6 +2745,13 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
 .language-smallprint{font-size:12px;color:var(--muted);line-height:1.55}.language-coming{margin:20px 0;background:var(--paper-soft);border-radius:15px;padding:17px;border:1px solid var(--line)}
 @media(max-width:1100px){.language-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.language-grid{grid-template-columns:1fr}.language-intro{padding:19px}.language-toolbar{align-items:stretch}.language-select{width:100%}}
 
+
+.course-detail-heading{font-family:"Fredoka",sans-serif;font-size:clamp(27px,4vw,42px);line-height:1.2;margin:12px 0}
+.course-detail-price{font-family:"Fredoka",sans-serif;font-size:30px;color:var(--ink);margin:14px 0}
+.course-detail-list{line-height:1.85;padding-left:22px}
+.course-detail-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.course-detail-alert{border-left:5px solid var(--orange);padding:16px;background:var(--paper-soft);border-radius:10px;margin:18px 0}
+.category[role="button"]:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
 </style>
 
 </head>
@@ -2886,21 +2893,6 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
 
     <button
       class="nav-button"
-      onclick="showSection('notes',this)"
-    >
-
-      <span class="nav-icon">
-        📒
-      </span>
-
-      Mi cuaderno
-
-    </button>
-
-
-
-    <button
-      class="nav-button"
       onclick="showSection('diplomas',this)"
     >
 
@@ -3013,7 +3005,7 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
         <p class="hero-copy">
 
           Este es tu lugar para aprender,
-          explorar, guardar ideas y seguir
+          explorar, practicar y seguir
           construyendo todo eso que querés.
 
         </p>
@@ -3159,45 +3151,6 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
 
             Mirá cuánto avanzaste
             y seguí sumando logros.
-
-          </p>
-
-
-          <span class="card-arrow">
-
-            →
-
-          </span>
-
-
-        </article>
-
-
-
-        <article
-          class="quick-card"
-          onclick="goToSection('notes')"
-        >
-
-          <div class="card-label">
-
-            ESCRIBÍ
-
-          </div>
-
-
-          <h2>
-
-            Mi cuaderno
-
-          </h2>
-
-
-          <p>
-
-            Guardá notas,
-            ideas y cosas que
-            no querés olvidar.
 
           </p>
 
@@ -3786,7 +3739,7 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
           <strong>Próximamente: video de presentación</strong>
           <p>Acá vamos a colocar el video de bienvenida a los cursos de idiomas.</p>
         </div>
-        <div class="language-note"><strong>Para aprovechar estos cursos</strong><p>Reservate un momento tranquilo para leer con atención, escuchar los audios y hacer las actividades sin apuro. No hay que terminar todo en un día: volver a escuchar, practicar y equivocarse también forma parte del aprendizaje.</p><p><strong>Duración orientativa:</strong> entre 6 y 12 horas de dedicación por curso, según el nivel y tu ritmo. Es una estimación inicial, no un tiempo medido ni un promedio exacto.</p><p><strong>Precio:</strong> $2.000 ARS por curso individual.</p></div>
+        <div class="language-note"><strong>Para aprovechar estos cursos</strong><p>Reservate un momento tranquilo para leer con atención, escuchar los audios y hacer las actividades sin apuro. No hay que terminar todo en un día: volver a escuchar, practicar y equivocarse también forma parte del aprendizaje.</p><p><strong>Duración orientativa:</strong> entre 6 y 12 horas de dedicación por curso, según el nivel y tu ritmo. Es una estimación inicial, no un tiempo medido ni un promedio exacto.</p><p><strong>Precio:</strong> $4.000 ARS por curso individual.</p></div>
       </div>
       <div class="panel">
         <div class="panel-head"><h3>Elegí tu próximo curso</h3></div>
@@ -3799,8 +3752,13 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
         </div>
         <p id="languageCount" class="language-count" aria-live="polite"></p>
         <div class="language-grid" id="languageCourseGrid"></div>
-        <div class="language-coming"><strong>Sobre las compras</strong><p style="margin:6px 0 0">Estos 30 cursos ya figuran en el catálogo a $2.000 cada uno, pero las compras aún no están habilitadas. Debemos darlos de alta en Supabase, configurar el precio y verificar la habilitación segura con Mercado Pago antes de aceptar pagos reales.</p></div>
+        <div class="language-coming"><strong>Sobre las compras</strong><p style="margin:6px 0 0">Podés conocer el contenido y precio de cada nivel antes de comprar. Las compras online todavía no están activas. Si ya tenés una inscripción habilitada, podés entrar a tu curso desde acá.</p></div>
       </div>
+    </section>
+
+    <section id="courseDetail" class="section-view" aria-live="polite">
+      <div class="section-head"><h2>Conocé el curso</h2><button class="back-button" onclick="goToSection('explore')">← EXPLORAR</button></div>
+      <div class="panel" id="courseDetailContent"></div>
     </section>
 
     <!-- ======================================================
@@ -3875,44 +3833,6 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
 
 
     </section>
-
-
-
-    <!-- ======================================================
-         CUADERNO
-         ====================================================== -->
-
-    <section
-      id="notes"
-      class="section-view"
-    >
-
-
-      <div class="section-head">
-
-
-        <h2>
-
-          Mi cuaderno
-
-        </h2>
-
-
-        <button
-          class="back-button"
-          onclick="goToSection('home')"
-        >
-
-          ← VOLVER
-
-        </button>
-
-
-      </div>
-
-
-
-      <section class="panel" id="courseNotes" aria-live="polite"><p>Cargando tus apuntes…</p></section>
 
 
     </section>
@@ -4378,6 +4298,9 @@ async function loadCoursesCampus(){
 
     const courses =
       publishedCourses || [];
+    campusDbCourses=courses;
+    campusOwnedIds=new Set((enrollments||[]).map(item=>Number(item.course_id)));
+    renderLanguagesCatalog();
 
 
     const ownedCourseIds =
@@ -4494,10 +4417,20 @@ async function loadCoursesCampus(){
     }
 
 
-    putHTML(
-      exploreContainer,
-      exploreHTML
-    );
+    // Idiomas listados aunque todavía no estén en la tabla pública Courses.
+    const listedIds=new Set(courses.map(c=>Number(c.id)));
+    const extraCourses=[{id:1,title:'Dropshipping y E-commerce desde Argentina',category:'Educación financiera',short_description:DROP_DESCRIPTION},...LANGUAGE_COURSES.map(c=>({id:c.courseId,title:c.name+' '+c.level,category:'Idiomas',short_description:c.description}))].filter(c=>!listedIds.has(c.id));
+    const extras=extraCourses.map(c=>createCourseCard(c,campusOwnedIds.has(c.id))).join('');
+    putHTML(exploreContainer, exploreHTML + extras);
+    // Las inscripciones de idioma también aparecen en Mis cursos.
+    const ownedExtras=extraCourses.filter(c=>campusOwnedIds.has(c.id)).map(c=>createCourseCard(c,true)).join('');
+    if(ownedExtras){putHTML(homeContainer,myCoursesHTML+ownedExtras);putHTML(myCoursesContainer,myCoursesHTML+ownedExtras);}
+    const requested=new URLSearchParams(location.search).get('curso');
+    if(requested&&!window.__openedInitialCourse){
+      const match=LANGUAGE_COURSES.find(c=>c.key.replace('_','-')===requested||c.key===requested);
+      const target=Number(requested)||match?.courseId||(requested==='dropshipping-sin-humo'?1:null);
+      if(getCourseInfo(target)){window.__openedInitialCourse=true;showCourseDetail(target);}
+    }
 
     setCheckoutBusy(checkoutBusy);
     await refreshCoursePayment(user,ownedCourseIds);
@@ -4514,7 +4447,6 @@ async function loadCoursesCampus(){
 
 
     renderCampusProgress([],true);
-    renderCourseNotes([],[],true);
     renderCourseDiplomas([],[],true);
     const errorHTML = `
 
@@ -4598,14 +4530,13 @@ function createCourseCard(
       : "VER CURSO →";
 
 
+  const courseInfo=getCourseInfo(id);
+  const coursePrice=courseInfo?.price!=null?`<p><strong>$${courseInfo.price.toLocaleString("es-AR")} ARS</strong></p>`:"";
+
   const statusClass =
     owned
       ? "course-status"
       : "course-status course-status-available";
-
-  const testBuyButton=!owned&&id===1&&campusBuyerId===PAYMENT_TEST_USER
-    ? `<p><strong>Compra de prueba: $1.500 ARS</strong><br>Usá el comprador de prueba de Mercado Pago y datos de tarjeta de prueba.</p><button type="button" class="open-course-button" data-course-checkout onclick="buyTestCourse()">PROBAR COMPRA · $1.500 ARS →</button>`
-    : '';
 
 
   return `
@@ -4641,11 +4572,11 @@ function createCourseCard(
       </p>
 
 
+      ${coursePrice}
       ${owned ? courseProgressCard(id) : ""}
-      ${testBuyButton}
       <button
         class="open-course-button"
-        onclick="openCourse(${id}, ${owned})"
+        onclick="${owned?`openCourse(${id},true)`:`showCourseDetail(${id})`}"
       >
 
         ${buttonText}
@@ -4665,47 +4596,50 @@ function createCourseCard(
    ABRIR CURSO
    ========================================================== */
 
-function openCourse(courseId, owned){
-
-  if(!owned){
-
-    alert(
-      "Este curso todavía no está habilitado en tu cuenta."
-    );
-
-    return;
-
-  }
-
-  const courseRoutes = {
-
-    1: "curso-dropshipping.html"
-
-  };
-
-
-  const route =
-    courseRoutes[courseId];
-
-
-  if(route){
-
-    window.location.href =
-      route;
-
-  }
-
-  else{
-
-    alert(
-      "Este curso todavía no tiene una página asignada."
-    );
-
-  }
-
+const COURSE_ROUTES = {
+  1:'curso-dropshipping.html',
+  2:'curso-ingles-a1-privado.html',7:'curso-ingles-a2-privado.html',12:'curso-ingles-b1-privado.html',17:'curso-ingles-b2-privado.html',22:'curso-ingles-c1-privado.html',27:'curso-ingles-c2-privado.html',
+  3:'curso-portugues-a1-privado.html',8:'curso-portugues-a2-privado.html',13:'curso-portugues-b1-privado.html',18:'curso-portugues-b2-privado.html',23:'curso-portugues-c1-privado.html',28:'curso-portugues-c2-privado.html',
+  4:'curso-italiano-a1-privado.html',9:'curso-italiano-a2-privado.html',14:'curso-italiano-b1-privado.html',19:'curso-italiano-b2-privado.html',24:'curso-italiano-c1-privado.html',29:'curso-italiano-c2-privado.html',
+  5:'curso-frances-a1-privado.html',10:'curso-frances-a2-privado.html',15:'curso-frances-b1-privado.html',20:'curso-frances-b2-privado.html',25:'curso-frances-c1-privado.html',30:'curso-frances-c2-privado.html',
+  6:'curso-aleman-a1-privado.html',11:'curso-aleman-a2-privado.html',16:'curso-aleman-b1-privado.html',21:'curso-aleman-b2-privado.html',26:'curso-aleman-c1-privado.html',31:'curso-aleman-c2-privado.html'
+};
+let campusOwnedIds=new Set();
+let campusDbCourses=[];
+const DROP_DESCRIPTION='Aprendé a planificar una tienda online desde Argentina: modelos de e-commerce y dropshipping, clientes, proveedores, logística, costos, pagos, obligaciones legales y marketing digital. Trabajá con ejemplos y ejercicios para evaluar tu propio proyecto. Al finalizar, podrás crear una tienda de demostración como tesis opcional.';
+const DROP_TOPICS=['Qué es e-commerce y cómo se relaciona con dropshipping','Investigación de clientes, mercados y productos','Proveedores, pedidos, envíos y devoluciones','Precios, márgenes y viabilidad financiera','Facturación, derechos del consumidor y responsabilidades en Argentina','Plataformas de tiendas, marketing y validación del negocio','Actividades, evaluación final y proyecto voluntario después del diploma'];
+const LANGUAGE_TOPICS={
+  A1:['Saludos, pronunciación y expresiones esenciales','Vocabulario básico y oraciones iniciales','Escucha, práctica guiada y primeras conversaciones'],
+  A2:['Verbos frecuentes y tiempos básicos','Situaciones cotidianas y vocabulario ampliado','Comprensión y actividades interactivas'],
+  B1:['Comprensión de historias y diálogos','Expresar experiencias, planes y opiniones','Prácticas para ganar autonomía'],
+  B2:['Conversaciones, escenas y decisiones','Comprensión de textos y expresiones complejas','Práctica contextualizada y evaluación'],
+  C1:['Uso avanzado del idioma en contexto','Matices de significado y comprensión','Actividades narrativas y desafíos'],
+  C2:['Precisión, matices y comunicación avanzada','Misiones con situaciones y diálogos exigentes','Comprensión profunda y ejercicios de aplicación']
+};
+function getCourseInfo(courseId){
+  const id=Number(courseId);
+  const lang=LANGUAGE_COURSES.find(c=>c.courseId===id);
+  if(lang)return {id,title:lang.name+' '+lang.level,category:'Idiomas',price:4000,description:'Aprendé '+lang.name+' en el nivel '+lang.level+' con explicaciones, ejercicios interactivos y práctica de comprensión. Este curso te ayuda a consolidar conocimientos y avanzar a tu ritmo, sin garantizar una certificación oficial de nivel.',topics:LANGUAGE_TOPICS[lang.level]};
+  if(id===1)return {id,title:'Dropshipping y E-commerce desde Argentina',category:'Educación financiera',price:3000,description:DROP_DESCRIPTION,topics:DROP_TOPICS};
+  const other=campusDbCourses.find(c=>Number(c.id)===id);
+  if(other)return {id,title:other.title,category:other.category,price:null,description:other.short_description||'Conocé el programa y objetivos de este curso.',topics:[]};
+  return null;
 }
-
-
+function showCourseDetail(courseId){
+  const c=getCourseInfo(courseId);if(!c)return;
+  const owned=campusOwnedIds.has(c.id);
+  const topics=c.topics.map(t=>'<li>'+escapeHTML(t)+'</li>').join('');
+  document.getElementById('courseDetailContent').innerHTML=`<span class="real-course-category">${escapeHTML(c.category||'Curso')}</span><h3 class="course-detail-heading">${escapeHTML(c.title)}</h3><p>${escapeHTML(c.description)}</p>${c.price!==null?`<div class="course-detail-price">${new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(c.price)} <span style="font:600 14px Manrope,sans-serif">por curso</span></div>`:''}<h4>¿Qué vas a aprender?</h4><ul class="course-detail-list">${topics||'<li>Descripción y programa en preparación.</li>'}</ul><p>Modalidad online a tu ritmo, con práctica y actividades. El diploma corresponde a la finalización de la formación independiente, según las reglas del curso.</p><div class="course-detail-alert">${owned?'Este curso está habilitado en tu cuenta.':'Las compras todavía no están habilitadas. Podés explorar el programa y su precio mientras preparamos la integración con Mercado Pago.'}</div><div class="course-detail-actions">${owned?`<button class="open-course-button" onclick="openCourse(${c.id},true)">Entrar al curso →</button>`:'<button class="open-course-button" type="button" disabled aria-disabled="true">Compra próximamente</button>'}<button class="open-course-button" onclick="goToSection('${c.category==='Idiomas'?'languages':'explore'}')">Seguir explorando</button></div>`;
+  showSection('courseDetail');
+  history.replaceState(null,'',location.pathname+'?curso='+encodeURIComponent(c.id));
+}
+function openCourse(courseId, owned){
+  const id=Number(courseId);
+  if(!campusOwnedIds.has(id)){showCourseDetail(id);return;}
+  const route=COURSE_ROUTES[id];
+  if(!route){alert('Este curso todavía no tiene un visor configurado.');return;}
+  window.location.href=route;
+}
 
 /* ==========================================================
    PROTEGER TEXTO DE LA BASE DE DATOS
@@ -4760,15 +4694,14 @@ function courseProgressCard(id){
 async function loadCampusProgress(userId,courses){
  campusProgress=new Map();
  const connected=courses.filter(c=>Number(c.id)===1);
- if(!connected.length){renderCampusProgress(courses,false);renderCourseNotes(courses,[],false);renderCourseDiplomas(courses,[],false);return;}
+ if(!connected.length){renderCampusProgress(courses,false);renderCourseDiplomas(courses,[],false);return;}
  try{
   const {data,error}=await supabaseClient.from('course_progress').select('course_id,state').eq('user_id',userId).in('course_id',connected.map(c=>c.id));
   if(error)throw error;
   for(const course of connected){const saved=(data||[]).find(p=>Number(p.course_id)===Number(course.id));campusProgress.set(Number(course.id),progressSummary(course.id,saved?.state));}
   renderCampusProgress(courses,false);
-  renderCourseNotes(courses,data||[],false);
   renderCourseDiplomas(courses,data||[],false);
- }catch(e){renderCampusProgress(courses,true);renderCourseNotes(courses,[],true);renderCourseDiplomas(courses,[],true);}
+ }catch(e){renderCampusProgress(courses,true);renderCourseDiplomas(courses,[],true);}
 }
 
 
@@ -4784,17 +4717,7 @@ function renderCourseDiplomas(courses,rows,failed){
  container.innerHTML=completed.map(c=>{const notes=rows.find(r=>Number(r.course_id)===Number(c.id)).state.notes||{};return `<article class="real-course-card"><span class="course-status">CURSO COMPLETADO</span><div class="real-course-category">Educación financiera</div><h3>${escapeHTML(c.title||'Dropshipping')}</h3><p>Tu diploma de finalización está disponible.</p>${typeof notes.diplomaName==='string'&&notes.diplomaName.trim()?`<p><strong>${escapeHTML(notes.diplomaName)}</strong></p>`:''}${typeof notes.diplomaDate==='string'&&notes.diplomaDate.trim()?`<p>Fecha: ${escapeHTML(notes.diplomaDate)}</p>`:''}<a class="open-course-button" href="curso-dropshipping.html?view=diploma">Ver diploma / Guardar PDF →</a><p>Al abrirlo, completá tu nombre y tocá «Imprimir / Guardar diploma como PDF».</p><p>Formación independiente, sin aval ni acreditación oficial.</p></article>`}).join('');
 }
 
-function renderCourseNotes(courses,rows,failed){
- const container=document.getElementById('courseNotes');
- if(failed){container.innerHTML='<h3>No pudimos consultar tus apuntes.</h3><p>Revisá la conexión y reintentá. Tus respuestas guardadas no se borraron.</p><button type="button" onclick="loadCoursesCampus()">Reintentar</button>';return;}
- const course=courses.find(c=>Number(c.id)===1);
- if(!course){container.innerHTML='<h3>Tus apuntes de los cursos</h3><p>Cuando tengas acceso a Dropshipping, acá podrás consultar las respuestas que guardes en sus actividades.</p>';return;}
- const record=rows.find(r=>Number(r.course_id)===1);
- const notes=record?.state?.notes||{};
- const titles=['El negocio detrás de la vidriera','Un producto, una necesidad','El proveedor también se evalúa','¿Vende o deja plata?','Una tienda que pueda cumplir','Una prueba chica, una decisión grande'];
- const count=titles.filter((_,i)=>typeof notes['m'+i]==='string'&&notes['m'+i].trim()).length;
- container.innerHTML=`<h3>${escapeHTML(course.title||'Dropshipping')}</h3><p>${count} de 6 hojas con respuestas. Estos son tus apuntes guardados en tu cuenta, tal como los escribiste. Para editarlos, abrí la actividad dentro del curso.</p><button type="button" onclick="loadCoursesCampus()">Actualizar apuntes</button>${titles.map((title,i)=>{const text=typeof notes['m'+i]==='string'?notes['m'+i]:'';return `<article class="campus-note-sheet"><p class="campus-note-label">HOJA ${i+1}</p><h4>${escapeHTML(title)}</h4><p class="campus-note-ink">${escapeHTML(text.trim()?text:'Todavía no escribiste en esta actividad.')}</p></article>`}).join('')}<button type="button" onclick="openCourse(1,true)">Abrir curso para editar →</button>`;
-}
+
 
 function renderCampusProgress(courses,failed){
  const values=[...campusProgress.values()];
@@ -4926,11 +4849,9 @@ function goToSection(id){
 
     progress:3,
 
-    notes:4,
+    diplomas:4,
 
-    diplomas:5,
-
-    profile:6
+    profile:5
 
   };
 
@@ -5060,11 +4981,11 @@ themeToggle
    hasta que existan registros y pagos verificados en el backend.
    ========================================================== */
 const LANGUAGE_INFO=[
-  {id:'ingles',name:'Inglés',flag:'🇬🇧',color:'#3568AD'},
-  {id:'portugues',name:'Portugués',flag:'🇧🇷',color:'#31965C'},
-  {id:'italiano',name:'Italiano',flag:'🇮🇹',color:'#CF704B'},
-  {id:'frances',name:'Francés',flag:'🇫🇷',color:'#8870B5'},
-  {id:'aleman',name:'Alemán',flag:'🇩🇪',color:'#D4A83C'}
+  {id:'ingles',name:'Inglés',flag:'🇬🇧',color:'#3568AD',ids:[2,7,12,17,22,27]},
+  {id:'portugues',name:'Portugués',flag:'🇧🇷',color:'#31965C',ids:[3,8,13,18,23,28]},
+  {id:'italiano',name:'Italiano',flag:'🇮🇹',color:'#CF704B',ids:[4,9,14,19,24,29]},
+  {id:'frances',name:'Francés',flag:'🇫🇷',color:'#8870B5',ids:[5,10,15,20,25,30]},
+  {id:'aleman',name:'Alemán',flag:'🇩🇪',color:'#D4A83C',ids:[6,11,16,21,26,31]}
 ];
 const LEVEL_INFO=[
   {id:'A1',description:'Primeros pasos, palabras esenciales y mucha práctica desde cero.'},
@@ -5074,9 +4995,9 @@ const LEVEL_INFO=[
   {id:'C1',description:'Serie interactiva con misterio, pistas y conversaciones avanzadas.'},
   {id:'C2',description:'Misiones con diálogos, matices, audios y desafíos avanzados.'}
 ];
-const LANGUAGE_COURSES=LANGUAGE_INFO.flatMap(lang=>LEVEL_INFO.map(level=>({
+const LANGUAGE_COURSES=LANGUAGE_INFO.flatMap(lang=>LEVEL_INFO.map((level,i)=>({
   key:lang.id+'_'+level.id.toLowerCase(),lang:lang.id,name:lang.name,flag:lang.flag,color:lang.color,
-  level:level.id,description:level.description,price:2000
+  level:level.id,description:level.description,price:4000,courseId:lang.ids[i]
 })));
 let languageSelected='all',languageLevelSelected='all';
 function setLanguageFilter(value){languageSelected=value;renderLanguagesCatalog()}
@@ -5086,8 +5007,8 @@ function renderLanguagesCatalog(){
   if(!grid||!buttons)return;
   buttons.innerHTML=['all',...LEVEL_INFO.map(item=>item.id)].map(level=>`<button type="button" class="language-filter ${languageLevelSelected===level?'chosen':''}" aria-pressed="${languageLevelSelected===level}" onclick="setLanguageLevel('${level}')">${level==='all'?'Todos los niveles':level}</button>`).join('');
   const filtered=LANGUAGE_COURSES.filter(c=>(languageSelected==='all'||c.lang===languageSelected)&&(languageLevelSelected==='all'||c.level===languageLevelSelected));
-  document.getElementById('languageCount').textContent=`${filtered.length} ${filtered.length===1?'curso disponible en el catálogo':'cursos en el catálogo'} · $2.000 ARS cada uno`;
-  grid.innerHTML=filtered.map(c=>`<article class="language-course" style="--lang:${c.color}"><span class="level">${c.flag} ${c.level}</span><h4>${c.name} ${c.level}</h4><p>${c.description}</p><p class="language-smallprint">Actividades interactivas · audios · evaluación</p><div class="price">$2.000 <span style="font-size:13px">ARS</span></div><button class="course-action" type="button" disabled aria-label="Compra de ${c.name} ${c.level} próximamente">Compra próximamente</button></article>`).join('');
+  document.getElementById('languageCount').textContent=`${filtered.length} ${filtered.length===1?'curso disponible en el catálogo':'cursos en el catálogo'} · $4.000 ARS cada uno`;
+  grid.innerHTML=filtered.map(c=>`<article class="language-course" style="--lang:${c.color}"><span class="level">${c.flag} ${c.level}</span><h4>${c.name} ${c.level}</h4><p>${c.description}</p><p class="language-smallprint">Actividades interactivas · audios · evaluación</p><div class="price">$4.000 <span style="font-size:13px">ARS</span></div><button class="course-action" type="button" onclick="showCourseDetail(${c.courseId})">Ver curso →</button></article>`).join('');
 }
 renderLanguagesCatalog();
 
