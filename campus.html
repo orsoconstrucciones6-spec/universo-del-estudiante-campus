@@ -4203,6 +4203,8 @@ async function refreshCoursePayment(user,ownedIds){
 async function loadCoursesCampus(){
   if(campusLoading)return;
   campusLoading=true;
+  campusOwnedIds.clear();
+  campusVerifiedUserId=null;
 
   const homeContainer =
     document.getElementById("homeCourses");
@@ -4244,6 +4246,9 @@ async function loadCoursesCampus(){
       userData.user;
 
     campusBuyerId=user.id;
+    // Never reuse ownership from another account or an old render.
+    campusOwnedIds.clear();
+    campusVerifiedUserId=null;
 
 
 
@@ -4300,6 +4305,7 @@ async function loadCoursesCampus(){
       publishedCourses || [];
     campusDbCourses=courses;
     campusOwnedIds=new Set((enrollments||[]).map(item=>Number(item.course_id)));
+    campusVerifiedUserId=user.id;
     renderLanguagesCatalog();
 
 
@@ -4439,6 +4445,8 @@ async function loadCoursesCampus(){
   }
 
   catch(error){
+    campusOwnedIds.clear();
+    campusVerifiedUserId=null;
 
     console.error(
       "Error cargando cursos:",
@@ -4521,7 +4529,7 @@ function createCourseCard(
   const status =
     owned
       ? "YA ES TUYO"
-      : "DISPONIBLE";
+      : "SIN COMPRAR";
 
 
   const buttonText =
@@ -4605,6 +4613,7 @@ const COURSE_ROUTES = {
   6:'curso-aleman-a1-privado.html',11:'curso-aleman-a2-privado.html',16:'curso-aleman-b1-privado.html',21:'curso-aleman-b2-privado.html',26:'curso-aleman-c1-privado.html',31:'curso-aleman-c2-privado.html'
 };
 let campusOwnedIds=new Set();
+let campusVerifiedUserId=null;
 let campusDbCourses=[];
 const DROP_DESCRIPTION='Aprendé a planificar una tienda online desde Argentina: modelos de e-commerce y dropshipping, clientes, proveedores, logística, costos, pagos, obligaciones legales y marketing digital. Trabajá con ejemplos y ejercicios para evaluar tu propio proyecto. Al finalizar, podrás crear una tienda de demostración como tesis opcional.';
 const DROP_TOPICS=['Qué es e-commerce y cómo se relaciona con dropshipping','Investigación de clientes, mercados y productos','Proveedores, pedidos, envíos y devoluciones','Precios, márgenes y viabilidad financiera','Facturación, derechos del consumidor y responsabilidades en Argentina','Plataformas de tiendas, marketing y validación del negocio','Actividades, evaluación final y proyecto voluntario después del diploma'];
@@ -4627,18 +4636,44 @@ function getCourseInfo(courseId){
 }
 function showCourseDetail(courseId){
   const c=getCourseInfo(courseId);if(!c)return;
-  const owned=campusOwnedIds.has(c.id);
+  const owned=Boolean(campusVerifiedUserId && campusOwnedIds.has(c.id));
   const topics=c.topics.map(t=>'<li>'+escapeHTML(t)+'</li>').join('');
   document.getElementById('courseDetailContent').innerHTML=`<span class="real-course-category">${escapeHTML(c.category||'Curso')}</span><h3 class="course-detail-heading">${escapeHTML(c.title)}</h3><p>${escapeHTML(c.description)}</p>${c.price!==null?`<div class="course-detail-price">${new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(c.price)} <span style="font:600 14px Manrope,sans-serif">por curso</span></div>`:''}<h4>¿Qué vas a aprender?</h4><ul class="course-detail-list">${topics||'<li>Descripción y programa en preparación.</li>'}</ul><p>Modalidad online a tu ritmo, con práctica y actividades. El diploma corresponde a la finalización de la formación independiente, según las reglas del curso.</p><div class="course-detail-alert">${owned?'Este curso está habilitado en tu cuenta.':'Las compras todavía no están habilitadas. Podés explorar el programa y su precio mientras preparamos la integración con Mercado Pago.'}</div><div class="course-detail-actions">${owned?`<button class="open-course-button" onclick="openCourse(${c.id},true)">Entrar al curso →</button>`:'<button class="open-course-button" type="button" disabled aria-disabled="true">Compra próximamente</button>'}<button class="open-course-button" onclick="goToSection('${c.category==='Idiomas'?'languages':'explore'}')">Seguir explorando</button></div>`;
   showSection('courseDetail');
   history.replaceState(null,'',location.pathname+'?curso='+encodeURIComponent(c.id));
 }
-function openCourse(courseId, owned){
+async function openCourse(courseId){
   const id=Number(courseId);
-  if(!campusOwnedIds.has(id)){showCourseDetail(id);return;}
-  const route=COURSE_ROUTES[id];
-  if(!route){alert('Este curso todavía no tiene un visor configurado.');return;}
-  window.location.href=route;
+  // Fresh, server-backed identity and enrollment check before navigation.
+  // The private course viewer must independently verify access too.
+  try{
+    const {data:userData,error:userError}=await supabaseClient.auth.getUser();
+    if(userError||!userData?.user){
+      campusOwnedIds.clear();campusVerifiedUserId=null;
+      window.location.href='login.html';return;
+    }
+    const uid=userData.user.id;
+    if(campusVerifiedUserId!==uid){campusOwnedIds.clear();campusVerifiedUserId=null;}
+    const {data:enrollment,error:enrollmentError}=await supabaseClient.from('enrollments')
+      .select('id').eq('user_id',uid).eq('course_id',id).eq('status','active').limit(1);
+    if(enrollmentError)throw enrollmentError;
+    if(!enrollment?.length){
+      campusOwnedIds.delete(id);
+      campusVerifiedUserId=uid;
+      showCourseDetail(id);
+      return;
+    }
+    campusVerifiedUserId=uid;
+    campusOwnedIds.add(id);
+    const route=COURSE_ROUTES[id];
+    if(!route){alert('Este curso todavía no tiene un visor configurado.');return;}
+    window.location.href=route;
+  }catch(error){
+    console.error('No se pudo verificar el acceso al curso',error);
+    campusOwnedIds.clear();campusVerifiedUserId=null;
+    alert('No pudimos comprobar tu inscripción. Reintentá desde el Campus.');
+    await loadCoursesCampus();
+  }
 }
 
 /* ==========================================================
@@ -5007,7 +5042,7 @@ function renderLanguagesCatalog(){
   if(!grid||!buttons)return;
   buttons.innerHTML=['all',...LEVEL_INFO.map(item=>item.id)].map(level=>`<button type="button" class="language-filter ${languageLevelSelected===level?'chosen':''}" aria-pressed="${languageLevelSelected===level}" onclick="setLanguageLevel('${level}')">${level==='all'?'Todos los niveles':level}</button>`).join('');
   const filtered=LANGUAGE_COURSES.filter(c=>(languageSelected==='all'||c.lang===languageSelected)&&(languageLevelSelected==='all'||c.level===languageLevelSelected));
-  document.getElementById('languageCount').textContent=`${filtered.length} ${filtered.length===1?'curso disponible en el catálogo':'cursos en el catálogo'} · $4.000 ARS cada uno`;
+  document.getElementById('languageCount').textContent=`${filtered.length} ${filtered.length===1?'curso en el catálogo':'cursos en el catálogo'} · $4.000 ARS cada uno`;
   grid.innerHTML=filtered.map(c=>`<article class="language-course" style="--lang:${c.color}"><span class="level">${c.flag} ${c.level}</span><h4>${c.name} ${c.level}</h4><p>${c.description}</p><p class="language-smallprint">Actividades interactivas · audios · evaluación</p><div class="price">$4.000 <span style="font-size:13px">ARS</span></div><button class="course-action" type="button" onclick="showCourseDetail(${c.courseId})">Ver curso →</button></article>`).join('');
 }
 renderLanguagesCatalog();
