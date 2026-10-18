@@ -1,0 +1,47 @@
+<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dropshipping · Acceso privado · Universo del Estudiante</title><style>
+:root{font-family:system-ui,Arial,sans-serif;color:#193350;background:#f3f1eb}*{box-sizing:border-box}body{margin:0}header{background:#193350;color:#fff;padding:14px 5%;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center;border-bottom:6px solid #ff873d}a{color:inherit}main{margin:18px auto;max-width:1360px;padding:0 14px}.notice{border:2px solid #193350;background:#fff;border-radius:16px;padding:28px}#courseFrame{width:100%;height:calc(100vh - 100px);min-height:620px;border:2px solid #193350;border-radius:13px;display:none;background:white}#retry{display:none;padding:11px;background:#ff873d;border:2px solid #193350;border-radius:9px;font-weight:800;cursor:pointer}.videos{display:none;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.videos button{padding:9px 12px;background:#fff;border:1px solid #193350;border-radius:8px;cursor:pointer}.videos video{width:min(520px,100%);max-height:250px}#saveState{font-size:12px}
+</style></head><body><header><strong>UNIVERSO DEL ESTUDIANTE · DROPSHIPPING</strong><a href="campus.html">← Volver al Campus</a><span id="saveState" role="status"></span></header><main><div id="gate" class="notice" role="status" aria-live="polite"><h1>Preparando tu curso…</h1><p id="status">Comprobando tu inscripción.</p><button id="retry" onclick="location.reload()">Volver a intentar</button></div><div class="videos" id="videos"></div><iframe id="courseFrame" title="Dropshipping y E-commerce desde Argentina" sandbox="allow-scripts allow-modals allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation" referrerpolicy="no-referrer"></iframe></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+'use strict';
+const URL_SUPA='https://ohlgifhdmqzqymnkjnwe.supabase.co';
+const SUPA_KEY='sb_publishable_0o_hbYuQFkWQ49u6gCTNgg_2kd6QAiu';
+const COURSE_ID=1,PROGRESS_NAME='ue_dropshipping_v6_9mod_progress',COURSE_STORE_KEY='course_dropshipping_v6_9mod';
+const client=window.supabase?.createClient(URL_SUPA,SUPA_KEY);
+const frame=document.getElementById('courseFrame'),gate=document.getElementById('gate'),status=document.getElementById('status'),retry=document.getElementById('retry'),saveState=document.getElementById('saveState');
+let userId=null,session=null,cloudRoot={},cloudTime=null,localKey=null,currentProgress=null,delay=null,writing=false,pending=false;
+function fail(message){status.textContent=message;retry.style.display='inline-block'}
+function validProgress(obj){return obj&&typeof obj==='object'&&!Array.isArray(obj)&&Array.isArray(obj.completed)&&typeof obj.answers==='object'}
+function safeJSON(obj){return JSON.stringify(obj).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029')}
+async function flush(){if(writing||!pending||!userId)return;writing=true;pending=false;saveState.textContent='Guardando progreso…';try{
+  let source={...cloudRoot,[COURSE_STORE_KEY]:currentProgress};
+  let res=await client.from('course_progress').upsert({user_id:userId,course_id:COURSE_ID,state:source,updated_at:new Date().toISOString()},{onConflict:'user_id,course_id'}).select('updated_at').single();
+  if(res.error)throw res.error;cloudRoot=source;cloudTime=res.data?.updated_at;saveState.textContent='Guardado en tu cuenta ✓';
+ }catch(e){pending=true;saveState.textContent='No pudimos sincronizar. Queda una copia local en este navegador.';console.warn('Sync failed',e?.message||'error')}finally{writing=false;if(pending)saveState.textContent='Hay cambios pendientes de sincronización.'}}
+client?.auth.onAuthStateChange((event,s)=>{if(event==='SIGNED_OUT'||(s?.user&&userId&&s.user.id!==userId)){userId=null;pending=false;clearTimeout(delay);frame.removeAttribute('srcdoc');frame.style.display='none';gate.style.display='block';fail('La sesión cambió. Volvé a iniciar sesión desde el Campus.');}});
+window.addEventListener('message',e=>{if(e.source!==frame.contentWindow||!userId||!e.data||e.data.type!=='ue-dropshipping-v6-save'||e.data.key!==PROGRESS_NAME)return;if(typeof e.data.value!=='string'||e.data.value.length>150000)return;try{let obj=JSON.parse(e.data.value);if(!validProgress(obj))return;currentProgress=obj;localStorage.setItem(localKey,e.data.value);pending=true;saveState.textContent='Cambios pendientes…';clearTimeout(delay);delay=setTimeout(flush,950)}catch{}});
+window.addEventListener('online',()=>{if(pending)flush()});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flush()});
+async function videos(){const wrap=document.getElementById('videos');for(const [label,path] of [['▶ Bienvenida','1/bienvenida.mp4'],['▶ Despedida','1/despedida.mp4']]){try{const {data,error}=await client.storage.from('course-videos').createSignedUrl(path,1800);if(error||!data?.signedUrl)continue;let button=document.createElement('button');button.textContent=label;button.type='button';button.onclick=()=>{wrap.querySelectorAll('video').forEach(v=>{v.pause();v.remove()});let v=document.createElement('video');v.controls=true;v.playsInline=true;v.src=data.signedUrl;wrap.appendChild(v);v.play().catch(()=>{})};wrap.appendChild(button);wrap.style.display='flex'}catch{}}}
+(async()=>{try{
+ if(!client)throw new Error('No se pudo iniciar la conexión a Supabase.');
+ const ses=await client.auth.getSession();session=ses.data?.session;
+ if(ses.error||!session){fail('Iniciá sesión en el Campus antes de abrir este curso.');return}
+ const result=await client.auth.getUser();if(result.error||!result.data?.user||result.data.user.id!==session.user.id)throw new Error('No pudimos validar la sesión.');
+ userId=result.data.user.id;localKey='ue_ds_v6_'+userId;
+ const res=await client.functions.invoke('abrir-curso-privado',{body:{course_id:COURSE_ID},headers:{Authorization:'Bearer '+session.access_token}});
+ if(res.error){let message=res.error.context?.status===403?'Acceso denegado: no tenés inscripción activa en este curso.':'No se pudo verificar tu acceso.';try{const j=await res.error.context?.json();if(j?.error)message=j.error}catch{}fail(message);return}
+ if(Number(res.data?.course_id)!==1||typeof res.data.signed_url!=='string')throw new Error('La respuesta de acceso no corresponde a este curso.');
+ status.textContent='Cargando tus clases privadas…';
+ const progress=await client.from('course_progress').select('state,updated_at').eq('user_id',userId).eq('course_id',COURSE_ID).maybeSingle();
+ if(progress.error)throw new Error('No se pudo consultar el progreso.');cloudRoot=progress.data?.state&&typeof progress.data.state==='object'?progress.data.state:{};cloudTime=progress.data?.updated_at||null;
+ let local=null;try{local=JSON.parse(localStorage.getItem(localKey)||'null')}catch{}
+ currentProgress=validProgress(cloudRoot[COURSE_STORE_KEY])?cloudRoot[COURSE_STORE_KEY]:(validProgress(local)?local:null);
+ const response=await fetch(res.data.signed_url,{cache:'no-store'});if(!response.ok)throw new Error('No se pudo recuperar el curso privado.');
+ let html=await response.text();
+ if(!html.includes("STORAGE_KEY='ue_dropshipping_v6_9mod_progress'")||!html.includes('const MODULES=')||html.includes('const REVIEW=true'))throw new Error('El archivo privado no coincide con la versión esperada.');
+ const get='localStorage.getItem(STORAGE_KEY)',set='localStorage.setItem(STORAGE_KEY,JSON.stringify(state))';
+ if(!html.includes(get)||!html.includes(set))throw new Error('No se encontró el formato de guardado esperado.');
+ html=html.replaceAll(get,'window.__courseStore.getItem(STORAGE_KEY)').replaceAll(set,'window.__courseStore.setItem(STORAGE_KEY,JSON.stringify(state))');
+ let bootstrap=`<script>window.__courseStore={getItem:function(k){return k==='${PROGRESS_NAME}'?${safeJSON(currentProgress===null?null:JSON.stringify(currentProgress))}:null},setItem:function(k,v){if(k==='${PROGRESS_NAME}')parent.postMessage({type:'ue-dropshipping-v6-save',key:k,value:v},'*')}};<\/script>`;
+ html=html.replace('</head>',bootstrap+'</head>');
+ frame.srcdoc=html;gate.style.display='none';frame.style.display='block';saveState.textContent='Curso habilitado';videos();
+ }catch(e){console.error('Error Dropshipping:',e?.message||e);fail('No se pudo cargar el curso. Revisá que el HTML mejorado esté en el bucket privado y que el ID 1 esté agregado a la función de acceso.')}})();
+</script></body></html>
