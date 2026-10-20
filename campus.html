@@ -3314,8 +3314,7 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
 <div class="category-grid">
 
 
-  <article class="category">
-
+  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de educación financiera" onclick="goToSection('finance')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('finance')}" style="cursor:pointer">
     <span class="category-badge">
       01
     </span>
@@ -3333,7 +3332,6 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
 
 
   <article class="category" role="button" tabindex="0" aria-label="Ver cursos de idiomas" onclick="goToSection('languages')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('languages')}" style="cursor:pointer">
-
     <span class="category-badge">
       02
     </span>
@@ -3350,8 +3348,7 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
   </article>
 
 
-  <article class="category">
-
+  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de desarrollo personal" onclick="goToSection('personal')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('personal')}" style="cursor:pointer">
     <span class="category-badge">
       03
     </span>
@@ -3368,8 +3365,7 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
   </article>
 
 
-  <article class="category">
-
+  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de ciencia divertida" onclick="goToSection('science')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('science')}" style="cursor:pointer">
     <span class="category-badge">
       04
     </span>
@@ -3386,8 +3382,7 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
   </article>
 
 
-  <article class="category">
-
+  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de mundo vegetal" onclick="goToSection('plants')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('plants')}" style="cursor:pointer">
     <span class="category-badge">
       05
     </span>
@@ -3596,8 +3591,7 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
       <div class="category-grid">
 
 
-  <article class="category">
-
+  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de educación financiera" onclick="goToSection('finance')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('finance')}" style="cursor:pointer">
     <span class="category-badge">
       01
     </span>
@@ -3615,7 +3609,6 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
 
 
   <article class="category" role="button" tabindex="0" aria-label="Ver cursos de idiomas" onclick="goToSection('languages')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('languages')}" style="cursor:pointer">
-
     <span class="category-badge">
       02
     </span>
@@ -3632,8 +3625,7 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
   </article>
 
 
-  <article class="category">
-
+  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de desarrollo personal" onclick="goToSection('personal')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('personal')}" style="cursor:pointer">
     <span class="category-badge">
       03
     </span>
@@ -3650,8 +3642,7 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
   </article>
 
 
-  <article class="category">
-
+  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de ciencia divertida" onclick="goToSection('science')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('science')}" style="cursor:pointer">
     <span class="category-badge">
       04
     </span>
@@ -3668,8 +3659,7 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
   </article>
 
 
-  <article class="category">
-
+  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de mundo vegetal" onclick="goToSection('plants')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('plants')}" style="cursor:pointer">
     <span class="category-badge">
       05
     </span>
@@ -3689,42 +3679,19 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
 </div>
 
 
-<section
-  class="panel"
-  style="margin-top:26px;"
->
-
-
-  <div class="panel-head">
-
-    <h3>
-      Cursos disponibles
-    </h3>
-
-  </div>
-
-
-  <div
-    id="exploreCourses"
-    class="my-courses-grid"
-  >
-
-    <div class="courses-loading">
-
-      Buscando cursos... ✦
-
-    </div>
-
-  </div>
-
-
 </section>
 
 
+
+    <!-- Catálogos por categoría: exploración no concede acceso -->
+    <section id="finance" class="section-view">
+      <div class="section-head"><h2>Educación financiera</h2><button class="back-button" onclick="goToSection('explore')">← EXPLORAR</button></div>
+      <div class="panel"><div class="panel-head"><h3>Aprendé a manejar tu dinero 💜</h3></div><p>Explorá los cursos de educación financiera. Podés consultar cada programa y su precio; las clases se habilitan únicamente con una inscripción activa.</p></div>
+      <div class="panel" style="margin-top:24px"><div class="panel-head"><h3>Cursos de Educación financiera</h3></div><div id="financeCourses" class="my-courses-grid"><div class="courses-loading">Cargando cursos…</div></div></div>
     </section>
-
-
-
+    <section id="personal" class="section-view"><div class="section-head"><h2>Desarrollo personal</h2><button class="back-button" onclick="goToSection('explore')">← EXPLORAR</button></div><div class="panel"><h3>Desarrollo personal</h3><p>Cursos de organización, comunicación y habilidades personales.</p><div id="personalCourses" class="my-courses-grid"><div class="no-courses">Próximamente vamos a incorporar cursos a esta categoría.</div></div></div></section>
+    <section id="science" class="section-view"><div class="section-head"><h2>Ciencia divertida</h2><button class="back-button" onclick="goToSection('explore')">← EXPLORAR</button></div><div class="panel"><h3>Ciencia divertida</h3><p>Experimentos, curiosidades y proyectos para descubrir.</p><div id="scienceCourses" class="my-courses-grid"><div class="no-courses">Próximamente vamos a incorporar cursos a esta categoría.</div></div></div></section>
+    <section id="plants" class="section-view"><div class="section-head"><h2>Mundo vegetal</h2><button class="back-button" onclick="goToSection('explore')">← EXPLORAR</button></div><div class="panel"><h3>Mundo vegetal</h3><p>Aprendé sobre plantas, naturaleza y cultivo.</p><div id="plantsCourses" class="my-courses-grid"><div class="no-courses">Próximamente vamos a incorporar cursos a esta categoría.</div></div></div></section>
     <!-- ======================================================
          IDIOMAS · CATÁLOGO (30 CURSOS)
          ====================================================== -->
@@ -4212,8 +4179,6 @@ async function loadCoursesCampus(){
   const myCoursesContainer =
     document.getElementById("allMyCourses");
 
-  const exploreContainer =
-    document.getElementById("exploreCourses");
 
 
   function putHTML(element, html){
@@ -4382,52 +4347,17 @@ async function loadCoursesCampus(){
 
 
 
-    let exploreHTML;
-
-
-    if(courses.length === 0){
-
-      exploreHTML = `
-
-        <div class="no-courses">
-
-          Todavía no hay cursos
-          publicados.
-
-        </div>
-
-      `;
-
-    }
-
-    else{
-
-      exploreHTML =
-        courses
-          .map(course => {
-
-            const owned =
-              ownedCourseIds.has(
-                Number(course.id)
-              );
-
-
-            return createCourseCard(
-              course,
-              owned
-            );
-
-          })
-          .join("");
-
-    }
-
-
-    // Idiomas listados aunque todavía no estén en la tabla pública Courses.
+    // Catálogos públicos divididos por categoría: NO son cursos adquiridos.
     const listedIds=new Set(courses.map(c=>Number(c.id)));
     const extraCourses=[{id:32,title:'Mi primera platinga',category:'Educación financiera',short_description:PLATINGA_DESCRIPTION},{id:1,title:'Dropshipping y E-commerce desde Argentina',category:'Educación financiera',short_description:DROP_DESCRIPTION},...LANGUAGE_COURSES.map(c=>({id:c.courseId,title:c.name+' '+c.level,category:'Idiomas',short_description:c.description}))].filter(c=>!listedIds.has(c.id));
-    const extras=extraCourses.map(c=>createCourseCard(c,campusOwnedIds.has(c.id))).join('');
-    putHTML(exploreContainer, exploreHTML + extras);
+    const allCatalog=[...courses,...extraCourses];
+    const financial=allCatalog.filter(c=>String(c.category||'').toLowerCase().includes('financiera'));
+    putHTML(document.getElementById('financeCourses'),financial.length?financial.map(c=>createCourseCard(c,campusOwnedIds.has(Number(c.id)))).join(''):'<div class="no-courses">Todavía no hay cursos en esta categoría.</div>');
+    const catIds={personal:'Desarrollo personal',science:'Ciencia divertida',plants:'Mundo vegetal'};
+    for(const [key,category] of Object.entries(catIds)){
+      const matches=allCatalog.filter(c=>String(c.category||'').toLowerCase()===category.toLowerCase());
+      putHTML(document.getElementById(key+'Courses'),matches.length?matches.map(c=>createCourseCard(c,campusOwnedIds.has(Number(c.id)))).join(''):'<div class="no-courses">Próximamente vamos a incorporar cursos a esta categoría.</div>');
+    }
     // Las inscripciones de idioma también aparecen en Mis cursos.
     const ownedExtras=extraCourses.filter(c=>campusOwnedIds.has(c.id)).map(c=>createCourseCard(c,true)).join('');
     if(ownedExtras){putHTML(homeContainer,myCoursesHTML+ownedExtras);putHTML(myCoursesContainer,myCoursesHTML+ownedExtras);}
@@ -4480,10 +4410,7 @@ async function loadCoursesCampus(){
     );
 
 
-    putHTML(
-      exploreContainer,
-      errorHTML
-    );
+    putHTML(document.getElementById("financeCourses"),errorHTML);
 
   }
 
@@ -4642,7 +4569,7 @@ function showCourseDetail(courseId){
   const c=getCourseInfo(courseId);if(!c)return;
   const owned=Boolean(campusVerifiedUserId && campusOwnedIds.has(c.id));
   const topics=c.topics.map(t=>'<li>'+escapeHTML(t)+'</li>').join('');
-  document.getElementById('courseDetailContent').innerHTML=`<span class="real-course-category">${escapeHTML(c.category||'Curso')}</span><h3 class="course-detail-heading">${escapeHTML(c.title)}</h3><p>${escapeHTML(c.description)}</p>${c.price!==null?`<div class="course-detail-price">${new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(c.price)} <span style="font:600 14px Manrope,sans-serif">por curso</span></div>`:''}<h4>¿Qué vas a aprender?</h4><ul class="course-detail-list">${topics||'<li>Descripción y programa en preparación.</li>'}</ul><p>Modalidad online a tu ritmo, con práctica y actividades. El diploma corresponde a la finalización de la formación independiente, según las reglas del curso.</p><div class="course-detail-alert">${owned?'Este curso está habilitado en tu cuenta.':'Las compras todavía no están habilitadas. Podés explorar el programa y su precio mientras preparamos la integración con Mercado Pago.'}</div><div class="course-detail-actions">${owned?`<button class="open-course-button" onclick="openCourse(${c.id},true)">Entrar al curso →</button>`:'<button class="open-course-button" type="button" disabled aria-disabled="true">Compra próximamente</button>'}<button class="open-course-button" onclick="goToSection('${c.category==='Idiomas'?'languages':'explore'}')">Seguir explorando</button></div>`;
+  document.getElementById('courseDetailContent').innerHTML=`<span class="real-course-category">${escapeHTML(c.category||'Curso')}</span><h3 class="course-detail-heading">${escapeHTML(c.title)}</h3><p>${escapeHTML(c.description)}</p>${c.price!==null?`<div class="course-detail-price">${new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(c.price)} <span style="font:600 14px Manrope,sans-serif">por curso</span></div>`:''}<h4>¿Qué vas a aprender?</h4><ul class="course-detail-list">${topics||'<li>Descripción y programa en preparación.</li>'}</ul><p>Modalidad online a tu ritmo, con práctica y actividades. El diploma corresponde a la finalización de la formación independiente, según las reglas del curso.</p><div class="course-detail-alert">${owned?'Este curso está habilitado en tu cuenta.':'Las compras todavía no están habilitadas. Podés explorar el programa y su precio mientras preparamos la integración con Mercado Pago.'}</div><div class="course-detail-actions">${owned?`<button class="open-course-button" onclick="openCourse(${c.id},true)">Entrar al curso →</button>`:'<button class="open-course-button" type="button" disabled aria-disabled="true">Compra próximamente</button>'}<button class="open-course-button" onclick="goToSection('${c.category==='Idiomas'?'languages':c.category==='Educación financiera'?'finance':'explore'}')">Seguir explorando</button></div>`;
   showSection('courseDetail');
   history.replaceState(null,'',location.pathname+'?curso='+encodeURIComponent(c.id));
 }
