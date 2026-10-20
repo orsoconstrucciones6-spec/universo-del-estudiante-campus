@@ -2752,6 +2752,44 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
 .course-detail-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
 .course-detail-alert{border-left:5px solid var(--orange);padding:16px;background:var(--paper-soft);border-radius:10px;margin:18px 0}
 .category[role="button"]:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+
+/* Secciones del catálogo de educación financiera */
+.finance-sections{display:grid;gap:22px;margin-top:24px}
+.finance-group{scroll-margin-top:100px}
+.finance-group .panel-head h3{font-size:clamp(1.35rem,2.5vw,1.8rem)}
+.finance-group > p{margin:5px 0 18px}
+.finance-group .my-courses-grid{margin-top:12px}
+#finance-primeros-pasos{border-top:5px solid #9c79d8}
+#finance-vida-cotidiana{border-top:5px solid #66b7aa}
+#finance-inversiones{border-top:5px solid #e5a15a}
+#finance-historia-negocios{border-top:5px solid #82a8dd}
+
+/* Portadas de categorías · papeles cálidos, colores alternados y contrastes accesibles */
+.category-intro{--accent:#8055b6;--wash:#f4e9ff;--wash2:#fff6e7;position:relative;overflow:hidden;margin:0 0 25px;padding:clamp(22px,4vw,40px);border:2px solid var(--accent);border-radius:28px;background:linear-gradient(125deg,var(--wash),var(--wash2));color:#193650;box-shadow:6px 7px 0 var(--accent)}
+.category-intro::after{content:'✦';position:absolute;right:22px;top:8px;font:900 clamp(60px,10vw,115px)/1 'Fredoka',sans-serif;color:var(--accent);opacity:.15;pointer-events:none;transform:rotate(14deg)}
+.category-intro--finance{--accent:#8756b5;--wash:#f0e3ff;--wash2:#fff0d9}
+.category-intro--personal{--accent:#ba7442;--wash:#ffe5c7;--wash2:#f7efdb}
+.category-intro--science{--accent:#5376b6;--wash:#e0ecff;--wash2:#f3e6ff}
+.category-intro--plants{--accent:#3b916b;--wash:#d9f1df;--wash2:#fff2dc}
+.category-intro-kicker{display:inline-block;position:relative;z-index:1;padding:7px 12px;border:1px solid currentColor;border-radius:999px;background:#fffaf1;color:#193650;font:800 11px/1.3 'Manrope',sans-serif;letter-spacing:.045em}
+.category-intro h3{position:relative;z-index:1;margin:15px 0 10px;color:#193650;font:700 clamp(29px,4.7vw,46px)/1.13 'Fredoka',sans-serif;max-width:800px}
+.category-intro>p{position:relative;z-index:1;max-width:850px;margin:0;font:700 clamp(14px,1.7vw,17px)/1.65 'Manrope',sans-serif}
+.category-intro-note{position:relative;z-index:1;max-width:920px;margin-top:22px;padding:16px 19px;border-left:6px solid var(--accent);border-radius:14px;background:rgba(255,255,255,.76);line-height:1.65}
+.category-intro-note strong{font-size:15px}.category-intro-note p{margin:5px 0 0;font-size:14px}
+/* Cada sección financiera tiene su propia superficie: el azul es un acento, no el fondo de todo. */
+.finance-group{color:#193650;border:2px solid var(--line);box-shadow:4px 5px 0 rgba(0,0,0,.07)}
+.finance-group .panel-head h3{color:#193650!important}
+#finance-primeros-pasos{background:#f3e8ff;border-top:8px solid #9970c9}
+#finance-vida-cotidiana{background:#e4f3e7;border-top:8px solid #54a47e}
+#finance-inversiones{background:#fff0db;border-top:8px solid #e3984c}
+#finance-historia-negocios{background:#e5edf9;border-top:8px solid #7197d2}
+.category-catalog--personal{border-top:7px solid #d99467}
+.category-catalog--science{border-top:7px solid #9a80d6}
+.category-catalog--plants{border-top:7px solid #65b58d}
+html[data-theme="dark"] .category-intro{box-shadow:5px 6px 0 var(--accent)}
+html[data-theme="dark"] .finance-group{color:#193650}
+html[data-theme="dark"] .finance-group .no-courses{color:#193650}
+@media(max-width:650px){.category-intro{padding:21px 18px}.category-intro::after{right:8px;top:8px}.category-intro-note{padding:13px 14px}}
 </style>
 
 </head>
@@ -3686,12 +3724,49 @@ html[data-theme="dark"] .language-intro{background:linear-gradient(120deg,#304c6
     <!-- Catálogos por categoría: exploración no concede acceso -->
     <section id="finance" class="section-view">
       <div class="section-head"><h2>Educación financiera</h2><button class="back-button" onclick="goToSection('explore')">← EXPLORAR</button></div>
-      <div class="panel"><div class="panel-head"><h3>Aprendé a manejar tu dinero 💜</h3></div><p>Explorá los cursos de educación financiera. Podés consultar cada programa y su precio; las clases se habilitan únicamente con una inscripción activa.</p></div>
-      <div class="panel" style="margin-top:24px"><div class="panel-head"><h3>Cursos de Educación financiera</h3></div><div id="financeCourses" class="my-courses-grid"><div class="courses-loading">Cargando cursos…</div></div></div>
+      <div class="category-intro category-intro--finance">
+      <span class="category-intro-kicker">FINANZAS PARA LA VIDA · 4 SECCIONES</span>
+      <h3>¡Tus ideas también pueden crecer! 💸</h3>
+      <p>Desde organizar tu primera platita hasta explorar inversiones y negocios: aprendé a entender el dinero, hacer preguntas y tomar decisiones con más herramientas. No hace falta empezar sabiendo todo.</p>
+      <div class="category-intro-note"><strong>✦ Aprendé con calma</strong><p>Elegí por dónde empezar, tomá apuntes y resolvé las actividades a tu ritmo. Cada curso propone ejemplos y práctica para que puedas aplicar lo aprendido.</p></div>
+    </div>
+      <div class="finance-sections" aria-label="Secciones de Educación financiera">
+        <section class="panel finance-group" id="finance-primeros-pasos"><div class="panel-head"><h3>🌱 Primeros pasos</h3></div><p>Empezá por las bases: dinero, ahorro y decisiones financieras.</p><div id="financePrimeros" class="my-courses-grid"><div class="courses-loading">Cargando cursos…</div></div></section>
+        <section class="panel finance-group" id="finance-vida-cotidiana"><div class="panel-head"><h3>🛍️ Vida cotidiana</h3></div><p>Organizá tus gastos y aprendé a resolver situaciones del día a día.</p><div id="financeVida" class="my-courses-grid"><div class="no-courses">Próximamente vamos a incorporar cursos a esta sección.</div></div></section>
+        <section class="panel finance-group" id="finance-inversiones"><div class="panel-head"><h3>📈 Inversiones</h3></div><p>Conocé alternativas, emprendimientos y decisiones de inversión.</p><div id="financeInversiones" class="my-courses-grid"><div class="courses-loading">Cargando cursos…</div></div></section>
+        <section class="panel finance-group" id="finance-historia-negocios"><div class="panel-head"><h3>📚 Historia y negocios</h3></div><p>Descubrí cómo evolucionaron el dinero y las ideas de negocios.</p><div id="financeHistoria" class="my-courses-grid"><div class="no-courses">Próximamente vamos a incorporar cursos a esta sección.</div></div></section>
+      </div>
     </section>
-    <section id="personal" class="section-view"><div class="section-head"><h2>Desarrollo personal</h2><button class="back-button" onclick="goToSection('explore')">← EXPLORAR</button></div><div class="panel"><h3>Desarrollo personal</h3><p>Cursos de organización, comunicación y habilidades personales.</p><div id="personalCourses" class="my-courses-grid"><div class="no-courses">Próximamente vamos a incorporar cursos a esta categoría.</div></div></div></section>
-    <section id="science" class="section-view"><div class="section-head"><h2>Ciencia divertida</h2><button class="back-button" onclick="goToSection('explore')">← EXPLORAR</button></div><div class="panel"><h3>Ciencia divertida</h3><p>Experimentos, curiosidades y proyectos para descubrir.</p><div id="scienceCourses" class="my-courses-grid"><div class="no-courses">Próximamente vamos a incorporar cursos a esta categoría.</div></div></div></section>
-    <section id="plants" class="section-view"><div class="section-head"><h2>Mundo vegetal</h2><button class="back-button" onclick="goToSection('explore')">← EXPLORAR</button></div><div class="panel"><h3>Mundo vegetal</h3><p>Aprendé sobre plantas, naturaleza y cultivo.</p><div id="plantsCourses" class="my-courses-grid"><div class="no-courses">Próximamente vamos a incorporar cursos a esta categoría.</div></div></div></section>
+    <section id="personal" class="section-view">
+      <div class="section-head"><h2>Desarrollo personal</h2><button class="back-button" onclick="goToSection('explore')">← EXPLORAR</button></div>
+      <div class="category-intro category-intro--personal">
+      <span class="category-intro-kicker">HABILIDADES PARA TU DÍA A DÍA</span>
+      <h3>¡Un poquito más de vos, cada día! ✨</h3>
+      <p>Explorá herramientas para organizarte, comunicarte, conocerte mejor y encarar desafíos personales. No hay una única manera de crecer: encontrá la que tenga sentido para vos.</p>
+      <div class="category-intro-note"><strong>✦ Tu ritmo también cuenta</strong><p>Probá las ideas, adaptalas a tu realidad y quedate con lo que te resulte útil. Aprender sobre uno mismo es un proceso, no una carrera.</p></div>
+    </div>
+      <div class="panel category-catalog category-catalog--personal"><div class="panel-head"><h3>Explorá los cursos</h3></div><div id="personalCourses" class="my-courses-grid"><div class="no-courses">Próximamente vamos a incorporar cursos a esta categoría.</div></div></div>
+    </section>
+    <section id="science" class="section-view">
+      <div class="section-head"><h2>Ciencia divertida</h2><button class="back-button" onclick="goToSection('explore')">← EXPLORAR</button></div>
+      <div class="category-intro category-intro--science">
+      <span class="category-intro-kicker">PREGUNTAR · PROBAR · DESCUBRIR</span>
+      <h3>¡La curiosidad tiene superpoderes! 🔬</h3>
+      <p>¿Por qué pasan las cosas? ¿Qué sucede si cambiamos una variable? Descubrí conceptos científicos con preguntas, experimentos seguros, actividades y explicaciones que invitan a pensar.</p>
+      <div class="category-intro-note"><strong>✦ Una pregunta puede abrir mil caminos</strong><p>Anotá tus hipótesis, compará resultados y animate a revisar tus ideas. En ciencia, equivocarse también ayuda a aprender.</p></div>
+    </div>
+      <div class="panel category-catalog category-catalog--science"><div class="panel-head"><h3>Explorá los cursos</h3></div><div id="scienceCourses" class="my-courses-grid"><div class="no-courses">Próximamente vamos a incorporar cursos a esta categoría.</div></div></div>
+    </section>
+    <section id="plants" class="section-view">
+      <div class="section-head"><h2>Mundo vegetal</h2><button class="back-button" onclick="goToSection('explore')">← EXPLORAR</button></div>
+      <div class="category-intro category-intro--plants">
+      <span class="category-intro-kicker">NATURALEZA · CULTIVO · DESCUBRIMIENTO</span>
+      <h3>¡De una semillita a un mundo entero! 🌿</h3>
+      <p>Acercate al universo de las plantas: cómo viven, qué necesitan y por qué son esenciales para nuestro planeta. Desde una maceta hasta un ecosistema, siempre hay algo nuevo para observar.</p>
+      <div class="category-intro-note"><strong>✦ Observá, cuidá y aprendé</strong><p>No necesitás un jardín para empezar: podés aprender mirando las plantas de tu entorno y haciendo actividades sencillas con materiales accesibles.</p></div>
+    </div>
+      <div class="panel category-catalog category-catalog--plants"><div class="panel-head"><h3>Explorá los cursos</h3></div><div id="plantsCourses" class="my-courses-grid"><div class="no-courses">Próximamente vamos a incorporar cursos a esta categoría.</div></div></div>
+    </section>
     <!-- ======================================================
          IDIOMAS · CATÁLOGO (30 CURSOS)
          ====================================================== -->
@@ -4352,7 +4427,39 @@ async function loadCoursesCampus(){
     const extraCourses=[{id:32,title:'Mi primera platinga',category:'Educación financiera',short_description:PLATINGA_DESCRIPTION},{id:1,title:'Dropshipping y E-commerce desde Argentina',category:'Educación financiera',short_description:DROP_DESCRIPTION},...LANGUAGE_COURSES.map(c=>({id:c.courseId,title:c.name+' '+c.level,category:'Idiomas',short_description:c.description}))].filter(c=>!listedIds.has(c.id));
     const allCatalog=[...courses,...extraCourses];
     const financial=allCatalog.filter(c=>String(c.category||'').toLowerCase().includes('financiera'));
-    putHTML(document.getElementById('financeCourses'),financial.length?financial.map(c=>createCourseCard(c,campusOwnedIds.has(Number(c.id)))).join(''):'<div class="no-courses">Todavía no hay cursos en esta categoría.</div>');
+    // Misma clasificación de los 18 programas académicos de Educación financiera.
+    const financeSectionByTitle={
+      'Mi primera platinga': 'financePrimeros',
+      'Que no te vendan humo': 'financePrimeros',
+      'Interés compuesto: el tiempo cuenta': 'financePrimeros',
+      '¿Cuándo ahorrar y cuándo invertir?': 'financePrimeros',
+      'Antes de invertir tu primer peso': 'financePrimeros',
+      '¿A dónde se me va la plata?': 'financeVida',
+      'Un colchón para los imprevistos': 'financeVida',
+      'Inflación: lo que cambia tu dinero': 'financeVida',
+      'Tarjetas, cuotas y deudas': 'financeVida',
+      'Monedas del mundo: del dólar al peso': 'financeVida',
+      'Acciones y CEDEARs': 'financeInversiones',
+      'Opciones: puts y calls': 'financeInversiones',
+      'Fondos comunes de inversión': 'financeInversiones',
+      'Letras, cauciones y bonos': 'financeInversiones',
+      'Dropshipping y E-commerce desde Argentina': 'financeInversiones',
+      '¿Por qué existe el dinero?': 'financeHistoria',
+      '¿Por qué el dólar es tan universal?': 'financeHistoria',
+      'Lectura crítica de Padre rico, padre pobre': 'financeHistoria',
+    };
+    const normalizeFinanceTitle=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+    const financeSectionNormalized=new Map(Object.entries(financeSectionByTitle).map(([title,section])=>[normalizeFinanceTitle(title),section]));
+    // IDs conocidos: no dependen de que el título en Supabase sea idéntico.
+    const financeSectionById={1:'financeInversiones',32:'financePrimeros'};
+    const financeBuckets={financePrimeros:[],financeVida:[],financeInversiones:[],financeHistoria:[]};
+    for(const course of financial){
+      const group=financeSectionById[Number(course.id)]||financeSectionNormalized.get(normalizeFinanceTitle(course.title))||'financeHistoria';
+      financeBuckets[group].push(course);
+    }
+    for(const [elementId,items] of Object.entries(financeBuckets)){
+      putHTML(document.getElementById(elementId),items.length?items.map(c=>createCourseCard(c,campusOwnedIds.has(Number(c.id)))).join(''):'<div class="no-courses">Próximamente vamos a incorporar cursos a esta sección.</div>');
+    }
     const catIds={personal:'Desarrollo personal',science:'Ciencia divertida',plants:'Mundo vegetal'};
     for(const [key,category] of Object.entries(catIds)){
       const matches=allCatalog.filter(c=>String(c.category||'').toLowerCase()===category.toLowerCase());
@@ -4410,7 +4517,9 @@ async function loadCoursesCampus(){
     );
 
 
-    putHTML(document.getElementById("financeCourses"),errorHTML);
+    for(const id of ['financePrimeros','financeVida','financeInversiones','financeHistoria']){
+      putHTML(document.getElementById(id),errorHTML);
+    }
 
   }
 
