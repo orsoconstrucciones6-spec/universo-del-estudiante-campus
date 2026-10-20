@@ -4425,7 +4425,7 @@ async function loadCoursesCampus(){
 
     // Idiomas listados aunque todavía no estén en la tabla pública Courses.
     const listedIds=new Set(courses.map(c=>Number(c.id)));
-    const extraCourses=[{id:1,title:'Dropshipping y E-commerce desde Argentina',category:'Educación financiera',short_description:DROP_DESCRIPTION},...LANGUAGE_COURSES.map(c=>({id:c.courseId,title:c.name+' '+c.level,category:'Idiomas',short_description:c.description}))].filter(c=>!listedIds.has(c.id));
+    const extraCourses=[{id:32,title:'Mi primera platinga',category:'Educación financiera',short_description:PLATINGA_DESCRIPTION},{id:1,title:'Dropshipping y E-commerce desde Argentina',category:'Educación financiera',short_description:DROP_DESCRIPTION},...LANGUAGE_COURSES.map(c=>({id:c.courseId,title:c.name+' '+c.level,category:'Idiomas',short_description:c.description}))].filter(c=>!listedIds.has(c.id));
     const extras=extraCourses.map(c=>createCourseCard(c,campusOwnedIds.has(c.id))).join('');
     putHTML(exploreContainer, exploreHTML + extras);
     // Las inscripciones de idioma también aparecen en Mis cursos.
@@ -4434,7 +4434,7 @@ async function loadCoursesCampus(){
     const requested=new URLSearchParams(location.search).get('curso');
     if(requested&&!window.__openedInitialCourse){
       const match=LANGUAGE_COURSES.find(c=>c.key.replace('_','-')===requested||c.key===requested);
-      const target=Number(requested)||match?.courseId||(requested==='dropshipping-sin-humo'?1:null);
+      const target=Number(requested)||match?.courseId||(requested==='dropshipping-sin-humo'?1:requested==='mi-primera-platinga'?32:null);
       if(getCourseInfo(target)){window.__openedInitialCourse=true;showCourseDetail(target);}
     }
 
@@ -4610,11 +4610,14 @@ const COURSE_ROUTES = {
   3:'curso-portugues-a1-privado.html',8:'curso-portugues-a2-privado.html',13:'curso-portugues-b1-privado.html',18:'curso-portugues-b2-privado.html',23:'curso-portugues-c1-privado.html',28:'curso-portugues-c2-privado.html',
   4:'curso-italiano-a1-privado.html',9:'curso-italiano-a2-privado.html',14:'curso-italiano-b1-privado.html',19:'curso-italiano-b2-privado.html',24:'curso-italiano-c1-privado.html',29:'curso-italiano-c2-privado.html',
   5:'curso-frances-a1-privado.html',10:'curso-frances-a2-privado.html',15:'curso-frances-b1-privado.html',20:'curso-frances-b2-privado.html',25:'curso-frances-c1-privado.html',30:'curso-frances-c2-privado.html',
-  6:'curso-aleman-a1-privado.html',11:'curso-aleman-a2-privado.html',16:'curso-aleman-b1-privado.html',21:'curso-aleman-b2-privado.html',26:'curso-aleman-c1-privado.html',31:'curso-aleman-c2-privado.html'
+  6:'curso-aleman-a1-privado.html',11:'curso-aleman-a2-privado.html',16:'curso-aleman-b1-privado.html',21:'curso-aleman-b2-privado.html',26:'curso-aleman-c1-privado.html',31:'curso-aleman-c2-privado.html',
+  32:'curso-mi-primera-platinga-privado.html'
 };
 let campusOwnedIds=new Set();
 let campusVerifiedUserId=null;
 let campusDbCourses=[];
+const PLATINGA_DESCRIPTION='Aprendé a identificar ingresos y gastos, organizar presupuestos, tomar decisiones de consumo y establecer metas de ahorro a través de ocho módulos, ejercicios y evaluaciones.';
+const PLATINGA_TOPICS=['Ingresos, gastos, necesidades y deseos','Presupuestos personales y registro de movimientos','Metas de ahorro y decisiones financieras cotidianas','Hábitos sostenibles, prevención de errores y proyecto integrador'];
 const DROP_DESCRIPTION='Aprendé a planificar una tienda online desde Argentina: modelos de e-commerce y dropshipping, clientes, proveedores, logística, costos, pagos, obligaciones legales y marketing digital. Trabajá con ejemplos y ejercicios para evaluar tu propio proyecto. Al finalizar, podrás crear una tienda de demostración como tesis opcional.';
 const DROP_TOPICS=['Qué es e-commerce y cómo se relaciona con dropshipping','Investigación de clientes, mercados y productos','Proveedores, pedidos, envíos y devoluciones','Precios, márgenes y viabilidad financiera','Facturación, derechos del consumidor y responsabilidades en Argentina','Plataformas de tiendas, marketing y validación del negocio','Actividades, evaluación final y proyecto voluntario después del diploma'];
 const LANGUAGE_TOPICS={
@@ -4629,6 +4632,7 @@ function getCourseInfo(courseId){
   const id=Number(courseId);
   const lang=LANGUAGE_COURSES.find(c=>c.courseId===id);
   if(lang)return {id,title:lang.name+' '+lang.level,category:'Idiomas',price:4000,description:'Aprendé '+lang.name+' en el nivel '+lang.level+' con explicaciones, ejercicios interactivos y práctica de comprensión. Este curso te ayuda a consolidar conocimientos y avanzar a tu ritmo, sin garantizar una certificación oficial de nivel.',topics:LANGUAGE_TOPICS[lang.level]};
+  if(id===32)return {id,title:'Mi primera platinga',category:'Educación financiera',price:1500,description:PLATINGA_DESCRIPTION,topics:PLATINGA_TOPICS};
   if(id===1)return {id,title:'Dropshipping y E-commerce desde Argentina',category:'Educación financiera',price:3000,description:DROP_DESCRIPTION,topics:DROP_TOPICS};
   const other=campusDbCourses.find(c=>Number(c.id)===id);
   if(other)return {id,title:other.title,category:other.category,price:null,description:other.short_description||'Conocé el programa y objetivos de este curso.',topics:[]};
