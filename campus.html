@@ -3298,6 +3298,32 @@ html[data-theme="dark"] .real-course-card:nth-child(6n+2) h3,html[data-theme="da
 html[data-theme="dark"] .real-course-card:nth-child(6n+4) h3,html[data-theme="dark"] .real-course-card:nth-child(6n+4) h4,html[data-theme="dark"] .real-course-card:nth-child(6n+4) p,html[data-theme="dark"] .real-course-card:nth-child(6n+4) .real-course-category,html[data-theme="dark"] .real-course-card:nth-child(6n+4) .course-status,
 html[data-theme="dark"] .real-course-card:nth-child(6n+5) h3,html[data-theme="dark"] .real-course-card:nth-child(6n+5) h4,html[data-theme="dark"] .real-course-card:nth-child(6n+5) p,html[data-theme="dark"] .real-course-card:nth-child(6n+5) .real-course-category,html[data-theme="dark"] .real-course-card:nth-child(6n+5) .course-status{color:#193250 !important;}
 
+
+/* INICIO COMPACTO · Sin listado de cursos repetido */
+.home-essentials{
+ display:grid;grid-template-columns:1.25fr .9fr .95fr;
+ gap:18px;align-items:stretch;margin-top:22px;
+}
+.home-essentials .panel{margin:0;min-width:0;}
+.home-essentials .panel + .panel{margin-top:0;}
+.home-essentials .progress-box{background:#84adbe;color:#18314c;}
+.home-essentials .progress-box h3,
+.home-essentials .progress-box .progress-row{color:#18314c;}
+.home-essentials .quote-card{background:linear-gradient(135deg,#e5c45e,#ebbb86);color:#193250;font-size:21px;display:flex;align-items:center;transform:none;cursor:default;}
+.home-essentials .home-reminder{background:#e7d8be;color:#193250;}
+.home-essentials .home-reminder h3,.home-essentials .home-reminder p{color:#193250;}
+.home-reminder p{margin:0;font-size:14px;font-weight:700;line-height:1.65;}
+.home-summary-link{margin-top:18px;padding:10px 15px;border-radius:12px;border:2px solid #193250;background:#285876;color:#fff;font:700 14px Fredoka,sans-serif;cursor:pointer;}
+.home-summary-link:hover{background:#193250;}
+html[data-theme="dark"] .home-essentials .progress-box,
+html[data-theme="dark"] .home-essentials .quote-card,
+html[data-theme="dark"] .home-essentials .home-reminder{color:#193250;}
+html[data-theme="dark"] .home-essentials .progress-box h3,
+html[data-theme="dark"] .home-essentials .home-reminder h3,
+html[data-theme="dark"] .home-essentials .home-reminder p{color:#193250 !important;}
+@media(max-width:1250px){.home-essentials{grid-template-columns:1fr 1fr}.home-essentials .progress-box{grid-column:span 2}}
+@media(max-width:700px){.home-essentials{grid-template-columns:1fr}.home-essentials .progress-box{grid-column:auto}}
+
 </style>
 
 </head>
@@ -3791,257 +3817,27 @@ html[data-theme="dark"] .real-course-card:nth-child(6n+5) h3,html[data-theme="da
 
 
 
-      <!-- INFERIOR -->
-
-      <div class="content-grid">
-
-
-        <div>
-
-
-          <section class="panel">
-
-
-            <div class="panel-head">
-
-
-              <h3>
-
-                Mis cursos
-
-              </h3>
-
-
-              <button
-                class="panel-link"
-                onclick="goToSection('courses')"
-              >
-
-                VER TODOS →
-
-              </button>
-
-
-            </div>
-
-
-
-            <div
-  id="homeCourses"
-  class="my-courses-grid"
->
-
-  <div class="courses-loading">
-    Buscando tus cursos... ✦
-  </div>
-
-</div>
-
-
-          </section>
-
-
-
-          <section class="panel">
-
-
-            <div class="panel-head">
-
-              <h3>
-
-                Explorar por categoría
-
-              </h3>
-
-            </div>
-
-
-
-<div class="category-grid">
-
-
-  <article class="category" role="button" data-edition="01 · DINERO" tabindex="0" aria-label="Ver cursos de educación financiera" onclick="goToSection('finance')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('finance')}" style="cursor:pointer">
-    <span class="category-badge">
-      01
-    </span>
-
-    <h3>
-      Educación financiera
-    </h3>
-
-    <p>
-      Dinero, ahorro, inversiones,
-      negocios y decisiones financieras.
-    </p>
-
-  </article>
-
-
-  <article class="category" role="button" data-edition="02 · IDIOMAS" tabindex="0" aria-label="Ver cursos de idiomas" onclick="goToSection('languages')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('languages')}" style="cursor:pointer">
-    <span class="category-badge">
-      02
-    </span>
-
-    <h3>
-      Idiomas
-    </h3>
-
-    <p>
-      Aprendé a comunicarte
-      con personas de todo el mundo.
-    </p>
-
-  </article>
-
-
-  <article class="category" role="button" data-edition="03 · IDEAS" tabindex="0" aria-label="Ver cursos de desarrollo personal" onclick="goToSection('personal')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('personal')}" style="cursor:pointer">
-    <span class="category-badge">
-      03
-    </span>
-
-    <h3>
-      Desarrollo personal
-    </h3>
-
-    <p>
-      Organización, comunicación,
-      trabajo y habilidades para crecer.
-    </p>
-
-  </article>
-
-
-  <article class="category" role="button" data-edition="04 · LAB" tabindex="0" aria-label="Ver cursos de ciencia divertida" onclick="goToSection('science')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('science')}" style="cursor:pointer">
-    <span class="category-badge">
-      04
-    </span>
-
-    <h3>
-      Ciencia divertida
-    </h3>
-
-    <p>
-      Experimentos, curiosidades
-      y proyectos para aprender haciendo.
-    </p>
-
-  </article>
-
-
-  <article class="category" role="button" data-edition="05 · VERDE" tabindex="0" aria-label="Ver cursos de mundo vegetal" onclick="goToSection('plants')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('plants')}" style="cursor:pointer">
-    <span class="category-badge">
-      05
-    </span>
-
-    <h3>
-      Mundo vegetal
-    </h3>
-
-    <p>
-      Plantas, naturaleza
-      y cuidados para cultivar vida.
-    </p>
-
-  </article>
-
-
-</div>
-
-
-          </section>
-
-
-        </div>
-
-
-
-        <!-- DERECHA -->
-
-        <aside>
-
-
-          <section class="panel progress-box">
-
-
-            <div class="panel-head">
-
-              <h3>
-
-                Mi progreso
-
-              </h3>
-
-            </div>
-
-
-
-            <div class="progress-row">
-
-              <span>
-                Progreso de cursos conectados
-              </span>
-
-              <span data-campus-progress-percent>—</span>
-
-            </div>
-
-
-
-            <div class="progress-bar">
-
-              <div class="progress-fill" data-campus-progress-fill></div>
-
-            </div>
-
-
-          </section>
-
-
-
-          <section class="panel quote-card">
-
-            “La constancia también cuenta
-            los días en los que hiciste poquito.”
-
-          </section>
-
-
-
-          <section class="panel">
-
-            <div class="panel-head">
-
-              <h3>
-                Recordatorio
-              </h3>
-
-            </div>
-
-            <p
-              style="
-                margin:0;
-                font-size:14px;
-                font-weight:700;
-                line-height:1.55;
-              "
-            >
-
-              No necesitás hacer todo hoy.
-              Elegí una cosa y empezá por ahí.
-
-            </p>
-
-          </section>
-
-
-        </aside>
-
-
+      <!-- INICIO: resumen breve. El catálogo completo está en Mis cursos y Explorar. -->
+      <div class="home-essentials" aria-label="Resumen del Campus">
+        <section class="panel progress-box">
+          <div class="panel-head"><h3>Mi progreso</h3></div>
+          <div class="progress-row">
+            <span>Progreso de cursos conectados</span>
+            <span data-campus-progress-percent>—</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" data-campus-progress-fill></div></div>
+          <button class="home-summary-link" type="button" onclick="goToSection('courses')">Ir a Mis cursos →</button>
+        </section>
+        <section class="panel quote-card">“La constancia también cuenta los días en los que hiciste poquito.”</section>
+        <section class="panel home-reminder">
+          <div class="panel-head"><h3>Recordatorio</h3></div>
+          <p>No necesitás hacer todo hoy. Elegí una cosa y empezá por ahí.</p>
+        </section>
       </div>
-
-
+      <!-- Contenedor de compatibilidad para las actualizaciones del catálogo,
+           no visible en Inicio; todos los cursos se muestran en Mis cursos. -->
+      <div id="homeCourses" hidden aria-hidden="true"></div>
     </section>
-
 
 
     <!-- ======================================================
