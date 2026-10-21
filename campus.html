@@ -2790,6 +2790,200 @@ html[data-theme="dark"] .category-intro{box-shadow:5px 6px 0 var(--accent)}
 html[data-theme="dark"] .finance-group{color:#193650}
 html[data-theme="dark"] .finance-group .no-courses{color:#193650}
 @media(max-width:650px){.category-intro{padding:21px 18px}.category-intro::after{right:8px;top:8px}.category-intro-note{padding:13px 14px}}
+
+/* ==========================================================
+   AJUSTES VISUALES · CAMPUS CÁLIDO RAYADO
+   ========================================================== */
+:root{
+  --bg:#f4ead7;
+  --paper:#fff9ef;
+  --paper-soft:#f7efde;
+  --line:#dcc8a9;
+  --ink:#19304c;
+  --navy:#1b3452;
+  --navy-2:#365878;
+  --orange:#ef8a4c;
+  --orange-light:#f7c18c;
+  --blue:#b9dff1;
+  --blue-light:#dceef7;
+  --green:#b8ddb0;
+  --yellow:#f1d67a;
+  --purple:#cfb5ee;
+  --pink:#edbfd0;
+  --coral:#ef9a8b;
+  --mint:#cce6cf;
+  --shadow:rgba(92,70,39,.12);
+}
+body{
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(to right, transparent 0 72px, rgba(216,151,129,.38) 72px 75px, transparent 75px),
+    repeating-linear-gradient(to bottom, rgba(255,248,235,.98) 0 31px, rgba(215,201,173,.8) 31px 32px),
+    radial-gradient(circle at 92% 9%, rgba(240,200,123,.22), transparent 20%),
+    radial-gradient(circle at 8% 93%, rgba(164,202,169,.18), transparent 22%);
+  background-attachment:fixed;
+}
+.topbar{
+  background:rgba(255,250,241,.94);
+  border-bottom:1px solid rgba(167,140,95,.35);
+}
+.sidebar,.panel,.hero,.quick-card,.category,.real-course-card,.language-intro,.category-intro,.campus-note-sheet{
+  box-shadow:0 12px 24px rgba(86,65,35,.10);
+}
+.sidebar{
+  background:linear-gradient(180deg, rgba(255,250,241,.98), rgba(250,242,226,.98));
+  border-color:rgba(173,145,104,.35);
+}
+.sidebar-title{
+  font-family:"Fredoka",sans-serif;
+  font-size:25px;
+  letter-spacing:-.02em;
+}
+.nav-button:hover{
+  background:#f6ddaf;
+}
+.nav-icon{
+  font-size:19px;
+}
+.sidebar-note{
+  position:relative;
+  background:linear-gradient(135deg,#f7e48b,#f2c983);
+  border:1px solid rgba(158,110,45,.24);
+  padding:16px 16px 16px 18px;
+  box-shadow:0 10px 18px rgba(123,88,34,.12);
+}
+.sidebar-note::before{
+  content:"✦";
+  display:inline-grid;
+  place-items:center;
+  width:28px;
+  height:28px;
+  margin-right:8px;
+  border-radius:50%;
+  background:rgba(255,255,255,.45);
+  font-family:"Fredoka",sans-serif;
+  font-size:16px;
+  vertical-align:middle;
+}
+.identity-tag.arg{background:#cce7f6;}
+.identity-tag.signature{background:#efbc93;}
+.hero{
+  background:linear-gradient(180deg, rgba(255,252,246,.98), rgba(249,241,225,.98));
+  border:1px solid rgba(170,145,103,.35);
+}
+.hero-label{background:#fff0c8;border:1px solid rgba(166,139,95,.35);}
+.hero-copy{color:#31465a;}
+.hero-planet{background:#9ccce6;}
+.hero-planet::before{background:#f4d270;}
+.mate-zone{filter:drop-shadow(0 9px 14px rgba(56,41,24,.16));}
+.thermos{background:linear-gradient(180deg,#9bd0ea,#6f9dbf);}
+.thermos::after{content:"";position:absolute;left:50%;top:19px;transform:translateX(-50%);width:22px;height:38px;border:2px solid rgba(255,255,255,.65);border-radius:9px;opacity:.8;}
+.mate{background:linear-gradient(180deg,#b78058,#8a5835);}
+.mate::after{background:radial-gradient(circle at 30% 25%, #95ae67 0 38%, #708c48 39% 100%);}
+.mate-message{background:#fff4cc;border:2px solid var(--navy);box-shadow:4px 4px 0 rgba(27,52,82,.14);}
+.quote-card{background:linear-gradient(135deg,#f1d47c,#efbf8a);color:#213a57;}
+.quote-card::after{background:#f0e9cf;}
+.quick-card,.category{border:2px solid rgba(27,52,82,.16);}
+.quick-card:nth-child(1){background:#f7c18c;}
+.quick-card:nth-child(2){background:#bfe0b8;}
+.quick-card:nth-child(3){background:#bfe0f1;}
+.quick-card:nth-child(4){background:#f2d67c;}
+.quick-card:nth-child(5){background:#e9bfd1;}
+.quick-card:nth-child(6){background:#d0b6ef;}
+.category{position:relative;overflow:hidden;transition:.17s ease;}
+.category:hover{transform:translateY(-4px) rotate(-.35deg);}
+.category:nth-child(1){background:#f7c18c;}
+.category:nth-child(2){background:#d8bceb;}
+.category:nth-child(3){background:#b9dff1;}
+.category:nth-child(4){background:#f3d777;}
+.category:nth-child(5){background:#bcdcae;}
+.category::after{position:absolute;right:16px;bottom:10px;font:700 32px/1 "Fredoka",sans-serif;color:rgba(27,52,82,.17);}
+.category:nth-child(1)::after{content:"$";}
+.category:nth-child(2)::after{content:"Aa";font-size:26px;}
+.category:nth-child(3)::after{content:"✦";}
+.category:nth-child(4)::after{content:"⚗";}
+.category:nth-child(5)::after{content:"❀";}
+.category h3{font-family:"Fredoka",sans-serif;line-height:1.08;}
+.panel h3{font-family:"Fredoka",sans-serif;font-size:29px;}
+.real-course-card{border:2px solid var(--navy);box-shadow:5px 6px 0 rgba(27,52,82,.85);}
+.real-course-card:nth-child(6n+1){background:#f7c18c;}
+.real-course-card:nth-child(6n+2){background:#bfe0f1;}
+.real-course-card:nth-child(6n+3){background:#d4bee8;}
+.real-course-card:nth-child(6n+4){background:#f1d67d;}
+.real-course-card:nth-child(6n+5){background:#c7e3bd;}
+.real-course-card:nth-child(6n+6){background:#ecb7b8;}
+.real-course-card h4,.real-course-card h3{font-family:"Fredoka",sans-serif;line-height:1.12;}
+.finance-group{background:rgba(255,250,241,.75);}
+#finance-primeros-pasos{border-top-color:#af84de;}
+#finance-vida-cotidiana{border-top-color:#6fb2a6;}
+#finance-inversiones{border-top-color:#e29a52;}
+#finance-historia-negocios{border-top-color:#86a6d8;}
+@media(max-width:900px){body{background-image:repeating-linear-gradient(to bottom, rgba(255,248,235,.98) 0 31px, rgba(215,201,173,.8) 31px 32px), radial-gradient(circle at 92% 9%, rgba(240,200,123,.22), transparent 20%), radial-gradient(circle at 8% 93%, rgba(164,202,169,.18), transparent 22%);}}
+
+
+/* ========================================================
+   SEGUNDA PASADA · EDITORIAL DOSMILERA / IDENTIDAD POR ÁREA
+   Solo presentación; las funciones de Supabase y cursos siguen intactas.
+   ======================================================== */
+:root{--ink-pencil:#203955;--vintage-red:#c66e62;--brown:#926d50;}
+.brand{letter-spacing:-.045em}
+.brand::after{content:'✳';font-size:13px;color:#d47b55;transform:rotate(-12deg);align-self:flex-start}
+.sidebar-title{position:relative;border-bottom:2px dashed #dbbb8b;padding-bottom:12px}
+.sidebar-title::after{content:'VOL. 2026';font:800 10px Manrope,sans-serif;letter-spacing:.12em;color:#a46d4a;position:absolute;right:3px;bottom:14px;transform:rotate(-5deg)}
+.hero{border:2px solid #324e6b;box-shadow:8px 9px 0 #eacb98;isolation:isolate}
+.hero::before{content:'✧';position:absolute;right:23%;top:12px;font:900 42px Fredoka,sans-serif;color:#daa0a2;transform:rotate(-20deg);opacity:.85;pointer-events:none}
+.hero h1{letter-spacing:-.04em;text-shadow:2px 2px 0 rgba(255,221,154,.9)}
+.hero-label{font-family:Fredoka,sans-serif;font-weight:700;letter-spacing:.07em;transform:rotate(-2deg);width:max-content}
+.hero-copy{max-width:570px}
+.mate-zone{transform:rotate(-2deg)}
+.mate{border-radius:13px 13px 30px 30px;box-shadow:inset -10px -6px 0 rgba(47,31,21,.18)}
+.mate::before{background:linear-gradient(90deg,#f2eee1 0 30%,#7f9492 32% 72%,#e7f2e9 73%);border:1px solid #314960}
+.mate-message{transform:rotate(5deg);font-size:14px}
+.quick-card{border:2px solid rgba(32,57,85,.45);box-shadow:5px 6px 0 rgba(35,60,83,.25);transition:transform .16s, box-shadow .16s}
+.quick-card:nth-child(2n){transform:rotate(.45deg)}
+.quick-card:nth-child(3n){transform:rotate(-.4deg)}
+.quick-card:hover{transform:translateY(-5px) rotate(0);box-shadow:7px 9px 0 rgba(35,60,83,.22)}
+.quick-card h2{font-family:Fredoka,sans-serif;line-height:1.13;font-size:29px;letter-spacing:-.025em}
+.quick-card::after{content:'✳';position:absolute;right:13px;top:9px;color:rgba(25,50,80,.22);font:900 30px Fredoka,sans-serif;transform:rotate(15deg)}
+.panel-head h3{letter-spacing:-.03em}
+.category-grid{gap:20px}
+.category{--area:#bd7b57;--area-dark:#6b3c35;border:2px solid var(--area-dark);box-shadow:6px 7px 0 var(--area);min-height:187px;padding:21px 19px 23px;isolation:isolate}
+.category:nth-child(1){--area:#da915d;--area-dark:#6d4731;background:#f5d3a9}
+.category:nth-child(2){--area:#9873ba;--area-dark:#553f72;background:#e2c8ef}
+.category:nth-child(3){--area:#6ba4c9;--area-dark:#355c7a;background:#c8e4f3}
+.category:nth-child(4){--area:#bc8743;--area-dark:#775124;background:#f6e1a2}
+.category:nth-child(5){--area:#719a69;--area-dark:#385c41;background:#d0e6b7}
+.category:hover{box-shadow:9px 10px 0 var(--area);transform:translateY(-4px) rotate(-.6deg)}
+.category-badge{background:var(--area-dark);border-radius:30px;font-size:11px;letter-spacing:.08em;padding:6px 11px}
+.category::before{content:'CUADERNO / '+attr(data-edition);position:absolute;top:22px;right:18px;font:800 9px Manrope,sans-serif;letter-spacing:.065em;color:var(--area-dark);opacity:.73}
+.category h3{font:700 clamp(22px,2.3vw,28px)/1.12 Fredoka,sans-serif;color:#213752;max-width:90%;margin:18px 0 10px}
+.category p{font-weight:650;font-size:13px;line-height:1.55;max-width:92%;color:#293b50}
+.category::after{right:13px;bottom:8px;font-size:36px;color:var(--area-dark);opacity:.22}
+.category:nth-child(1)::after{content:'$'}
+.category:nth-child(2)::after{content:'Aa'}
+.category:nth-child(3)::after{content:'✧'}
+.category:nth-child(4)::after{content:'⚗'}
+.category:nth-child(5)::after{content:'❀'}
+.category-intro{border-width:3px;border-bottom-width:6px;box-shadow:7px 8px 0 color-mix(in srgb,var(--accent),white 40%)}
+.category-intro h3{letter-spacing:-.035em}
+.category-intro--finance{--accent:#9b6bb5;--wash:#f0e0fb;--wash2:#ffe5cb}
+.category-intro--personal{--accent:#c47b61;--wash:#f7d3c5;--wash2:#f7efdd}
+.category-intro--science{--accent:#5489b2;--wash:#d4e9fa;--wash2:#eae3fd}
+.category-intro--plants{--accent:#5b9274;--wash:#d0ead4;--wash2:#f8efce}
+.language-intro{background:linear-gradient(130deg,#d5e9f9,#efdef7 62%,#fff1d8);border-bottom-width:5px}
+.real-course-card{transition:transform .15s ease}
+.real-course-card:hover{transform:translateY(-3px)}
+.real-course-card:nth-child(6n+1){background:#f4d1aa}
+.real-course-card:nth-child(6n+2){background:#cce9f4}
+.real-course-card:nth-child(6n+3){background:#dfc7ed}
+.real-course-card:nth-child(6n+4){background:#f6dfa1}
+.real-course-card:nth-child(6n+5){background:#d2e8bd}
+.real-course-card:nth-child(6n+6){background:#efc7c2}
+@media (max-width:700px){.category::before{font-size:9px}.hero::before{display:none}.hero{box-shadow:4px 5px 0 #eacb98}.category{min-height:165px}}
+html[data-theme="dark"] body{background:#172634;background-image:repeating-linear-gradient(to bottom,#172634 0 31px,#30475c 31px 32px)}
+html[data-theme="dark"] .hero{box-shadow:6px 7px 0 #3c526a}
+html[data-theme="dark"] .category h3,html[data-theme="dark"] .category p{color:#213752}
+
 </style>
 
 </head>
@@ -2890,7 +3084,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
     >
 
       <span class="nav-icon">
-        📚
+        ▦
       </span>
 
       Mis cursos
@@ -2905,7 +3099,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
     >
 
       <span class="nav-icon">
-        🪐
+        ✦
       </span>
 
       Explorar
@@ -2920,7 +3114,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
     >
 
       <span class="nav-icon">
-        📈
+        ↗
       </span>
 
       Mi progreso
@@ -2935,7 +3129,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
     >
 
       <span class="nav-icon">
-        🏆
+        ❖
       </span>
 
       Diplomas
@@ -2950,7 +3144,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
     >
 
       <span class="nav-icon">
-        ◯
+        ◎
       </span>
 
       Mi perfil
@@ -2961,7 +3155,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
 
     <div class="sidebar-note">
 
-      Un paso a la vez también es avanzar.
+      Aprendé habilidades para cambiar tu mundo.
 
     </div>
 
@@ -3072,7 +3266,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
 
           <div class="mate-message">
 
-            mate listo 🧉
+            mate listo
 
           </div>
 
@@ -3352,7 +3546,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
 <div class="category-grid">
 
 
-  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de educación financiera" onclick="goToSection('finance')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('finance')}" style="cursor:pointer">
+  <article class="category" role="button" data-edition="01 · DINERO" tabindex="0" aria-label="Ver cursos de educación financiera" onclick="goToSection('finance')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('finance')}" style="cursor:pointer">
     <span class="category-badge">
       01
     </span>
@@ -3369,7 +3563,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
   </article>
 
 
-  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de idiomas" onclick="goToSection('languages')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('languages')}" style="cursor:pointer">
+  <article class="category" role="button" data-edition="02 · IDIOMAS" tabindex="0" aria-label="Ver cursos de idiomas" onclick="goToSection('languages')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('languages')}" style="cursor:pointer">
     <span class="category-badge">
       02
     </span>
@@ -3386,7 +3580,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
   </article>
 
 
-  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de desarrollo personal" onclick="goToSection('personal')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('personal')}" style="cursor:pointer">
+  <article class="category" role="button" data-edition="03 · IDEAS" tabindex="0" aria-label="Ver cursos de desarrollo personal" onclick="goToSection('personal')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('personal')}" style="cursor:pointer">
     <span class="category-badge">
       03
     </span>
@@ -3403,7 +3597,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
   </article>
 
 
-  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de ciencia divertida" onclick="goToSection('science')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('science')}" style="cursor:pointer">
+  <article class="category" role="button" data-edition="04 · LAB" tabindex="0" aria-label="Ver cursos de ciencia divertida" onclick="goToSection('science')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('science')}" style="cursor:pointer">
     <span class="category-badge">
       04
     </span>
@@ -3420,7 +3614,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
   </article>
 
 
-  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de mundo vegetal" onclick="goToSection('plants')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('plants')}" style="cursor:pointer">
+  <article class="category" role="button" data-edition="05 · VERDE" tabindex="0" aria-label="Ver cursos de mundo vegetal" onclick="goToSection('plants')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('plants')}" style="cursor:pointer">
     <span class="category-badge">
       05
     </span>
@@ -3629,7 +3823,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
       <div class="category-grid">
 
 
-  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de educación financiera" onclick="goToSection('finance')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('finance')}" style="cursor:pointer">
+  <article class="category" role="button" data-edition="01 · DINERO" tabindex="0" aria-label="Ver cursos de educación financiera" onclick="goToSection('finance')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('finance')}" style="cursor:pointer">
     <span class="category-badge">
       01
     </span>
@@ -3646,7 +3840,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
   </article>
 
 
-  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de idiomas" onclick="goToSection('languages')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('languages')}" style="cursor:pointer">
+  <article class="category" role="button" data-edition="02 · IDIOMAS" tabindex="0" aria-label="Ver cursos de idiomas" onclick="goToSection('languages')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('languages')}" style="cursor:pointer">
     <span class="category-badge">
       02
     </span>
@@ -3663,7 +3857,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
   </article>
 
 
-  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de desarrollo personal" onclick="goToSection('personal')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('personal')}" style="cursor:pointer">
+  <article class="category" role="button" data-edition="03 · IDEAS" tabindex="0" aria-label="Ver cursos de desarrollo personal" onclick="goToSection('personal')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('personal')}" style="cursor:pointer">
     <span class="category-badge">
       03
     </span>
@@ -3680,7 +3874,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
   </article>
 
 
-  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de ciencia divertida" onclick="goToSection('science')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('science')}" style="cursor:pointer">
+  <article class="category" role="button" data-edition="04 · LAB" tabindex="0" aria-label="Ver cursos de ciencia divertida" onclick="goToSection('science')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('science')}" style="cursor:pointer">
     <span class="category-badge">
       04
     </span>
@@ -3697,7 +3891,7 @@ html[data-theme="dark"] .finance-group .no-courses{color:#193650}
   </article>
 
 
-  <article class="category" role="button" tabindex="0" aria-label="Ver cursos de mundo vegetal" onclick="goToSection('plants')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('plants')}" style="cursor:pointer">
+  <article class="category" role="button" data-edition="05 · VERDE" tabindex="0" aria-label="Ver cursos de mundo vegetal" onclick="goToSection('plants')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goToSection('plants')}" style="cursor:pointer">
     <span class="category-badge">
       05
     </span>
