@@ -4424,7 +4424,7 @@ async function loadCoursesCampus(){
 
     // Catálogos públicos divididos por categoría: NO son cursos adquiridos.
     const listedIds=new Set(courses.map(c=>Number(c.id)));
-    const extraCourses=[{id:33,title:'Que no te vendan humo',category:'Educación financiera',short_description:HUMO_DESCRIPTION},{id:32,title:'Mi primera platinga',category:'Educación financiera',short_description:PLATINGA_DESCRIPTION},{id:1,title:'Dropshipping y E-commerce desde Argentina',category:'Educación financiera',short_description:DROP_DESCRIPTION},...LANGUAGE_COURSES.map(c=>({id:c.courseId,title:c.name+' '+c.level,category:'Idiomas',short_description:c.description}))].filter(c=>!listedIds.has(c.id));
+    const extraCourses=[{id:34,title:'Interés compuesto: el tiempo cuenta',category:'Educación financiera',short_description:INTERES_DESCRIPTION},{id:33,title:'Que no te vendan humo',category:'Educación financiera',short_description:HUMO_DESCRIPTION},{id:32,title:'Mi primera platinga',category:'Educación financiera',short_description:PLATINGA_DESCRIPTION},{id:1,title:'Dropshipping y E-commerce desde Argentina',category:'Educación financiera',short_description:DROP_DESCRIPTION},...LANGUAGE_COURSES.map(c=>({id:c.courseId,title:c.name+' '+c.level,category:'Idiomas',short_description:c.description}))].filter(c=>!listedIds.has(c.id));
     const allCatalog=[...courses,...extraCourses];
     const financial=allCatalog.filter(c=>String(c.category||'').toLowerCase().includes('financiera'));
     // Misma clasificación de los 18 programas académicos de Educación financiera.
@@ -4451,7 +4451,7 @@ async function loadCoursesCampus(){
     const normalizeFinanceTitle=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
     const financeSectionNormalized=new Map(Object.entries(financeSectionByTitle).map(([title,section])=>[normalizeFinanceTitle(title),section]));
     // IDs conocidos: no dependen de que el título en Supabase sea idéntico.
-    const financeSectionById={1:'financeInversiones',32:'financePrimeros',33:'financePrimeros'};
+    const financeSectionById={1:'financeInversiones',32:'financePrimeros',33:'financePrimeros',34:'financePrimeros'};
     const financeBuckets={financePrimeros:[],financeVida:[],financeInversiones:[],financeHistoria:[]};
     for(const course of financial){
       const group=financeSectionById[Number(course.id)]||financeSectionNormalized.get(normalizeFinanceTitle(course.title))||'financeHistoria';
@@ -4471,7 +4471,7 @@ async function loadCoursesCampus(){
     const requested=new URLSearchParams(location.search).get('curso');
     if(requested&&!window.__openedInitialCourse){
       const match=LANGUAGE_COURSES.find(c=>c.key.replace('_','-')===requested||c.key===requested);
-      const target=Number(requested)||match?.courseId||(requested==='dropshipping-sin-humo'?1:requested==='mi-primera-platinga'?32:requested==='que-no-te-vendan-humo'?33:null);
+      const target=Number(requested)||match?.courseId||(requested==='dropshipping-sin-humo'?1:requested==='mi-primera-platinga'?32:requested==='que-no-te-vendan-humo'?33:requested==='interes-compuesto-el-tiempo-cuenta'?34:null);
       if(getCourseInfo(target)){window.__openedInitialCourse=true;showCourseDetail(target);}
     }
 
@@ -4648,11 +4648,14 @@ const COURSE_ROUTES = {
   5:'curso-frances-a1-privado.html',10:'curso-frances-a2-privado.html',15:'curso-frances-b1-privado.html',20:'curso-frances-b2-privado.html',25:'curso-frances-c1-privado.html',30:'curso-frances-c2-privado.html',
   6:'curso-aleman-a1-privado.html',11:'curso-aleman-a2-privado.html',16:'curso-aleman-b1-privado.html',21:'curso-aleman-b2-privado.html',26:'curso-aleman-c1-privado.html',31:'curso-aleman-c2-privado.html',
   32:'curso-mi-primera-platinga-privado.html',
-  33:'curso-que-no-te-vendan-humo-privado.html'
+  33:'curso-que-no-te-vendan-humo-privado.html',
+  34:'curso-interes-compuesto-privado.html'
 };
 let campusOwnedIds=new Set();
 let campusVerifiedUserId=null;
 let campusDbCourses=[];
+const INTERES_DESCRIPTION='Aprendé cómo crece el dinero con el tiempo. Comprendé interés simple y compuesto, tasas nominales y efectivas, aportes periódicos, inflación y deudas mediante ocho módulos interactivos.';
+const INTERES_TOPICS=['Porcentajes e interés simple: las bases','Interés compuesto y capitalización paso a paso','Cómo influyen el tiempo y la tasa','TNA, TEA y períodos de capitalización','Aportes periódicos y metas de ahorro','Inflación y poder adquisitivo','Interés compuesto en deudas y decisiones','Proyecto integrador y evaluación final'];
 const HUMO_DESCRIPTION='Aprendé a detectar estafas, engaños comerciales y fraudes financieros, verificar ofertas y plataformas y proteger tu dinero y tus datos mediante ocho módulos, casos prácticos y evaluaciones.';
 const HUMO_TOPICS=['Cómo reconocer señales de alerta y técnicas de manipulación','Ofertas engañosas y fraudes de inversión','Seguridad bancaria, pagos y datos personales','Cómo verificar plataformas y propuestas comerciales','Reclamos, denuncias y respuesta ante incidentes','Laboratorio de casos y evaluación final'];
 const PLATINGA_DESCRIPTION='Aprendé a identificar ingresos y gastos, organizar presupuestos, tomar decisiones de consumo y establecer metas de ahorro a través de ocho módulos, ejercicios y evaluaciones.';
@@ -4671,6 +4674,7 @@ function getCourseInfo(courseId){
   const id=Number(courseId);
   const lang=LANGUAGE_COURSES.find(c=>c.courseId===id);
   if(lang)return {id,title:lang.name+' '+lang.level,category:'Idiomas',price:4000,description:'Aprendé '+lang.name+' en el nivel '+lang.level+' con explicaciones, ejercicios interactivos y práctica de comprensión. Este curso te ayuda a consolidar conocimientos y avanzar a tu ritmo, sin garantizar una certificación oficial de nivel.',topics:LANGUAGE_TOPICS[lang.level]};
+  if(id===34)return {id,title:'Interés compuesto: el tiempo cuenta',category:'Educación financiera',price:3000,description:INTERES_DESCRIPTION,topics:INTERES_TOPICS};
   if(id===33)return {id,title:'Que no te vendan humo',category:'Educación financiera',price:3000,description:HUMO_DESCRIPTION,topics:HUMO_TOPICS};
   if(id===32)return {id,title:'Mi primera platinga',category:'Educación financiera',price:3000,description:PLATINGA_DESCRIPTION,topics:PLATINGA_TOPICS};
   if(id===1)return {id,title:'Dropshipping y E-commerce desde Argentina',category:'Educación financiera',price:3000,description:DROP_DESCRIPTION,topics:DROP_TOPICS};
