@@ -2984,6 +2984,71 @@ html[data-theme="dark"] body{background:#172634;background-image:repeating-linea
 html[data-theme="dark"] .hero{box-shadow:6px 7px 0 #3c526a}
 html[data-theme="dark"] .category h3,html[data-theme="dark"] .category p{color:#213752}
 
+
+/* CORRECCIÓN CONTRASTE + BOTONES CROMÁTICOS */
+/* Los cursos de idiomas mantienen una identidad por idioma. */
+.language-course .course-action:not(:disabled):not(.secondary-action){
+  background:var(--lang);color:#fff;border:2px solid #193250;
+  box-shadow:0 4px 0 rgba(21,39,59,.23);
+  transition:filter .16s,transform .16s;
+}
+.language-course .course-action:not(:disabled):hover{filter:brightness(.91);transform:translateY(-2px)}
+.language-course[style*="#D4A83C"] .course-action:not(:disabled){color:#172c43;}
+/* Recuadros de cursos: colores alternados y un botón de su propia gama. */
+.real-course-card{--course-button:#ad693d;--course-button-ink:#fff;}
+.real-course-card:nth-child(6n+1){--course-button:#b75e30;}
+.real-course-card:nth-child(6n+2){--course-button:#36749e;}
+.real-course-card:nth-child(6n+3){--course-button:#77519e;}
+.real-course-card:nth-child(6n+4){--course-button:#aa7422;}
+.real-course-card:nth-child(6n+5){--course-button:#477b4b;}
+.real-course-card:nth-child(6n+6){--course-button:#a9515e;}
+.real-course-card .open-course-button:not(:disabled){background:var(--course-button);color:var(--course-button-ink);border-color:#203750;}
+.real-course-card .open-course-button:not(:disabled):hover{filter:brightness(.9)}
+/* El modo noche tiene dos superficies distintas: claras y oscuras. */
+html[data-theme="dark"] .sidebar{
+  background:#fbf4e8;color:#193250;border:1px solid #dbc9aa;
+}
+html[data-theme="dark"] .sidebar-title{color:#193250;}
+html[data-theme="dark"] .sidebar .nav-button:not(.active){color:#193250;}
+html[data-theme="dark"] .sidebar .nav-button:hover{color:#193250;background:#f7dbb3;}
+html[data-theme="dark"] .sidebar .nav-button.active{color:#fff;background:#1b3452;}
+html[data-theme="dark"] .sidebar-note,html[data-theme="dark"] .identity-tag{color:#193250;}
+html[data-theme="dark"] .hero{color:#f7f2e9;background:linear-gradient(125deg,#203a4b,#2b4355);}
+html[data-theme="dark"] .hero .hero-copy{color:#f7f2e9;opacity:1;}
+html[data-theme="dark"] .hero .user-email{color:#d5e4eb;}
+html[data-theme="dark"] .hero-label{color:#1a3550;background:#fff0c8;}
+html[data-theme="dark"] .hero h1{color:#fff;}
+html[data-theme="dark"] .hero h1 span{color:#ff9b60;}
+html[data-theme="dark"] .mate-message{color:#193250;}
+/* Los bloques claros mantienen tinta oscura, aunque el resto de la página sea nocturno. */
+html[data-theme="dark"] .quick-card,html[data-theme="dark"] .category,
+html[data-theme="dark"] .real-course-card,html[data-theme="dark"] .language-course,
+html[data-theme="dark"] .category-intro,html[data-theme="dark"] .language-intro{
+  color:#193250;
+}
+html[data-theme="dark"] .quick-card h2,html[data-theme="dark"] .quick-card p,
+html[data-theme="dark"] .category h3,html[data-theme="dark"] .category p,
+html[data-theme="dark"] .real-course-card h3,html[data-theme="dark"] .real-course-card h4,
+html[data-theme="dark"] .real-course-card p{color:#193250;}
+html[data-theme="dark"] .language-course{background:#fff9ef;border-color:#c9b793;}
+html[data-theme="dark"] .language-course h4,
+html[data-theme="dark"] .language-course p,
+html[data-theme="dark"] .language-course .price,
+html[data-theme="dark"] .language-course .language-smallprint{color:#193250;}
+html[data-theme="dark"] .language-course .level{color:#fff;}
+html[data-theme="dark"] .language-course[style*="#D4A83C"] .level{color:#193250;}
+html[data-theme="dark"] .language-intro h3,
+html[data-theme="dark"] .language-intro p{color:#193250;}
+html[data-theme="dark"] .category-intro-note,
+html[data-theme="dark"] .category-intro-note strong,
+html[data-theme="dark"] .category-intro-note p{color:#193250;}
+html[data-theme="dark"] .finance-group,
+html[data-theme="dark"] .finance-group h3,
+html[data-theme="dark"] .finance-group p{color:#193250;}
+html[data-theme="dark"] .quote-card{color:#193250;}
+/* La barra superior conserva legibilidad en modo oscuro. */
+html[data-theme="dark"] .topbar .brand{color:#fff;}
+
 </style>
 
 </head>
