@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>¿Cuándo ahorrar y cuándo invertir? Aprendé esto antes de invertir tu primer peso · Acceso privado · Universo del Estudiante</title>
+<style>
+:root{font-family:system-ui,Arial,sans-serif;background:#fff8e9;color:#203955}*{box-sizing:border-box}body{margin:0}
+header{background:#7251a3;color:#fff;padding:17px 5%;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}header a{color:white}
+main{max-width:1260px;margin:22px auto;padding:0 12px}.panel{padding:28px;background:white;border:2px solid #7251a3;border-radius:20px;box-shadow:5px 5px 0 #f4bd80}
+#frame{display:none;width:100%;height:calc(100vh - 120px);min-height:600px;border:2px solid #7251a3;border-radius:14px;background:#fff}
+#retry{display:none;border:0;padding:12px 20px;background:#327862;color:white;border-radius:12px;cursor:pointer}
+</style></head><body>
+<header><strong>💜 UNIVERSO DEL ESTUDIANTE · AHORRAR E INVERTIR</strong><a href="campus.html">← Volver al Campus</a></header>
+<main><div class="panel" id="panel" role="status" aria-live="polite"><h1>¿Cuándo ahorrar y cuándo invertir? Aprendé esto antes de invertir tu primer peso</h1><p id="status">Comprobando inscripción activa…</p><button id="retry" onclick="location.reload()">Volver a intentar</button></div><iframe id="frame" title="¿Cuándo ahorrar y cuándo invertir? Aprendé esto antes de invertir tu primer peso · Curso privado" sandbox="allow-scripts allow-forms allow-modals allow-downloads" referrerpolicy="no-referrer"></iframe></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+'use strict';
+const SUPABASE_URL='https://ohlgifhdmqzqymnkjnwe.supabase.co';
+const PUB='sb_publishable_0o_hbYuQFkWQ49u6gCTNgg_2kd6QAiu';
+const COURSE_ID=35, KEYS=['ue_ahorrar_invertir_unificado_v2'];
+const supa=window.supabase?.createClient?.(SUPABASE_URL,PUB);
+const panel=document.querySelector('#panel'),statusText=document.querySelector('#status'),frame=document.querySelector('#frame');
+let storagePrefix='',verified=false;
+function error(message){statusText.textContent=message;document.querySelector('#retry').style.display='inline-block'}
+window.addEventListener('message',e=>{
+  if(!verified||e.source!==frame.contentWindow||!e.data||e.data.type!=='ahorrar-private-store')return;
+  if(!KEYS.includes(e.data.key))return;
+  const key=storagePrefix+e.data.key;
+  if(e.data.action==='set'&&typeof e.data.value==='string'&&e.data.value.length<500000){try{JSON.parse(e.data.value);localStorage.setItem(key,e.data.value)}catch{}}
+  if(e.data.action==='remove')localStorage.removeItem(key);
+});
+(async()=>{
+ try{
+  if(!supa)throw new Error('No se pudo cargar la conexión con Supabase. Actualizá la página o comprobá tu conexión.');
+  const {data:sessionData,error:sessionErr}=await supa.auth.getSession();
+  const session=sessionData?.session;if(sessionErr||!session)throw new Error('Iniciá sesión en el Campus para acceder a tus cursos.');
+  const {data:account,error:accountErr}=await supa.auth.getUser();
+  if(accountErr||!account?.user||account.user.id!==session.user.id)throw new Error('No pudimos validar tu sesión.');
+  storagePrefix='ue_ahorrar_invertir_'+account.user.id+'_';
+  const {data,error:accessError}=await supa.functions.invoke('abrir-curso-privado',{body:{course_id:COURSE_ID},headers:{Authorization:'Bearer '+session.access_token}});
+  if(accessError){const message=accessError.context?.status===403?'Este curso todavía no está habilitado en tu cuenta.': 'No pudimos verificar el acceso al curso.';throw new Error(message)}
+  if(Number(data?.course_id)!==COURSE_ID||typeof data.signed_url!=='string')throw new Error('La respuesta del servidor no corresponde a este curso.');
+  statusText.textContent='Cargando clases…';
+  const response=await fetch(data.signed_url,{cache:'no-store'});
+  if(!response.ok)throw new Error('No pudimos descargar las clases privadas.');
+  let html=await response.text();
+  if(!html.includes("const STORAGE_KEY='ue_ahorrar_invertir_unificado_v2'"))throw new Error('La versión del curso guardada no coincide con la prevista.');
+  const initial={};for(const key of KEYS)initial[key]=localStorage.getItem(storagePrefix+key);
+  const bootstrap='<scr'+'ipt>window.__ahorrarStore={getItem(k){return Object.prototype.hasOwnProperty.call(this.data,k)?this.data[k]:null},setItem(k,v){if(typeof v==="string"){this.data[k]=v;parent.postMessage({type:"ahorrar-private-store",action:"set",key:k,value:v},"*")}},removeItem(k){delete this.data[k];parent.postMessage({type:"ahorrar-private-store",action:"remove",key:k},"*")},data:'+JSON.stringify(initial).replace(/</g,'\u003c')+'};</scr'+'ipt>';
+  html=html.replaceAll('localStorage.getItem(', 'window.__ahorrarStore.getItem(').replaceAll('localStorage.setItem(', 'window.__ahorrarStore.setItem(').replaceAll('localStorage.removeItem(', 'window.__ahorrarStore.removeItem(');
+  html=html.replace('</head>',bootstrap+'</head>');
+  verified=true;frame.srcdoc=html;panel.style.display='none';frame.style.display='block';
+ }catch(e){console.error(e);error(e?.message||'Error de acceso')} 
+})();
+</script></body></html>
