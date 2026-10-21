@@ -4424,21 +4424,21 @@ async function loadCoursesCampus(){
 
     // Catálogos públicos divididos por categoría: NO son cursos adquiridos.
     const listedIds=new Set(courses.map(c=>Number(c.id)));
-    const extraCourses=[{id:34,title:'Interés compuesto: el tiempo cuenta',category:'Educación financiera',short_description:INTERES_DESCRIPTION},{id:33,title:'Que no te vendan humo',category:'Educación financiera',short_description:HUMO_DESCRIPTION},{id:32,title:'Mi primera platinga',category:'Educación financiera',short_description:PLATINGA_DESCRIPTION},{id:1,title:'Dropshipping y E-commerce desde Argentina',category:'Educación financiera',short_description:DROP_DESCRIPTION},...LANGUAGE_COURSES.map(c=>({id:c.courseId,title:c.name+' '+c.level,category:'Idiomas',short_description:c.description}))].filter(c=>!listedIds.has(c.id));
+    const extraCourses=[{id:35,title:'¿Cuándo ahorrar y cuándo invertir? Aprendé esto antes de invertir tu primer peso',category:'Educación financiera',short_description:AHORRAR_INVERTIR_DESCRIPTION},{id:34,title:'Interés compuesto: el tiempo cuenta',category:'Educación financiera',short_description:INTERES_DESCRIPTION},{id:33,title:'Que no te vendan humo',category:'Educación financiera',short_description:HUMO_DESCRIPTION},{id:32,title:'Mi primera platinga',category:'Educación financiera',short_description:PLATINGA_DESCRIPTION},{id:1,title:'Dropshipping y E-commerce desde Argentina',category:'Educación financiera',short_description:DROP_DESCRIPTION},...LANGUAGE_COURSES.map(c=>({id:c.courseId,title:c.name+' '+c.level,category:'Idiomas',short_description:c.description}))].filter(c=>!listedIds.has(c.id));
     const allCatalog=[...courses,...extraCourses];
-    const financial=allCatalog.filter(c=>String(c.category||'').toLowerCase().includes('financiera'));
+    const removedFinanceTitles=new Set(['Monedas del mundo: del dólar al peso','Antes de invertir tu primer peso','¿Cuándo ahorrar y cuándo invertir?']);
+    const financial=allCatalog.filter(c=>String(c.category||'').toLowerCase().includes('financiera')&&!removedFinanceTitles.has(String(c.title||'').trim()));
     // Misma clasificación de los 18 programas académicos de Educación financiera.
     const financeSectionByTitle={
       'Mi primera platinga': 'financePrimeros',
       'Que no te vendan humo': 'financePrimeros',
       'Interés compuesto: el tiempo cuenta': 'financePrimeros',
+      '¿Cuándo ahorrar y cuándo invertir? Aprendé esto antes de invertir tu primer peso': 'financePrimeros',
       '¿Cuándo ahorrar y cuándo invertir?': 'financePrimeros',
-      'Antes de invertir tu primer peso': 'financePrimeros',
       '¿A dónde se me va la plata?': 'financeVida',
       'Un colchón para los imprevistos': 'financeVida',
       'Inflación: lo que cambia tu dinero': 'financeVida',
       'Tarjetas, cuotas y deudas': 'financeVida',
-      'Monedas del mundo: del dólar al peso': 'financeVida',
       'Acciones y CEDEARs': 'financeInversiones',
       'Opciones: puts y calls': 'financeInversiones',
       'Fondos comunes de inversión': 'financeInversiones',
@@ -4451,14 +4451,21 @@ async function loadCoursesCampus(){
     const normalizeFinanceTitle=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
     const financeSectionNormalized=new Map(Object.entries(financeSectionByTitle).map(([title,section])=>[normalizeFinanceTitle(title),section]));
     // IDs conocidos: no dependen de que el título en Supabase sea idéntico.
-    const financeSectionById={1:'financeInversiones',32:'financePrimeros',33:'financePrimeros',34:'financePrimeros'};
+    const financeSectionById={1:'financeInversiones',32:'financePrimeros',33:'financePrimeros',34:'financePrimeros',35:'financePrimeros'};
     const financeBuckets={financePrimeros:[],financeVida:[],financeInversiones:[],financeHistoria:[]};
     for(const course of financial){
       const group=financeSectionById[Number(course.id)]||financeSectionNormalized.get(normalizeFinanceTitle(course.title))||'financeHistoria';
       financeBuckets[group].push(course);
     }
+    // Lecturas anunciadas, sin curso implementado ni compras habilitadas.
+    const historiaProximos=[
+      ['La psicología del dinero — Morgan Housel','Curso futuro de análisis crítico y actividades inspiradas en las ideas del libro. No incluye una reproducción del libro.'],
+      ['Los secretos de la mente millonaria — T. Harv Eker','Curso futuro de lectura crítica sobre creencias, hábitos y decisiones financieras. No incluye una reproducción del libro.']
+    ];
+    const historiaProximosHTML=historiaProximos.map(([title,description])=>`<article class="real-course-card"><span class="course-status course-status-available">EN PREPARACIÓN</span><div class="real-course-category">Educación financiera · Historia y negocios</div><h4>${escapeHTML(title)}</h4><p>${escapeHTML(description)}</p><button class="open-course-button" type="button" disabled aria-disabled="true">Próximamente</button></article>`).join('');
     for(const [elementId,items] of Object.entries(financeBuckets)){
-      putHTML(document.getElementById(elementId),items.length?items.map(c=>createCourseCard(c,campusOwnedIds.has(Number(c.id)))).join(''):'<div class="no-courses">Próximamente vamos a incorporar cursos a esta sección.</div>');
+      const rendered=items.map(c=>createCourseCard(c,campusOwnedIds.has(Number(c.id)))).join('')+(elementId==='financeHistoria'?historiaProximosHTML:'');
+      putHTML(document.getElementById(elementId),rendered||'<div class="no-courses">Próximamente vamos a incorporar cursos a esta sección.</div>');
     }
     const catIds={personal:'Desarrollo personal',science:'Ciencia divertida',plants:'Mundo vegetal'};
     for(const [key,category] of Object.entries(catIds)){
@@ -4471,7 +4478,7 @@ async function loadCoursesCampus(){
     const requested=new URLSearchParams(location.search).get('curso');
     if(requested&&!window.__openedInitialCourse){
       const match=LANGUAGE_COURSES.find(c=>c.key.replace('_','-')===requested||c.key===requested);
-      const target=Number(requested)||match?.courseId||(requested==='dropshipping-sin-humo'?1:requested==='mi-primera-platinga'?32:requested==='que-no-te-vendan-humo'?33:requested==='interes-compuesto-el-tiempo-cuenta'?34:null);
+      const target=Number(requested)||match?.courseId||(requested==='dropshipping-sin-humo'?1:requested==='mi-primera-platinga'?32:requested==='que-no-te-vendan-humo'?33:requested==='interes-compuesto-el-tiempo-cuenta'?34:requested==='cuando-ahorrar-y-cuando-invertir'?35:null);
       if(getCourseInfo(target)){window.__openedInitialCourse=true;showCourseDetail(target);}
     }
 
@@ -4649,11 +4656,14 @@ const COURSE_ROUTES = {
   6:'curso-aleman-a1-privado.html',11:'curso-aleman-a2-privado.html',16:'curso-aleman-b1-privado.html',21:'curso-aleman-b2-privado.html',26:'curso-aleman-c1-privado.html',31:'curso-aleman-c2-privado.html',
   32:'curso-mi-primera-platinga-privado.html',
   33:'curso-que-no-te-vendan-humo-privado.html',
-  34:'curso-interes-compuesto-privado.html'
+  34:'curso-interes-compuesto-privado.html',
+  35:'curso-cuando-ahorrar-invertir-privado.html'
 };
 let campusOwnedIds=new Set();
 let campusVerifiedUserId=null;
 let campusDbCourses=[];
+const AHORRAR_INVERTIR_DESCRIPTION='Aprendé a decidir cuándo ahorrar o invertir y qué revisar antes de invertir tu primer peso. Diez módulos y treinta clases, actividades con calculadora y un simulador de prueba para observar cómo evolucionan los ahorros y las inversiones en escenarios hipotéticos, sin usar dinero real.';
+const AHORRAR_INVERTIR_TOPICS=['El filtro de las decisiones financieras','Fechas, objetivos y disponibilidad del dinero','Imprevistos y planes alternativos','Cuánto riesgo podrías afrontar','Instrumentos y condiciones de uso','Comparación de costos, inflación y resultados','Reglas para decidir y revisar','Taller de casos y decisiones','Preparación antes de invertir el primer peso','Intermediarios, documentos, costos y primera operación simulada','Simulador educativo de ingresos, gastos, ahorro e inversiones'];
 const INTERES_DESCRIPTION='Aprendé cómo crece el dinero con el tiempo. Comprendé interés simple y compuesto, tasas nominales y efectivas, aportes periódicos, inflación y deudas mediante ocho módulos interactivos.';
 const INTERES_TOPICS=['Porcentajes e interés simple: las bases','Interés compuesto y capitalización paso a paso','Cómo influyen el tiempo y la tasa','TNA, TEA y períodos de capitalización','Aportes periódicos y metas de ahorro','Inflación y poder adquisitivo','Interés compuesto en deudas y decisiones','Proyecto integrador y evaluación final'];
 const HUMO_DESCRIPTION='Aprendé a detectar estafas, engaños comerciales y fraudes financieros, verificar ofertas y plataformas y proteger tu dinero y tus datos mediante ocho módulos, casos prácticos y evaluaciones.';
@@ -4674,6 +4684,7 @@ function getCourseInfo(courseId){
   const id=Number(courseId);
   const lang=LANGUAGE_COURSES.find(c=>c.courseId===id);
   if(lang)return {id,title:lang.name+' '+lang.level,category:'Idiomas',price:4000,description:'Aprendé '+lang.name+' en el nivel '+lang.level+' con explicaciones, ejercicios interactivos y práctica de comprensión. Este curso te ayuda a consolidar conocimientos y avanzar a tu ritmo, sin garantizar una certificación oficial de nivel.',topics:LANGUAGE_TOPICS[lang.level]};
+  if(id===35)return {id,title:'¿Cuándo ahorrar y cuándo invertir? Aprendé esto antes de invertir tu primer peso',category:'Educación financiera',price:4000,description:AHORRAR_INVERTIR_DESCRIPTION,topics:AHORRAR_INVERTIR_TOPICS};
   if(id===34)return {id,title:'Interés compuesto: el tiempo cuenta',category:'Educación financiera',price:3000,description:INTERES_DESCRIPTION,topics:INTERES_TOPICS};
   if(id===33)return {id,title:'Que no te vendan humo',category:'Educación financiera',price:3000,description:HUMO_DESCRIPTION,topics:HUMO_TOPICS};
   if(id===32)return {id,title:'Mi primera platinga',category:'Educación financiera',price:3000,description:PLATINGA_DESCRIPTION,topics:PLATINGA_TOPICS};
