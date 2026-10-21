@@ -44,7 +44,7 @@ window.addEventListener('message',e=>{
   let html=await response.text();
   if(!html.includes("const KEY='ue-mi-primera-platinga-v1'")||!html.includes("const GATE_KEY='ue-platinga-examenes-v2'"))throw new Error('La versión del curso guardada no coincide con la prevista.');
   const initial={};for(const key of KEYS)initial[key]=localStorage.getItem(storagePrefix+key);
-  const bootstrap='<script>window.__platingaStore={getItem(k){return Object.prototype.hasOwnProperty.call(this.data,k)?this.data[k]:null},setItem(k,v){if(typeof v==="string"){this.data[k]=v;parent.postMessage({type:"platinga-private-store",action:"set",key:k,value:v},"*")}},removeItem(k){delete this.data[k];parent.postMessage({type:"platinga-private-store",action:"remove",key:k},"*")},data:'+JSON.stringify(initial).replace(/</g,'\u003c')+'};<\/script>';
+  const bootstrap='<scr'+'ipt>window.__platingaStore={getItem(k){return Object.prototype.hasOwnProperty.call(this.data,k)?this.data[k]:null},setItem(k,v){if(typeof v==="string"){this.data[k]=v;parent.postMessage({type:"platinga-private-store",action:"set",key:k,value:v},"*")}},removeItem(k){delete this.data[k];parent.postMessage({type:"platinga-private-store",action:"remove",key:k},"*")},data:'+JSON.stringify(initial).replace(/</g,'\u003c')+'};</scr'+'ipt>';
   html=html.replaceAll('localStorage.getItem(', 'window.__platingaStore.getItem(').replaceAll('localStorage.setItem(', 'window.__platingaStore.setItem(').replaceAll('localStorage.removeItem(', 'window.__platingaStore.removeItem(');
   html=html.replace('</head>',bootstrap+'</head>');
   verified=true;frame.srcdoc=html;panel.style.display='none';frame.style.display='block';
