@@ -3049,6 +3049,255 @@ html[data-theme="dark"] .quote-card{color:#193250;}
 /* La barra superior conserva legibilidad en modo oscuro. */
 html[data-theme="dark"] .topbar .brand{color:#fff;}
 
+
+/* ==========================================================
+   AJUSTES FINALES · PALETA CÁLIDA Y PROFUNDA + LEGIBILIDAD
+   ========================================================== */
+:root{
+  --warm-cream:#f6efe2;
+  --warm-line:#d9c7a8;
+  --deep-navy:#1d3652;
+  --terracotta:#c96f4d;
+  --terracotta-deep:#a95639;
+  --sage:#9ab585;
+  --sage-deep:#5f7d4f;
+  --dusty-blue:#8fb7cf;
+  --dusty-blue-deep:#426c87;
+  --mustard:#d5b04f;
+  --mustard-deep:#9f7821;
+  --plum:#9a77a8;
+  --plum-deep:#694778;
+  --brick:#be766d;
+  --brick-deep:#934b48;
+}
+
+/* Menú lateral: evitar superposición con VOL. 2026 */
+.sidebar-title{
+  display:block;
+  position:relative;
+  min-height:40px;
+  padding-right:84px;
+  line-height:1.06;
+  letter-spacing:-.02em;
+}
+.sidebar-title::after{
+  right:2px !important;
+  bottom:8px !important;
+  font-size:10px !important;
+  letter-spacing:.14em !important;
+}
+
+/* Dibujos y detalles decorativos más notorios */
+.quick-card::after,
+.category::after{
+  color:rgba(28,53,82,.34) !important;
+  text-shadow:1px 1px 0 rgba(255,248,232,.25);
+}
+.hero-planet,
+.mate,
+.thermos,
+.mate-message{
+  box-shadow:0 0 0 2px rgba(27,52,82,.12), 0 10px 18px rgba(27,52,82,.16);
+}
+.mate-message{
+  font-size:14px;
+  font-weight:800;
+}
+
+/* Tarjetas principales con gama más cálida y profunda */
+.quick-card,
+.category,
+.real-course-card,
+.language-course,
+.language-intro,
+.language-note,
+.language-video,
+.hero,
+.sidebar{
+  border-color:rgba(31,54,82,.22);
+}
+
+.quick-card:nth-child(1){background:#e7ab76;}
+.quick-card:nth-child(2){background:#b7d0a4;}
+.quick-card:nth-child(3){background:#a4cadb;}
+.quick-card:nth-child(4){background:#e2c164;}
+.quick-card:nth-child(5){background:#d3a4bd;}
+.quick-card:nth-child(6){background:#d7a18b;}
+.quick-card h2,.quick-card p{color:#193250;}
+
+.category:nth-child(1){background:#e8ac79;}
+.category:nth-child(2){background:#ccb0df;}
+.category:nth-child(3){background:#a9cfe0;}
+.category:nth-child(4){background:#e4c465;}
+.category:nth-child(5){background:#b6d09c;}
+.category h3,.category p{color:#193250;}
+
+/* Idiomas: mejor contraste en modo claro y oscuro */
+.language-intro{
+  background:linear-gradient(135deg,#ead3b9,#f6e6d4 48%,#eddcc7 100%) !important;
+  border:2px solid #a68a62;
+  box-shadow:6px 7px 0 #d0b07b;
+}
+.language-intro h3,
+.language-intro p,
+.language-intro strong,
+.language-toolbar label,
+.language-summary{
+  color:#18314d !important;
+}
+.language-select,
+.level-filter{
+  background:#fff9ef;
+  color:#193250;
+  border:2px solid rgba(29,54,82,.6);
+}
+.language-filter-chip{
+  background:#fff5e6;
+  color:#193250;
+  border:2px solid #d0b286;
+}
+.language-filter-chip.active{
+  background:#1d3652;
+  color:#fff9ef;
+  border-color:#1d3652;
+}
+.language-video{
+  background:#f1e3cb;
+  border:2px dashed #7b6241;
+  color:#193250;
+}
+.language-video p,
+.language-video strong,
+.language-video-icon{
+  color:#193250 !important;
+}
+.language-note{
+  background:#f9efe1;
+  border-left:7px solid var(--terracotta);
+  color:#193250;
+}
+.language-note p,
+.language-note strong{color:#193250 !important;}
+
+/* Modo oscuro: no permitir texto oscuro sobre fondos oscuros */
+html[data-theme="dark"] .hero{
+  background:linear-gradient(135deg,#27445d,#36556f 58%,#45647b) !important;
+}
+html[data-theme="dark"] .hero .hero-copy,
+html[data-theme="dark"] .hero .hero-email,
+html[data-theme="dark"] .hero p,
+html[data-theme="dark"] .hero h1{color:#fff8ee !important;}
+html[data-theme="dark"] .hero h1 span{color:#ff9a5a !important;}
+html[data-theme="dark"] .hero-planet,
+html[data-theme="dark"] .mate-message{filter:none;}
+
+html[data-theme="dark"] .sidebar,
+html[data-theme="dark"] .quick-card,
+html[data-theme="dark"] .category,
+html[data-theme="dark"] .real-course-card,
+html[data-theme="dark"] .language-course,
+html[data-theme="dark"] .language-intro,
+html[data-theme="dark"] .language-note,
+html[data-theme="dark"] .language-video,
+html[data-theme="dark"] .category-intro,
+html[data-theme="dark"] .panel{
+  background-clip:padding-box;
+}
+html[data-theme="dark"] .language-intro,
+html[data-theme="dark"] .language-note,
+html[data-theme="dark"] .language-video{
+  background:#f5ead8 !important;
+  border-color:#b28e64 !important;
+  box-shadow:6px 7px 0 rgba(66,92,116,.25);
+}
+html[data-theme="dark"] .language-intro h3,
+html[data-theme="dark"] .language-intro p,
+html[data-theme="dark"] .language-intro strong,
+html[data-theme="dark"] .language-note p,
+html[data-theme="dark"] .language-note strong,
+html[data-theme="dark"] .language-video p,
+html[data-theme="dark"] .language-video strong,
+html[data-theme="dark"] .language-video-icon,
+html[data-theme="dark"] .language-summary,
+html[data-theme="dark"] .language-toolbar label{
+  color:#18314d !important;
+}
+html[data-theme="dark"] .language-select,
+html[data-theme="dark"] .level-filter{
+  background:#fff8ee !important;
+  color:#193250 !important;
+  border-color:#38506a !important;
+}
+html[data-theme="dark"] .language-filter-chip{background:#fff2df;color:#193250;border-color:#d1b389;}
+html[data-theme="dark"] .language-filter-chip.active{background:#1d3652;color:#fff8ee;border-color:#1d3652;}
+
+/* Cursos de idiomas: botón con color del curso y texto legible */
+.language-course{
+  box-shadow:5px 6px 0 rgba(30,52,80,.16);
+}
+.language-course .course-action:not(:disabled):not(.secondary-action){
+  background:var(--lang) !important;
+  border-color:#203750 !important;
+  color:#fff !important;
+}
+.language-course[style*="#D4A83C"] .course-action:not(:disabled),
+.language-course[style*="#E3BE5D"] .course-action:not(:disabled),
+.language-course[style*="#D9B14E"] .course-action:not(:disabled){
+  color:#193250 !important;
+}
+
+/* Todas las tarjetas de cursos: color + botón coordinado */
+.real-course-card:nth-child(6n+1){background:#d98f68; color:#fff7ee; --course-button:#b65e3b; --course-button-ink:#fff;}
+.real-course-card:nth-child(6n+2){background:#a8cbd8; color:#17314d; --course-button:#527f98; --course-button-ink:#fff;}
+.real-course-card:nth-child(6n+3){background:#a484b4; color:#fff9ef; --course-button:#6d4f7d; --course-button-ink:#fff;}
+.real-course-card:nth-child(6n+4){background:#d8b04e; color:#1d3148; --course-button:#9b7421; --course-button-ink:#fff7ee;}
+.real-course-card:nth-child(6n+5){background:#a8c38a; color:#1d3148; --course-button:#587546; --course-button-ink:#fff;}
+.real-course-card:nth-child(6n+6){background:#bf7e76; color:#fff7ee; --course-button:#904d4a; --course-button-ink:#fff;}
+.real-course-card:nth-child(6n+1) h3,.real-course-card:nth-child(6n+1) h4,.real-course-card:nth-child(6n+1) p,.real-course-card:nth-child(6n+1) .real-course-category,.real-course-card:nth-child(6n+1) .course-status,
+.real-course-card:nth-child(6n+3) h3,.real-course-card:nth-child(6n+3) h4,.real-course-card:nth-child(6n+3) p,.real-course-card:nth-child(6n+3) .real-course-category,.real-course-card:nth-child(6n+3) .course-status,
+.real-course-card:nth-child(6n+6) h3,.real-course-card:nth-child(6n+6) h4,.real-course-card:nth-child(6n+6) p,.real-course-card:nth-child(6n+6) .real-course-category,.real-course-card:nth-child(6n+6) .course-status{color:#fff8ee !important;}
+.real-course-card:nth-child(6n+2) h3,.real-course-card:nth-child(6n+2) h4,.real-course-card:nth-child(6n+2) p,.real-course-card:nth-child(6n+2) .real-course-category,.real-course-card:nth-child(6n+2) .course-status,
+.real-course-card:nth-child(6n+4) h3,.real-course-card:nth-child(6n+4) h4,.real-course-card:nth-child(6n+4) p,.real-course-card:nth-child(6n+4) .real-course-category,.real-course-card:nth-child(6n+4) .course-status,
+.real-course-card:nth-child(6n+5) h3,.real-course-card:nth-child(6n+5) h4,.real-course-card:nth-child(6n+5) p,.real-course-card:nth-child(6n+5) .real-course-category,.real-course-card:nth-child(6n+5) .course-status{color:#193250 !important;}
+.real-course-card .open-course-button:not(:disabled){
+  background:var(--course-button) !important;
+  color:var(--course-button-ink) !important;
+  border-color:#203750 !important;
+  box-shadow:none;
+}
+.real-course-card .open-course-button:disabled{
+  background:rgba(255,249,239,.45);
+  color:rgba(25,50,80,.72);
+  border-color:rgba(29,54,82,.35);
+}
+
+/* Estado de curso y pequeñas etiquetas */
+.course-status,
+.real-course-category,
+.card-label,
+.identity-tag,
+.hero-label{
+  box-shadow:2px 2px 0 rgba(29,54,82,.12);
+}
+
+/* Modo oscuro para tarjetas de cursos: conservar contraste por tarjeta */
+html[data-theme="dark"] .real-course-card:nth-child(6n+1),
+html[data-theme="dark"] .real-course-card:nth-child(6n+3),
+html[data-theme="dark"] .real-course-card:nth-child(6n+6){
+  color:#fff8ee;
+}
+html[data-theme="dark"] .real-course-card:nth-child(6n+2),
+html[data-theme="dark"] .real-course-card:nth-child(6n+4),
+html[data-theme="dark"] .real-course-card:nth-child(6n+5){
+  color:#193250;
+}
+html[data-theme="dark"] .real-course-card:nth-child(6n+1) h3,html[data-theme="dark"] .real-course-card:nth-child(6n+1) h4,html[data-theme="dark"] .real-course-card:nth-child(6n+1) p,html[data-theme="dark"] .real-course-card:nth-child(6n+1) .real-course-category,html[data-theme="dark"] .real-course-card:nth-child(6n+1) .course-status,
+html[data-theme="dark"] .real-course-card:nth-child(6n+3) h3,html[data-theme="dark"] .real-course-card:nth-child(6n+3) h4,html[data-theme="dark"] .real-course-card:nth-child(6n+3) p,html[data-theme="dark"] .real-course-card:nth-child(6n+3) .real-course-category,html[data-theme="dark"] .real-course-card:nth-child(6n+3) .course-status,
+html[data-theme="dark"] .real-course-card:nth-child(6n+6) h3,html[data-theme="dark"] .real-course-card:nth-child(6n+6) h4,html[data-theme="dark"] .real-course-card:nth-child(6n+6) p,html[data-theme="dark"] .real-course-card:nth-child(6n+6) .real-course-category,html[data-theme="dark"] .real-course-card:nth-child(6n+6) .course-status{color:#fff8ee !important;}
+html[data-theme="dark"] .real-course-card:nth-child(6n+2) h3,html[data-theme="dark"] .real-course-card:nth-child(6n+2) h4,html[data-theme="dark"] .real-course-card:nth-child(6n+2) p,html[data-theme="dark"] .real-course-card:nth-child(6n+2) .real-course-category,html[data-theme="dark"] .real-course-card:nth-child(6n+2) .course-status,
+html[data-theme="dark"] .real-course-card:nth-child(6n+4) h3,html[data-theme="dark"] .real-course-card:nth-child(6n+4) h4,html[data-theme="dark"] .real-course-card:nth-child(6n+4) p,html[data-theme="dark"] .real-course-card:nth-child(6n+4) .real-course-category,html[data-theme="dark"] .real-course-card:nth-child(6n+4) .course-status,
+html[data-theme="dark"] .real-course-card:nth-child(6n+5) h3,html[data-theme="dark"] .real-course-card:nth-child(6n+5) h4,html[data-theme="dark"] .real-course-card:nth-child(6n+5) p,html[data-theme="dark"] .real-course-card:nth-child(6n+5) .real-course-category,html[data-theme="dark"] .real-course-card:nth-child(6n+5) .course-status{color:#193250 !important;}
+
 </style>
 
 </head>
