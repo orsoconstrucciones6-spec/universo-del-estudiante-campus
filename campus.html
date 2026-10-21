@@ -3405,6 +3405,35 @@ html[data-theme="dark"] body .real-course-card .course-status-available {
   background-color:#fff0c4 !important;
   -webkit-text-fill-color:#583a1a !important;
 }
+
+/* CONTRASTE FIJO 2026: las etiquetas tienen tinta propia, no heredan tinta de la tarjeta */
+html body .real-course-card :is(.real-course-category,.course-status),
+html[data-theme="dark"] body .real-course-card :is(.real-course-category,.course-status),
+html body #courseDetailContent .real-course-category {
+  opacity:1!important;
+  filter:none!important;
+  text-shadow:none!important;
+}
+html body .real-course-card .real-course-category,
+html[data-theme="dark"] body .real-course-card .real-course-category,
+html body #courseDetailContent .real-course-category {
+  background:#203651!important;
+  color:#fffaf0!important;
+  -webkit-text-fill-color:#fffaf0!important;
+}
+html body .real-course-card .course-status:not(.course-status-available),
+html[data-theme="dark"] body .real-course-card .course-status:not(.course-status-available){
+  background:#dbefd1!important;
+  color:#17432c!important;
+  -webkit-text-fill-color:#17432c!important;
+}
+html body .real-course-card .course-status-available,
+html[data-theme="dark"] body .real-course-card .course-status-available {
+  background:#fff0c4!important;
+  color:#583a1a!important;
+  -webkit-text-fill-color:#583a1a!important;
+}
+
 </style>
 
 </head>
@@ -4847,12 +4876,12 @@ async function loadCoursesCampus(){
       ['Bancos y billeteras virtuales: aprendé a usarlos','Curso en preparación. Cuentas, transferencias, alias, CBU, CVU, operaciones y seguridad digital.'],
       ['Independizarte cuesta: las cuentas de vivir por tu cuenta','Curso en preparación. Alquiler, expensas, servicios, mudanza y planificación de gastos para vivir por tu cuenta.']
     ];
-    const vidaProximosHTML=vidaProximos.map(([title,description])=>`<article class="real-course-card"><span class="course-status course-status-available">EN PREPARACIÓN</span><div class="real-course-category">Educación financiera · Vida cotidiana</div><h4>${escapeHTML(title)}</h4><p>${escapeHTML(description)}</p><button class="open-course-button" type="button" disabled aria-disabled="true">Próximamente</button></article>`).join('');
+    const vidaProximosHTML=vidaProximos.map(([title,description])=>`<article class="real-course-card"><span class="course-status course-status-available" style="background:#fff0c4!important;color:#583a1a!important;-webkit-text-fill-color:#583a1a!important;opacity:1!important">EN PREPARACIÓN</span><div class="real-course-category" style="background:#203651!important;color:#fffaf0!important;-webkit-text-fill-color:#fffaf0!important;opacity:1!important">Educación financiera · Vida cotidiana</div><h4>${escapeHTML(title)}</h4><p>${escapeHTML(description)}</p><button class="open-course-button" type="button" disabled aria-disabled="true">Próximamente</button></article>`).join('');
     const historiaProximos=[
       ['La psicología del dinero — Morgan Housel','Curso futuro de análisis crítico y actividades inspiradas en las ideas del libro. No incluye una reproducción del libro.'],
       ['Los secretos de la mente millonaria — T. Harv Eker','Curso futuro de lectura crítica sobre creencias, hábitos y decisiones financieras. No incluye una reproducción del libro.']
     ];
-    const historiaProximosHTML=historiaProximos.map(([title,description])=>`<article class="real-course-card"><span class="course-status course-status-available">EN PREPARACIÓN</span><div class="real-course-category">Educación financiera · Historia y negocios</div><h4>${escapeHTML(title)}</h4><p>${escapeHTML(description)}</p><button class="open-course-button" type="button" disabled aria-disabled="true">Próximamente</button></article>`).join('');
+    const historiaProximosHTML=historiaProximos.map(([title,description])=>`<article class="real-course-card"><span class="course-status course-status-available" style="background:#fff0c4!important;color:#583a1a!important;-webkit-text-fill-color:#583a1a!important;opacity:1!important">EN PREPARACIÓN</span><div class="real-course-category" style="background:#203651!important;color:#fffaf0!important;-webkit-text-fill-color:#fffaf0!important;opacity:1!important">Educación financiera · Historia y negocios</div><h4>${escapeHTML(title)}</h4><p>${escapeHTML(description)}</p><button class="open-course-button" type="button" disabled aria-disabled="true">Próximamente</button></article>`).join('');
     for(const [elementId,items] of Object.entries(financeBuckets)){
       const rendered=items.map(c=>createCourseCard(c,campusOwnedIds.has(Number(c.id)))).join('')+(elementId==='financeHistoria'?historiaProximosHTML:elementId==='financeVida'?vidaProximosHTML:'');
       putHTML(document.getElementById(elementId),rendered||'<div class="no-courses">Próximamente vamos a incorporar cursos a esta sección.</div>');
@@ -4985,14 +5014,14 @@ function createCourseCard(
     <article class="real-course-card">
 
 
-      <span class="${statusClass}">
+      <span class="${statusClass}" style="background:#dbefd1!important;color:#17432c!important;-webkit-text-fill-color:#17432c!important;opacity:1!important">
 
         ${status}
 
       </span>
 
 
-      <div class="real-course-category">
+      <div class="real-course-category" style="background:#203651!important;color:#fffaf0!important;-webkit-text-fill-color:#fffaf0!important;opacity:1!important">
 
         ${category}
 
@@ -5091,7 +5120,7 @@ function showCourseDetail(courseId){
   const c=getCourseInfo(courseId);if(!c)return;
   const owned=Boolean(campusVerifiedUserId && campusOwnedIds.has(c.id));
   const topics=c.topics.map(t=>'<li>'+escapeHTML(t)+'</li>').join('');
-  document.getElementById('courseDetailContent').innerHTML=`<span class="real-course-category">${escapeHTML(c.category||'Curso')}</span><h3 class="course-detail-heading">${escapeHTML(c.title)}</h3><p>${escapeHTML(c.description)}</p>${c.price!==null?`<div class="course-detail-price">${new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(c.price)} <span style="font:600 14px Manrope,sans-serif">por curso</span></div>`:''}<h4>¿Qué vas a aprender?</h4><ul class="course-detail-list">${topics||'<li>Descripción y programa en preparación.</li>'}</ul><p>Modalidad online a tu ritmo, con práctica y actividades. El diploma corresponde a la finalización de la formación independiente, según las reglas del curso.</p><div class="course-detail-alert">${owned?'Este curso está habilitado en tu cuenta.':'Las compras todavía no están habilitadas. Podés explorar el programa y su precio mientras preparamos la integración con Mercado Pago.'}</div><div class="course-detail-actions">${owned?`<button class="open-course-button" onclick="openCourse(${c.id},true)">Entrar al curso →</button>`:'<button class="open-course-button" type="button" disabled aria-disabled="true">Compra próximamente</button>'}<button class="open-course-button" onclick="goToSection('${c.category==='Idiomas'?'languages':c.category==='Educación financiera'?'finance':'explore'}')">Seguir explorando</button></div>`;
+  document.getElementById('courseDetailContent').innerHTML=`<span class="real-course-category" style="background:#203651!important;color:#fffaf0!important;-webkit-text-fill-color:#fffaf0!important;opacity:1!important">${escapeHTML(c.category||'Curso')}</span><h3 class="course-detail-heading">${escapeHTML(c.title)}</h3><p>${escapeHTML(c.description)}</p>${c.price!==null?`<div class="course-detail-price">${new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(c.price)} <span style="font:600 14px Manrope,sans-serif">por curso</span></div>`:''}<h4>¿Qué vas a aprender?</h4><ul class="course-detail-list">${topics||'<li>Descripción y programa en preparación.</li>'}</ul><p>Modalidad online a tu ritmo, con práctica y actividades. El diploma corresponde a la finalización de la formación independiente, según las reglas del curso.</p><div class="course-detail-alert">${owned?'Este curso está habilitado en tu cuenta.':'Las compras todavía no están habilitadas. Podés explorar el programa y su precio mientras preparamos la integración con Mercado Pago.'}</div><div class="course-detail-actions">${owned?`<button class="open-course-button" onclick="openCourse(${c.id},true)">Entrar al curso →</button>`:'<button class="open-course-button" type="button" disabled aria-disabled="true">Compra próximamente</button>'}<button class="open-course-button" onclick="goToSection('${c.category==='Idiomas'?'languages':c.category==='Educación financiera'?'finance':'explore'}')">Seguir explorando</button></div>`;
   showSection('courseDetail');
   history.replaceState(null,'',location.pathname+'?curso='+encodeURIComponent(c.id));
 }
@@ -5202,7 +5231,7 @@ function renderCourseDiplomas(courses,rows,failed){
  if(failed){container.innerHTML='<h3>No pudimos consultar tus diplomas.</h3><p>Revisá la conexión y volvé a intentar.</p><button type="button" onclick="loadCoursesCampus()">Reintentar</button>';return;}
  const completed=courses.filter(c=>Number(c.id)===1&&savedDiplomaEligible(rows.find(r=>Number(r.course_id)===Number(c.id))?.state));
  if(!completed.length){container.innerHTML='<div class="empty-state"><strong>Todavía no hay diplomas.</strong><p>Completá las seis actividades y aprobá la evaluación de Dropshipping para obtener el tuyo. La vista previa de editora es una muestra y no cuenta como finalización.</p></div>';return;}
- container.innerHTML=completed.map(c=>{const notes=rows.find(r=>Number(r.course_id)===Number(c.id)).state.notes||{};return `<article class="real-course-card"><span class="course-status">CURSO COMPLETADO</span><div class="real-course-category">Educación financiera</div><h3>${escapeHTML(c.title||'Dropshipping')}</h3><p>Tu diploma de finalización está disponible.</p>${typeof notes.diplomaName==='string'&&notes.diplomaName.trim()?`<p><strong>${escapeHTML(notes.diplomaName)}</strong></p>`:''}${typeof notes.diplomaDate==='string'&&notes.diplomaDate.trim()?`<p>Fecha: ${escapeHTML(notes.diplomaDate)}</p>`:''}<a class="open-course-button" href="curso-dropshipping.html?view=diploma">Ver diploma / Guardar PDF →</a><p>Al abrirlo, completá tu nombre y tocá «Imprimir / Guardar diploma como PDF».</p><p>Formación independiente, sin aval ni acreditación oficial.</p></article>`}).join('');
+ container.innerHTML=completed.map(c=>{const notes=rows.find(r=>Number(r.course_id)===Number(c.id)).state.notes||{};return `<article class="real-course-card"><span class="course-status" style="background:#dbefd1!important;color:#17432c!important;-webkit-text-fill-color:#17432c!important;opacity:1!important">CURSO COMPLETADO</span><div class="real-course-category" style="background:#203651!important;color:#fffaf0!important;-webkit-text-fill-color:#fffaf0!important;opacity:1!important">Educación financiera</div><h3>${escapeHTML(c.title||'Dropshipping')}</h3><p>Tu diploma de finalización está disponible.</p>${typeof notes.diplomaName==='string'&&notes.diplomaName.trim()?`<p><strong>${escapeHTML(notes.diplomaName)}</strong></p>`:''}${typeof notes.diplomaDate==='string'&&notes.diplomaDate.trim()?`<p>Fecha: ${escapeHTML(notes.diplomaDate)}</p>`:''}<a class="open-course-button" href="curso-dropshipping.html?view=diploma">Ver diploma / Guardar PDF →</a><p>Al abrirlo, completá tu nombre y tocá «Imprimir / Guardar diploma como PDF».</p><p>Formación independiente, sin aval ni acreditación oficial.</p></article>`}).join('');
 }
 
 
